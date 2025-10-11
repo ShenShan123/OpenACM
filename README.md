@@ -94,9 +94,7 @@ multiplier\_compiler.py  \[options]
 
 Note:
 
-We have updated the function generate\_Appro\_4\_2(test\_bit\_widths) to enhance the flexibility of the multiplier compiler. This update enables the program to automatically calculate the required number of approximate 4-2 compressors for a given bit width. The function supports batch generation for multiple bit widths and provides an interactive interface that allows users to choose combinations from eight predefined classic approximate compressors: Yang1, kong2, antonio, momeni, ha, akbar1, akbar2, and sabetz. If no input is provided, the system will default to Yang1.
-
-
+We have updated the function generate\_Appro\_4\_2(test\_bit\_widths) to enhance the flexibility of the multiplier compiler. This update enables the program to automatically calculate the required number of approximate 4-2 compressors for a given bit width. The function supports batch generation for multiple bit widths and provides an interactive interface that allows users to choose combinations from eight predefined classic approximate compressors: Yang1[1], kong2[2], antonio[3], momeni[4], ha[5], akbar1[6], akbar2[6], and sabetz[7]. If no input is provided, the system will default to Yang1.
 
 \### Truth Table of Approximate 4-2 Compressors
 
@@ -104,7 +102,13 @@ We have updated the function generate\_Appro\_4\_2(test\_bit\_widths) to enhance
 
 ![Approximate 4-2 Compressor Truth Table](./compressor.png)
 
-
+[1] Z. Yang, J. Han, and F. Lombardi, “Approximate compressors for error-resilient multiplier design,” 2015 IEEE International Symposium on Defect and Fault Tolerance in VLSI and Nanotechnology Systems (DFTS), Amherst, MA, USA, 2015, pp. 183-186.
+[2]	T. Kong and S. Li, “Design and Analysis of Approximate 4–2 Compressors for High-Accuracy Multipliers,” in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 29, no. 10, pp. 1771–1781, Oct. 2021.
+[3]	A. G. M. Strollo, E. Napoli, D. De Caro, N. Petra, and G. D. Meo, “Comparison and Extension of Approximate 4-2 Compressors for Low-Power Approximate Multipliers,” IEEE Trans. Circuits Syst. I Regul. Pap., vol. 67, no. 9, pp. 3021–3034, Sep. 2020.
+[4]	A. Momeni, J. Han, P. Montuschi, and F. Lombardi, “Design and Analysis of Approximate Compressors for Multiplication,” IEEE Trans. Comput., vol. 64, no. 4, pp. 984–994, Apr. 2015.
+[5]	M. Ha and S. Lee, “Multipliers With Approximate 4–2 Compressors and Error Recovery Modules,” IEEE Embed. Syst. Lett., vol. 10, no. 1, pp. 6–9, Mar. 2018.
+[6]	O. Akbari, M. Kamal, A. Afzali-Kusha, and M. Pedram, “Dual-Quality 4:2 Compressors for Utilizing in Dynamic Accuracy Configurable Multipliers,” in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 25, no. 4, pp. 1352–1361, Apr. 2017.
+[7]	F. Sabetzadeh, M. H. Moaiyeri, and M. Ahmadinejad, “A Majority-Based Imprecise Multiplier for Ultra-Efficient Approximate Image Multiplication,” IEEE Trans. Circuits Syst. I Regul. Pap., vol. 66, no. 11, pp. 4200–4208, Nov. 2019.
 
 \##Usage##
 
