@@ -102,7 +102,7 @@ We have updated the function generate\_Appro\_4\_2(test\_bit\_widths) to enhance
 
 
 
-!\[Approximate 4-2 Compressor Truth Table](./compressor.png)
+![Approximate 4-2 Compressor Truth Table](./compressor.png)
 
 
 
