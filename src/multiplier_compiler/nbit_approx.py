@@ -2,11 +2,27 @@ import datetime
 import math
 
 class MultiplierGeneratorArbitrary:
-    def __init__(self, n_bits=32):
+    def __init__(self, n_bits=32, compressor_types=None):
         self.n_bits = n_bits
         self.output_bits = 2 * n_bits
         self.stage_count = self._calculate_stage_count(n_bits)
         self.compression_width = self._get_compression_width(n_bits)
+        
+        self.compressor_mapping = {
+            1: "ACCI1", 
+            2: "kong2",
+            3: "antonio", 
+            4: "momeni",
+            5: "ha",
+            6: "akbar1",
+            7: "akbar2",
+            8: "sabetz"
+        }
+        
+        self.compressor_types = compressor_types or []
+        
+        self.compressor_usage_count = 0
+        self.required_compressors = 0
         
     def _calculate_stage_count(self, n_bits):
         if n_bits <= 4:
@@ -65,11 +81,11 @@ class MultiplierGeneratorArbitrary:
         
         widths = []
         
+ 
         special_col1 = 2 * self.n_bits - 1 - target_compression  
-        special_col2 = 2 * self.n_bits - target_compression      
+        special_col2 = 2 * self.n_bits - target_compression     
         
         for col in range(total_columns + 1):
-            
             if col == special_col2:
                 width = target_compression
             elif col < target_compression:
@@ -95,16 +111,13 @@ class MultiplierGeneratorArbitrary:
         return compressor_count, adder_count
     
     def _calculate_high_part_compressor_counts(self, col, total_terms, target_width, n_bits, target_compression=None):
-        """计算高半位特定列的压缩器数量"""
-        
         if target_compression is None:
             target_compression = target_width
-        special_col1 = 2 * n_bits - 1 - target_compression  
-        special_col2 = 2 * n_bits - target_compression      
+        special_col1 = 2 * n_bits - 1 - target_compression 
+        special_col2 = 2 * n_bits - target_compression     
         
-        if col == special_col1: 
-            
-            reduce_count = total_terms - 3  
+        if col == special_col1:
+            reduce_count = total_terms - 3 
             if reduce_count < 0:
                 compressor_count = 0
                 adder_count = 1
@@ -113,24 +126,23 @@ class MultiplierGeneratorArbitrary:
                 adder_count = 1
             return compressor_count, adder_count, "full_special1"
         elif col == special_col2:  
-          
             reduce_count = total_terms - target_width + 1
             if reduce_count <= 0:
                 return 0, 0, "normal_special2"
             compressor_count = reduce_count // 2
             adder_count = (reduce_count - compressor_count * 2) % 2
             return compressor_count, adder_count, "normal_special2"
-        elif col == n_bits:  
+        elif col == n_bits: 
             reduce_count = total_terms - target_width
             compressor_count = reduce_count // 2
             adder_count = 1
             return compressor_count, adder_count, "full"
-        elif col == n_bits + 1:  
+        elif col == n_bits + 1: 
             reduce_count = total_terms - target_width
             compressor_count = reduce_count // 2
             adder_count = 1
             return compressor_count, adder_count, "half"
-        else:  
+        else: 
             reduce_count = total_terms - target_width + 1
             if reduce_count <= 0:
                 return 0, 0, "normal"
@@ -138,8 +150,90 @@ class MultiplierGeneratorArbitrary:
             adder_count = (reduce_count - compressor_count * 2) % 2
             return compressor_count, adder_count, "normal"
     
+    def _get_approximate_compressor(self, col, comp_idx, inputs, is_low_part):
+        if not is_low_part:
+            return "E_4_2"
+        
+        if self.compressor_usage_count < len(self.compressor_types):
+            compressor_type_num = self.compressor_types[self.compressor_usage_count]
+            compressor_name = self.compressor_mapping.get(compressor_type_num, "ACCI1")
+            self.compressor_usage_count += 1
+            return compressor_name
+        else:
+            return "ACCI1"
+    
+    def _count_required_compressors(self, total_columns):
+        count = 0
+        n_bits = self.n_bits
+        split_column = n_bits
+        
+        widths, _ = self._calculate_stage1_widths(total_columns)
+        for col in range(total_columns + 1):
+            if col == total_columns:
+                continue
+                
+            is_low_part = col < split_column
+            if not is_low_part:
+                continue
+                
+            pp_count = self._calculate_partial_product_count(col)
+            target_width = widths[col]
+            
+            if pp_count > target_width:
+                compressor_count, _ = self._calculate_compressor_counts(pp_count, target_width, is_low_part)
+                count += compressor_count
+        
+        for stage in range(2, self.stage_count):
+            input_widths, _ = self._calculate_stage_widths(stage-1, total_columns)
+            output_widths, _ = self._calculate_stage_widths(stage, total_columns)
+            
+            for col in range(total_columns + 1):
+                if col == total_columns and stage in [2, 3]:
+                    continue
+                    
+                is_low_part = col < split_column
+                if not is_low_part:
+                    continue
+                    
+                input_width = input_widths[col]
+                output_width = output_widths[col]
+                
+                if input_width == 0 or output_width == 0:
+                    continue
+                    
+                if input_width > output_width:
+                    compressor_count, _ = self._calculate_compressor_counts(input_width, output_width, is_low_part)
+                    count += compressor_count
+        
+        input_widths, _ = self._calculate_stage_widths(self.stage_count-1, total_columns)
+        for col in range(total_columns + 1):
+            if col == total_columns:
+                continue
+                
+            is_low_part = col < split_column
+            if not is_low_part:
+                continue
+                
+            input_width = input_widths[col]
+            if input_width >= 4: 
+                count += 1
+        
+        return count
+    
     def generate_verilog_code(self):
         total_columns = 2 * self.n_bits - 1
+        
+        self.required_compressors = self._count_required_compressors(total_columns)
+        
+        self.compressor_usage_count = 0
+        
+        if len(self.compressor_types) > self.required_compressors:
+            print(f"Warning: Number of provided compressor types ({len(self.compressor_types)}) exceeds required amount ({self.required_compressors})")
+            self.compressor_types = self.compressor_types[:self.required_compressors]
+        elif len(self.compressor_types) < self.required_compressors:
+            print(f"Warning: Number of provided compressor types ({len(self.compressor_types)}) is less than required amount ({self.required_compressors}), using default compressors to fill")
+            self.compressor_types.extend([1] * (self.required_compressors - len(self.compressor_types)))
+        
         compression_width = self.compression_width
         
         code = """
@@ -153,7 +247,6 @@ class MultiplierGeneratorArbitrary:
 
 {basic_adders}
 
-
 {approx_module}
 
 {stage_modules}
@@ -164,7 +257,7 @@ class MultiplierGeneratorArbitrary:
     compression_width=compression_width,
     timestamp=datetime.datetime.now(),
     cla=self._generate_cla_modules(),
-    acc1=self._generate_acc1_module(),
+    acc1=self._generate_compressor_module(),
     e42=self._generate_e_4_2_module(),
     basic_adders=self._generate_basic_adder_modules(),
     approx_module=self._generate_approx_module(total_columns),
@@ -174,6 +267,44 @@ class MultiplierGeneratorArbitrary:
     
     def _generate_cla_modules(self):
         code = """
+module CLA1bit (
+    input A,
+    input B,
+    input Cin,
+    output Sum,
+    output Cout
+);
+    assign Sum = A ^ B ^ Cin;
+    assign Cout = (A & B) | ((A ^ B) & Cin);
+endmodule
+
+module CLA2bit (
+    input [1:0] A,
+    input [1:0] B,
+    input Cin,
+    output [1:0] Sum,
+    output Cout
+);
+    wire c0;
+    
+    CLA1bit cla0(.A(A[0]), .B(B[0]), .Cin(Cin), .Sum(Sum[0]), .Cout(c0));
+    CLA1bit cla1(.A(A[1]), .B(B[1]), .Cin(c0), .Sum(Sum[1]), .Cout(Cout));
+endmodule
+
+module CLA3bit (
+    input [2:0] A,
+    input [2:0] B,
+    input Cin,
+    output [2:0] Sum,
+    output Cout
+);
+    wire c0, c1;
+    
+    CLA1bit cla0(.A(A[0]), .B(B[0]), .Cin(Cin), .Sum(Sum[0]), .Cout(c0));
+    CLA1bit cla1(.A(A[1]), .B(B[1]), .Cin(c0), .Sum(Sum[1]), .Cout(c1));
+    CLA1bit cla2(.A(A[2]), .B(B[2]), .Cin(c1), .Sum(Sum[2]), .Cout(Cout));
+endmodule
+
 module CLA4bit (
     input [3:0] A,
     input [3:0] B,
@@ -194,24 +325,44 @@ module CLA4bit (
     assign Cout = C[3];
 endmodule
 """
-        bits_needed = [self.output_bits]
-        current = self.output_bits
-        while current > 4:
-            current = current // 2
-            if current >= 4:
-                bits_needed.append(current)
         
-        for bits in sorted(set(bits_needed)):
-            if bits > 4:
-                code += self._generate_cla_module(bits)
+        bits_needed = set()
+        
+        def collect_bits_needed(bits):
+            if bits <= 4:
+                return
+            bits_needed.add(bits)
+            
+            if bits % 2 == 0:
+                half = bits // 2
+                collect_bits_needed(half)
+            else:
+                half1 = bits // 2
+                half2 = bits - half1
+                collect_bits_needed(half1)
+                collect_bits_needed(half2)
+        
+        collect_bits_needed(self.output_bits)
+        
+        for bits in sorted(bits_needed):
+            code += self._generate_cla_module(bits)
         
         return code
     
     def _generate_cla_module(self, bits):
-        if bits == 4:
+        if bits <= 4:
             return ""
         
-        half_bits = bits // 2
+        if bits % 2 == 0:
+            low_bits = bits // 2
+            high_bits = bits // 2
+        else:
+            low_bits = bits // 2
+            high_bits = bits - low_bits
+        
+        low_module = f"CLA{low_bits}bit" if low_bits > 4 else f"CLA{low_bits}bit"
+        high_module = f"CLA{high_bits}bit" if high_bits > 4 else f"CLA{high_bits}bit"
+        
         return """
 module CLA{bits}bit (
     input [{bits_minus1}:0] A,
@@ -220,32 +371,34 @@ module CLA{bits}bit (
     output [{bits_minus1}:0] Sum,
     output Cout
 );
-    wire c1;
+    wire c_mid;
     
-    CLA{half_bits}bit cla1(
-        .A(A[{half_minus1}:0]),
-        .B(B[{half_minus1}:0]),
+    {low_module} cla_low(
+        .A(A[{low_minus1}:0]),
+        .B(B[{low_minus1}:0]),
         .Cin(Cin),
-        .Sum(Sum[{half_minus1}:0]),
-        .Cout(c1)
+        .Sum(Sum[{low_minus1}:0]),
+        .Cout(c_mid)
     );
     
-    CLA{half_bits}bit cla2(
-        .A(A[{bits_minus1}:{half_bits}]),
-        .B(B[{bits_minus1}:{half_bits}]),
-        .Cin(c1),
-        .Sum(Sum[{bits_minus1}:{half_bits}]),
+    {high_module} cla_high(
+        .A(A[{bits_minus1}:{low_bits}]),
+        .B(B[{bits_minus1}:{low_bits}]),
+        .Cin(c_mid),
+        .Sum(Sum[{bits_minus1}:{low_bits}]),
         .Cout(Cout)
     );
 endmodule
 """.format(
     bits=bits,
     bits_minus1=bits-1,
-    half_bits=half_bits,
-    half_minus1=half_bits-1
+    low_bits=low_bits,
+    low_minus1=low_bits-1,
+    low_module=low_module,
+    high_module=high_module
 )
 
-    def _generate_acc1_module(self):
+    def _generate_compressor_module(self):
         return """
 module ACCI1(
     input a,
@@ -273,6 +426,123 @@ module ACCI1(
     assign part8 = ~((~part2) ^ ~(part3 & ~part5));
     assign S = ~(part7 & part8);
     assign C = ~((~part2 | ~(part1 & ~part5)) & ~part5 & (~c | ~d));
+endmodule
+
+module akbar1(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    assign S = ~((~(a ^ b)) & (~(c ^ d)));
+    assign C = d;
+endmodule
+
+module akbar2(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    assign S = ~((~(a ^ b)) & (~(c ^ d)));
+    assign C = ~((~(a & b)) & (~(c & d)));
+endmodule
+
+module antonio(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    
+    wire w1;
+    wire w2;
+    wire w3;
+    
+    assign w1 = a | b;
+    assign w2 = c | (a & b);
+    assign w3 = d;
+    
+    Full_adder Full_adder(
+        .a(w1),
+        .b(w2),
+        .CIN(w3),
+        .S(S),
+        .C(C)
+    );
+endmodule
+
+module ha(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    
+    wire w1;
+    wire w2;
+    assign w1 = a ^ b;
+    assign w2 = c | d;
+    assign S = w1 ^ w2;
+    assign C = (a & b) | (w1 & w2);
+endmodule
+
+module kong2(
+   input a,
+   input b,
+   input c,
+   input d,
+   output S,
+   output C
+    );
+    wire part1;
+    wire part2;
+    wire part3;
+    wire part4;
+    wire part5;
+    wire part6;
+    
+    assign part1 = a ^ b;
+    assign part2 = c ^ d;
+    assign part3 = a | b;
+    assign part4 = c | d;
+    assign part5 = a & b;
+    assign part6 = c & d;
+    assign S = (part1 & ~part2) | (~part1 & part4);
+    assign C =  ~((~part3 & ~part6) | (~part4 & ~part5));
+endmodule
+
+module momeni(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    assign S = (~(a ^ b)) | (~(c ^ d));
+    assign C = ~(~(a | b) | ~(c | d));
+endmodule
+
+module sabetz(
+    input a,
+    input b,
+    input c,
+    input d,
+    output S,
+    output C
+    );
+    
+    assign S = 1'b1;
+    assign C = (d & (a | c)) | (a & c);
 endmodule
 """
 
@@ -340,9 +610,8 @@ endmodule
             widths, _ = self._calculate_stage_widths(stage, total_columns)
             if stage == self.stage_count:
                 continue
-            
             for i in range(total_columns + 1):
-                if stage in [1, 2, 3, 4] and i == total_columns:  
+                if stage in [1, 2, 3, 4] and i == total_columns: 
                     continue
                 width = widths[i]
                 if width == 0:
@@ -358,7 +627,6 @@ endmodule
 
         stage_instances = []
         
-       
         stage1_inputs = []
         widths, _ = self._calculate_stage_widths(1, total_columns)
         for i in range(total_columns + 1):
@@ -374,14 +642,12 @@ endmodule
 {inputs}
     );""".format(n_bits=self.n_bits, inputs=",\n".join(stage1_inputs)))
         
-        
         for stage in range(2, self.stage_count):
             inputs = []
             outputs = []
             prev_widths, _ = self._calculate_stage_widths(stage-1, total_columns)
             curr_widths, _ = self._calculate_stage_widths(stage, total_columns)
             for i in range(total_columns + 1):
-                
                 if stage in [2, 3] and i == total_columns:
                     continue
                 prev_width = prev_widths[i]
@@ -398,11 +664,9 @@ endmodule
 {outputs}
     );""".format(stage_num=stage, n_bits=self.n_bits, inputs=",\n".join(inputs), outputs=",\n".join(outputs)))
         
-        
         final_inputs = []
         prev_widths, _ = self._calculate_stage_widths(self.stage_count-1, total_columns)
         for i in range(total_columns + 1):
-           
             if i ==  total_columns :
                 continue
             width = prev_widths[i]
@@ -472,7 +736,7 @@ endmodule
         outputs = []
         widths, target_compression = self._calculate_stage_widths(1, total_columns)
         for i in range(total_columns + 1):
-            if i == total_columns:  
+            if i == total_columns: 
                 continue
             width = widths[i]
             if width == 0:
@@ -484,28 +748,25 @@ endmodule
         
         code += ",\n".join(outputs) + "\n);\n\n"
         
-        split_column = n_bits  
+        split_column = n_bits 
         
         assignments = []
         internal_wires = []
         
-        
+
         carry_signals = {}
         cout_signals = {}
-        
         
         special_col1 = 2 * n_bits - 1 - target_compression
         special_col2 = 2 * n_bits - target_compression
         column =n_bits
-        
         special_col1_carry = None
         
-        
+
         for col in range(total_columns + 1):
             if col == total_columns:
                 continue
-            
-           
+
             all_pp_terms = []
             for j in range(max(0, col - n_bits + 1), min(col + 1, n_bits)):
                 if j < n_bits and (col - j) < n_bits:
@@ -521,23 +782,17 @@ endmodule
             if col not in cout_signals:
                 cout_signals[col] = []
             
-           
             carry_terms_from_prev = []
             if col > 0 and col-1 in carry_signals:
                 carry_terms_from_prev = carry_signals[col-1]
-            
-            
+                      
             pp_terms_for_compression = all_pp_terms.copy()
             
-            
             if col == special_col1 and not is_low_part:
-                
                 if len(pp_terms_for_compression) < 2:
-                    
                     while len(pp_terms_for_compression) < 2:
                         pp_terms_for_compression.append("cin_net")
                 
-               
                 fa_inputs = pp_terms_for_compression[:2]
                 remaining_pp_terms = pp_terms_for_compression[2:]
                 
@@ -546,7 +801,6 @@ endmodule
                 
                 internal_wires.append("    wire {};".format(fa_signal))
                 internal_wires.append("    wire {};".format(fa_carry))
-                
                 
                 cin_signal = "1'b0"
                 if col > 0 and col-1 in cout_signals and cout_signals[col-1]:
@@ -560,15 +814,12 @@ endmodule
                 assignments.append("        .C({})".format(fa_carry))
                 assignments.append("    );")
                 
-                
                 special_col1_carry = fa_carry
-                
-               
+
                 output_terms = [fa_signal] + remaining_pp_terms
                 if col > 0 and col-1 in carry_signals:
                     output_terms.extend(carry_signals[col-1])
-                
-                
+
                 if len(output_terms) > target_width:
                     output_terms = output_terms[:target_width]
                 
@@ -580,15 +831,14 @@ endmodule
                     if len(output_terms) < target_width:
                         output_terms = ["1'b0"] * (target_width - len(output_terms)) + output_terms
                     assignments.append("    assign pp1_{} = {{{}}};".format(col, ", ".join(output_terms)))
-            
-            
+
             elif col == special_col2 and not is_low_part:
-            
+
+
                 output_terms = pp_terms_for_compression
                 if special_col1_carry is not None:
                     output_terms.append(special_col1_carry)
-                
-                
+
                 if carry_terms_from_prev and len(output_terms) >= target_width:
                     if len(output_terms) >= 1:
                         a = output_terms[-1]
@@ -609,14 +859,14 @@ endmodule
                         assignments.append("    );")
                         
                         output_terms = output_terms[:-1] + [fa_signal]
-                        
+
                         if col not in carry_signals:
                             carry_signals[col] = []
                         carry_signals[col].append(fa_carry)
                 elif carry_terms_from_prev and len(output_terms) < target_width:
                     output_terms.extend(carry_terms_from_prev)
                 
-               
+
                 if len(output_terms) > target_width:
                     output_terms = output_terms[:target_width]
                 
@@ -629,23 +879,20 @@ endmodule
                         output_terms = ["1'b0"] * (target_width - len(output_terms)) + output_terms
                     assignments.append("    assign pp1_{} = {{{}}};".format(col, ", ".join(output_terms)))
             
-           
+
             else:
                 if total_pp_terms <= target_width:
-                   
                     output_terms = pp_terms_for_compression
-                    
-                    
+
                     if is_low_part and col > 0 and col-1 in carry_signals:
                         output_terms.extend(carry_terms_from_prev)
                     
-                   
+
                     if len(output_terms) == 0:
                         assignments.append("    assign pp1_{} = 1'b0;".format(col))
                     elif len(output_terms) == 1:
                         assignments.append("    assign pp1_{} = {};".format(col, output_terms[0]))
                     else:
-                        
                         if len(output_terms) < target_width and is_low_part:
                             output_terms = output_terms + ["1'b0"] * (target_width - len(output_terms))
                         assignments.append("    assign pp1_{} = {{{}}};".format(col, ", ".join(output_terms)))
@@ -654,7 +901,7 @@ endmodule
                         compressor_count, adder_count = self._calculate_compressor_counts(
                             total_pp_terms, target_width, is_low_part)
                         
-                        compressor = "ACCI1"
+                        compressor = "ACCI1" 
                         adder = "Half_adder"
                     else:
                         compressor_count, adder_count, adder_type = self._calculate_high_part_compressor_counts(
@@ -670,8 +917,7 @@ endmodule
                     
                     comp_terms = []
                     adder_terms = []
-                    
-                   
+
                     for comp_idx in range(compressor_count):
                         if len(pp_terms_for_compression) < 4:
                             break
@@ -684,9 +930,11 @@ endmodule
                         
                         internal_wires.append("    wire {};".format(s_signal))
                         internal_wires.append("    wire {};".format(c_signal))
+
+                        actual_compressor = self._get_approximate_compressor(col, comp_idx, inputs, is_low_part)
                         
-                        if compressor == "ACCI1":
-                            assignments.append("    {} ACCI1_{}_{}(".format(compressor, col, comp_idx))
+                        if actual_compressor == "ACCI1":
+                            assignments.append("    {} ACCI1_{}_{}(".format(actual_compressor, col, comp_idx))
                             assignments.append("        .a({}),".format(inputs[0]))
                             assignments.append("        .b({}),".format(inputs[1]))
                             assignments.append("        .c({}),".format(inputs[2]))
@@ -694,21 +942,20 @@ endmodule
                             assignments.append("        .S({}),".format(s_signal))
                             assignments.append("        .C({})".format(c_signal))
                             assignments.append("    );")
-                            
+
                             if col not in carry_signals:
                                 carry_signals[col] = []
                             carry_signals[col].append(c_signal)
-                        else:
-                           
+                        elif actual_compressor == "E_4_2":
+
                             cout_signal = "pp1_{}_e42_{}_cout".format(col, comp_idx)
                             internal_wires.append("    wire {};".format(cout_signal))
                             
-                           
                             cin_signal = "cin_net"
                             if col > 0 and col-1 in cout_signals and comp_idx < len(cout_signals[col-1]):
                                 cin_signal = cout_signals[col-1][comp_idx]
                             
-                            assignments.append("    {} e42_{}_{}(".format(compressor, col, comp_idx))
+                            assignments.append("    {} e42_{}_{}(".format(actual_compressor, col, comp_idx))
                             assignments.append("        .a({}),".format(inputs[0]))
                             assignments.append("        .b({}),".format(inputs[1]))
                             assignments.append("        .c({}),".format(inputs[2]))
@@ -719,19 +966,30 @@ endmodule
                             assignments.append("        .COUT({})".format(cout_signal))
                             assignments.append("    );")
                             
-                           
+
                             if col not in cout_signals:
                                 cout_signals[col] = []
                             cout_signals[col].append(cout_signal)
-                            
-                            
+
+                            if col not in carry_signals:
+                                carry_signals[col] = []
+                            carry_signals[col].append(c_signal)
+                        else:
+                            assignments.append("    {} {}_{}_{}(".format(actual_compressor, actual_compressor, col, comp_idx))
+                            assignments.append("        .a({}),".format(inputs[0]))
+                            assignments.append("        .b({}),".format(inputs[1]))
+                            assignments.append("        .c({}),".format(inputs[2]))
+                            assignments.append("        .d({}),".format(inputs[3]))
+                            assignments.append("        .S({}),".format(s_signal))
+                            assignments.append("        .C({})".format(c_signal))
+                            assignments.append("    );")
+
                             if col not in carry_signals:
                                 carry_signals[col] = []
                             carry_signals[col].append(c_signal)
                         
                         comp_terms.append(s_signal)
-                    
-                    
+
                     for add_idx in range(adder_count):
                         if len(pp_terms_for_compression) < 2 and adder != "Half_adder":
                             break
@@ -755,23 +1013,21 @@ endmodule
                             pp_terms_for_compression = pp_terms_for_compression[2:] if len(pp_terms_for_compression) > 1 else []
                             adder_terms.append(ha_signal)
                             if is_low_part:
-                                
+
                                 if col not in carry_signals:
                                     carry_signals[col] = []
                                 carry_signals[col].append(ha_carry)
                             else:
-                                
+
                                 if col not in carry_signals:
                                     carry_signals[col] = []
                                 carry_signals[col].append(ha_carry)
                         else:
-                            
                             fa_signal = "pp1_{}_fa{}_s".format(col, add_idx)
                             fa_carry = "pp1_{}_fa{}_c".format(col, add_idx)
                             
                             internal_wires.append("    wire {};".format(fa_signal))
                             internal_wires.append("    wire {};".format(fa_carry))
-                            
                             
                             cin_signal = "cin_net"
                             remaining_cout_count = 0
@@ -779,17 +1035,14 @@ endmodule
                                 remaining_cout_count = len(cout_signals[col-1]) - compressor_count
                                 if add_idx < remaining_cout_count:
                                     cin_signal = cout_signals[col-1][compressor_count + add_idx]
-                            
-                            
+
                             if col == n_bits and adder_type == "full":
-                                
                                 if len(pp_terms_for_compression) >= 2:
-                                    
+
                                     if len(pp_terms_for_compression) >= 3:
                                         cin_signal = pp_terms_for_compression[2]
                                         pp_terms_for_compression = pp_terms_for_compression[:2]  
                                     else:
-                                       
                                         cin_signal = "1'b0"
                             
                             assignments.append("    Full_adder fa_{}_{}(".format(col, add_idx))
@@ -802,25 +1055,19 @@ endmodule
                             
                             pp_terms_for_compression = pp_terms_for_compression[3:] if len(pp_terms_for_compression) > 1 else []
                             adder_terms.append(fa_signal)
-                           
                             if col not in carry_signals:
                                 carry_signals[col] = []
                             carry_signals[col].append(fa_carry)
-                    
-                  
+
                     if is_low_part:
-                       
                         output_terms = pp_terms_for_compression + comp_terms + adder_terms
-                        
                         
                         if col > 0 and col-1 in carry_signals:
                             output_terms.extend(carry_signals[col-1])
-                        
-                       
+
                         if len(output_terms) > target_width:
                             output_terms = output_terms[:target_width]
-                        
-                        
+
                         if len(output_terms) < target_width:
                             output_terms = output_terms + ["1'b0"] * (target_width - len(output_terms))
                         
@@ -831,22 +1078,18 @@ endmodule
                         else:
                             assignments.append("    assign pp1_{} = {{{}}};".format(col, ", ".join(output_terms)))
                     else:
-                        
                         processed_terms = set()
-                        
-                        
+
                         for comp_idx in range(compressor_count):
                             if comp_idx * 4 < len(all_pp_terms):
                                 for i in range(min(4, len(all_pp_terms) - comp_idx * 4)):
                                     idx = comp_idx * 4 + i
                                     if idx < len(all_pp_terms):
                                         processed_terms.add(all_pp_terms[idx])
-                        
-                          
+
                         for add_idx in range(adder_count):
-                            
-                            if col == n_bits and adder_type == "full" : 
-                                input_count = 3  
+                            if col == n_bits and adder_type == "full" :  
+                                input_count = 3 
                             else:
                                 input_count = 2
                             
@@ -855,17 +1098,14 @@ endmodule
                                 idx = start_idx + i
                                 if idx < len(all_pp_terms):
                                     processed_terms.add(all_pp_terms[idx])
-                        
-                       
+
                         remaining_high_pp_terms = []
                         for term in all_pp_terms:
                             if term not in processed_terms:
                                 remaining_high_pp_terms.append(term)
-                        
-                        
+
                         output_terms = remaining_high_pp_terms + comp_terms + adder_terms
-                        
-                       
+
                         if carry_terms_from_prev and len(output_terms) >= target_width:
                             if len(output_terms) >= 1:
                                 a = output_terms[-1]
@@ -886,18 +1126,15 @@ endmodule
                                 assignments.append("    );")
                                 
                                 output_terms = output_terms[:-1] + [fa_signal]
-                               
                                 if col not in carry_signals:
                                     carry_signals[col] = []
                                 carry_signals[col].append(fa_carry)
                         elif carry_terms_from_prev and len(output_terms) < target_width:
                             output_terms.extend(carry_terms_from_prev)
-                        
-                       
+
                         if len(output_terms) > target_width:
                             output_terms = output_terms[:target_width]
-                        
-                        
+
                         if len(output_terms) == 0:
                             assignments.append("    assign pp1_{} = 1'b0;".format(col))
                         elif len(output_terms) == 1:
@@ -921,9 +1158,8 @@ module STAGE{stage_num}_{n_bits}(
         
         inputs = []
         prev_widths, _ = self._calculate_stage_widths(prev_stage, total_columns)
-        
         for i in range(total_columns + 1):
-            if i == total_columns:  
+            if i == total_columns: 
                 continue
             width = prev_widths[i]
             if width == 0:
@@ -935,9 +1171,8 @@ module STAGE{stage_num}_{n_bits}(
         
         outputs = []
         curr_widths, target_compression = self._calculate_stage_widths(stage_num, total_columns)
-        
         for i in range(total_columns + 1):
-            if i == total_columns:  
+            if i == total_columns: 
                 continue
             width = curr_widths[i]
             if width == 0:
@@ -966,7 +1201,7 @@ module STAGE{stage_num}_{n_bits}(
         
         inputs = []
         prev_widths, _ = self._calculate_stage_widths(prev_stage, total_columns)
-        
+
         for i in range(total_columns + 1):
             if i == total_columns:  
                 continue
@@ -1001,15 +1236,13 @@ module STAGE{stage_num}_{n_bits}(
         input_widths, _ = self._calculate_stage_widths(input_stage, total_columns)
         output_widths, _ = self._calculate_stage_widths(output_stage, total_columns)
         
-        
+
         special_col1 = 2 * n_bits - 1 - target_compression  
-        special_col2 = 2 * n_bits - target_compression      
-        
+        special_col2 = 2 * n_bits - target_compression     
         
         special_col1_carry = None
         
         for col in range(total_columns + 1):
-            
             if col == total_columns and output_stage in [2, 3]:
                 continue
                 
@@ -1035,20 +1268,16 @@ module STAGE{stage_num}_{n_bits}(
             if col not in cout_signals:
                 cout_signals[col] = []
             
-            
             carry_terms_from_prev = []
             if col > 0 and col-1 in carry_signals:
                 carry_terms_from_prev = carry_signals[col-1]
             
-            
             if col == special_col1 and not is_low_part:
-                
                 if len(pp_terms) < 2:
-                   
                     while len(pp_terms) < 2:
                         pp_terms.append("cin_net")
                 
-                
+
                 fa_inputs = pp_terms[:2]
                 remaining_pp_terms = pp_terms[2:]
                 
@@ -1058,7 +1287,6 @@ module STAGE{stage_num}_{n_bits}(
                 internal_wires.append("    wire {};".format(fa_signal))
                 internal_wires.append("    wire {};".format(fa_carry))
                 
-               
                 cin_signal = "cin_net"
                 if col > 0 and col-1 in cout_signals and cout_signals[col-1]:
                     cin_signal = cout_signals[col-1][0]
@@ -1070,16 +1298,13 @@ module STAGE{stage_num}_{n_bits}(
                 assignments.append("        .S({}),".format(fa_signal))
                 assignments.append("        .C({})".format(fa_carry))
                 assignments.append("    );")
-                
-                
+
                 special_col1_carry = fa_carry
-                
-                
+
                 output_terms = [fa_signal] + remaining_pp_terms
                 if col > 0 and col-1 in carry_signals:
                     output_terms.extend(carry_signals[col-1])
-                
-                
+
                 if len(output_terms) > output_width:
                     output_terms = output_terms[:output_width]
                 
@@ -1091,17 +1316,12 @@ module STAGE{stage_num}_{n_bits}(
                     if len(output_terms) < output_width:
                         output_terms = ["1'b0"] * (output_width - len(output_terms)) + output_terms
                     assignments.append("    assign pp{}_{} = {{{}}};".format(output_stage, col, ", ".join(output_terms)))
-            
-          
+
             elif col == special_col2 and not is_low_part:
-               
-                
-                
                 output_terms = pp_terms
                 if special_col1_carry is not None:
                     output_terms.append(special_col1_carry)
-                
-                
+
                 if carry_terms_from_prev and len(output_terms) >= output_width:
                     if len(output_terms) >= 1:
                         a = output_terms[-1]
@@ -1122,13 +1342,11 @@ module STAGE{stage_num}_{n_bits}(
                         assignments.append("    );")
                         
                         output_terms = output_terms[:-1] + [fa_signal]
-                        
                         if col not in carry_signals:
                             carry_signals[col] = []
                         carry_signals[col].append(fa_carry)
                 elif carry_terms_from_prev and len(output_terms) < output_width:
                     output_terms.extend(carry_terms_from_prev)
-                
                 
                 if len(output_terms) > output_width :
                     output_terms = output_terms[:output_width]
@@ -1141,7 +1359,6 @@ module STAGE{stage_num}_{n_bits}(
                     if len(output_terms) < output_width:
                         output_terms = ["1'b0"] * (output_width - len(output_terms)) + output_terms
                     assignments.append("    assign pp{}_{} = {{{}}};".format(output_stage, col, ", ".join(output_terms)))
-            
             
             else:
                 if total_pp_terms <= output_width:
@@ -1162,13 +1379,13 @@ module STAGE{stage_num}_{n_bits}(
                     if is_low_part:
                         compressor_count, adder_count = self._calculate_compressor_counts(
                             total_pp_terms, output_width, is_low_part)
-                        
-                        compressor = "ACCI1"
+
+                        compressor = "ACCI1" 
                         adder = "Half_adder"
                     else:
                         compressor_count, adder_count, adder_type = self._calculate_high_part_compressor_counts(
                             col, total_pp_terms, output_width, n_bits, target_compression)
-                        
+
                         compressor = "E_4_2"
                         if adder_type == "full":
                             adder = "Full_adder"
@@ -1177,7 +1394,7 @@ module STAGE{stage_num}_{n_bits}(
                         elif adder_type == "full_special1":
                             adder = "Full_adder"
                         elif adder_type == "normal_special2":
-                            adder = "Full_adder"  
+                            adder = "Full_adder" 
                         else:
                             adder = "Full_adder"
                     
@@ -1195,9 +1412,11 @@ module STAGE{stage_num}_{n_bits}(
                         
                         internal_wires.append("    wire {};".format(s_signal))
                         internal_wires.append("    wire {};".format(c_signal))
+
+                        actual_compressor = self._get_approximate_compressor(col, comp_idx, inputs_comp, is_low_part)
                         
-                        if compressor == "ACCI1":
-                            assignments.append("    {} ACCI1_{}_{}_{}(".format(compressor, output_stage, col, comp_idx))
+                        if actual_compressor == "ACCI1":
+                            assignments.append("    {} ACCI1_{}_{}_{}(".format(actual_compressor, output_stage, col, comp_idx))
                             assignments.append("        .a({}),".format(inputs_comp[0]))
                             assignments.append("        .b({}),".format(inputs_comp[1]))
                             assignments.append("        .c({}),".format(inputs_comp[2]))
@@ -1208,7 +1427,7 @@ module STAGE{stage_num}_{n_bits}(
                             if col not in carry_signals:
                                 carry_signals[col] = []
                             carry_signals[col].append(c_signal)
-                        else:
+                        elif actual_compressor == "E_4_2":
                             cout_signal = "pp{}_{}_comp{}_cout".format(output_stage, col, comp_idx)
                             internal_wires.append("    wire {};".format(cout_signal))
                             
@@ -1216,7 +1435,7 @@ module STAGE{stage_num}_{n_bits}(
                             if col > 0 and col-1 in cout_signals and comp_idx < len(cout_signals[col-1]):
                                 cin_signal = cout_signals[col-1][comp_idx]
                             
-                            assignments.append("    {} e42_{}_{}_{}(".format(compressor, output_stage, col, comp_idx))
+                            assignments.append("    {} e42_{}_{}_{}(".format(actual_compressor, output_stage, col, comp_idx))
                             assignments.append("        .a({}),".format(inputs_comp[0]))
                             assignments.append("        .b({}),".format(inputs_comp[1]))
                             assignments.append("        .c({}),".format(inputs_comp[2]))
@@ -1231,6 +1450,18 @@ module STAGE{stage_num}_{n_bits}(
                                 cout_signals[col] = []
                             cout_signals[col].append(cout_signal)
                             
+                            if col not in carry_signals:
+                                carry_signals[col] = []
+                            carry_signals[col].append(c_signal)
+                        else:
+                            assignments.append("    {} {}_{}_{}_{}(".format(actual_compressor, actual_compressor, output_stage, col, comp_idx))
+                            assignments.append("        .a({}),".format(inputs_comp[0]))
+                            assignments.append("        .b({}),".format(inputs_comp[1]))
+                            assignments.append("        .c({}),".format(inputs_comp[2]))
+                            assignments.append("        .d({}),".format(inputs_comp[3]))
+                            assignments.append("        .S({}),".format(s_signal))
+                            assignments.append("        .C({})".format(c_signal))
+                            assignments.append("    );")
                             if col not in carry_signals:
                                 carry_signals[col] = []
                             carry_signals[col].append(c_signal)
@@ -1281,17 +1512,13 @@ module STAGE{stage_num}_{n_bits}(
                                 remaining_cout_count = len(cout_signals[col-1]) - compressor_count
                                 if add_idx < remaining_cout_count:
                                     cin_signal = cout_signals[col-1][compressor_count + add_idx]
-                            
-                            
+
                             if col == n_bits and adder_type == "full":
-                                
                                 if len(pp_terms) >= 2:
-                                   
                                     if len(pp_terms) >= 3:
                                         cin_signal = pp_terms[2]
-                                        pp_terms = pp_terms[:2]  
+                                        pp_terms = pp_terms[:2] 
                                     else:
-                                       
                                         cin_signal = "cin_net"
                             
                             assignments.append("    Full_adder fa_{}_{}_{}(".format(output_stage, col, add_idx))
@@ -1359,18 +1586,16 @@ module STAGE{stage_num}_{n_bits}(
         internal_wires = []
         
         split_column = n_bits
-        
-        
+
         a_bits = ['1\'b0'] * (2 * n_bits - 1)
         b_bits = ['1\'b0'] * (2 * n_bits - 1)
         
-       
+
         prev_cout = "cin_net"
         
         input_widths, _ = self._calculate_stage_widths(input_stage, total_columns)
         
         for col in range(total_columns + 1):
-            
             if col == total_columns:
                 continue
                 
@@ -1387,23 +1612,20 @@ module STAGE{stage_num}_{n_bits}(
                     pp_terms.append("pp{}_{}[{}]".format(input_stage, col, k))
             
             is_low_part = col < split_column
-            
-           
+
             if is_low_part:
                 if col == 0:
-                    
                     a_bits[0] = pp_terms[0]
                     b_bits[0] = "1'b0"
                 
                 elif col == 1:
-                    
+
                     if len(pp_terms) >= 1:
                         a_bits[1] = pp_terms[0]
                     if len(pp_terms) >= 2:
                         b_bits[1] = pp_terms[1]
                 
                 elif col == 2:
-                    
                     if len(pp_terms) >= 2:
                         ha_s = "ha_{}_s".format(col)
                         ha_c = "ha_{}_c".format(col)
@@ -1425,47 +1647,48 @@ module STAGE{stage_num}_{n_bits}(
                         a_bits[2] = pp_terms[0]
                         b_bits[2] = " 1'b0"
                 
-                else:  
-                    
+                else: 
                     if len(pp_terms) >= 4:
-                        acci_s = "acci_{}_s".format(col)
-                        acci_c = "acci_{}_c".format(col)
+                        actual_compressor = self._get_approximate_compressor(col, 0, pp_terms[:4], is_low_part)
                         
-                        internal_wires.append("    wire {};".format(acci_s))
-                        internal_wires.append("    wire {};".format(acci_c))
+                        comp_s = "comp_{}_s".format(col)
+                        comp_c = "comp_{}_c".format(col)
                         
-                        assignments.append("    ACCI1 ACCI1_{}(".format(col))
+                        internal_wires.append("    wire {};".format(comp_s))
+                        internal_wires.append("    wire {};".format(comp_c))
+                        
+                        assignments.append("    {} comp_{}(".format(actual_compressor, col))
                         assignments.append("        .a({}),".format(pp_terms[0]))
                         assignments.append("        .b({}),".format(pp_terms[1]))
                         assignments.append("        .c({}),".format(pp_terms[2]))
                         assignments.append("        .d({}),".format(pp_terms[3]))
-                        assignments.append("        .S({}),".format(acci_s))
-                        assignments.append("        .C({})".format(acci_c))
+                        assignments.append("        .S({}),".format(comp_s))
+                        assignments.append("        .C({})".format(comp_c))
                         assignments.append("    );")
                         
-                        a_bits[col] = acci_s
-                        b_bits[col+1] = acci_c
+                        a_bits[col] = comp_s
+                        b_bits[col+1] = comp_c
                     elif len(pp_terms) == 3:
+                        actual_compressor = self._get_approximate_compressor(col, 0, pp_terms[:3] + ["1'b0"], is_low_part)
                         
-                        acci_s = "acci_{}_s".format(col)
-                        acci_c = "acci_{}_c".format(col)
+                        comp_s = "comp_{}_s".format(col)
+                        comp_c = "comp_{}_c".format(col)
                         
-                        internal_wires.append("    wire {};".format(acci_s))
-                        internal_wires.append("    wire {};".format(acci_c))
+                        internal_wires.append("    wire {};".format(comp_s))
+                        internal_wires.append("    wire {};".format(comp_c))
                         
-                        assignments.append("    ACCI1 ACCI1_{}(".format(col))
+                        assignments.append("    {} comp_{}(".format(actual_compressor, col))
                         assignments.append("        .a({}),".format(pp_terms[0]))
                         assignments.append("        .b({}),".format(pp_terms[1]))
                         assignments.append("        .c({}),".format(pp_terms[2]))
                         assignments.append("        .d(1'b0),")
-                        assignments.append("        .S({}),".format(acci_s))
-                        assignments.append("        .C({})".format(acci_c))
+                        assignments.append("        .S({}),".format(comp_s))
+                        assignments.append("        .C({})".format(comp_c))
                         assignments.append("    );")
                         
-                        a_bits[col] = acci_s
-                        b_bits[col+1] = acci_c
+                        a_bits[col] = comp_s
+                        b_bits[col+1] = comp_c
                     elif len(pp_terms) == 2:
-                        
                         ha_s = "ha_{}_s".format(col)
                         ha_c = "ha_{}_c".format(col)
                         
@@ -1485,14 +1708,11 @@ module STAGE{stage_num}_{n_bits}(
                         a_bits[col] = pp_terms[0]
                         b_bits[col+1] = "1'b0"
             
-           
             else:
-                if col == 2 * n_bits - 2:  
-                  
+                if col == 2 * n_bits - 2: 
                     a_bits[2*n_bits-2] = pp_terms[0] if len(pp_terms) > 0 else "1'b0"
                 
-                elif col == 2 * n_bits - 3:  
-                    
+                elif col == 2 * n_bits - 3: 
                     if len(pp_terms) >= 2:
                         fa_s = "fa_{}_s".format(col)
                         fa_c = "fa_{}_c".format(col)
@@ -1511,7 +1731,6 @@ module STAGE{stage_num}_{n_bits}(
                         a_bits[col] = fa_s
                         b_bits[col+1] = fa_c
                     elif len(pp_terms) == 1:
-                        
                         fa_s = "fa_{}_s".format(col)
                         fa_c = "fa_{}_c".format(col)
                         
@@ -1530,7 +1749,6 @@ module STAGE{stage_num}_{n_bits}(
                         b_bits[col+1] = fa_c
                 
                 else:  
-                    
                     if len(pp_terms) >= 4:
                         e42_s = "e42_{}_s".format(col)
                         e42_c = "e42_{}_c".format(col)
@@ -1556,7 +1774,6 @@ module STAGE{stage_num}_{n_bits}(
                         prev_cout = e42_cout
                     
                     elif len(pp_terms) == 3:
-                        
                         e42_s = "e42_{}_s".format(col)
                         e42_c = "e42_{}_c".format(col)
                         e42_cout = "e42_{}_cout".format(col)
@@ -1581,7 +1798,6 @@ module STAGE{stage_num}_{n_bits}(
                         prev_cout = e42_cout
                     
                     elif len(pp_terms) == 2:
-                        
                         fa_s = "fa_{}_s".format(col)
                         fa_c = "fa_{}_c".format(col)
                         
@@ -1598,11 +1814,10 @@ module STAGE{stage_num}_{n_bits}(
                         
                         a_bits[col] = fa_s
                         b_bits[col+1] = fa_c
-                        
                         prev_cout = "1'b0"
 
         
-        
+
         a_assign = ", ".join(reversed(a_bits))
         b_assign = ", ".join(reversed(b_bits))
         
@@ -1611,14 +1826,84 @@ module STAGE{stage_num}_{n_bits}(
         
         return "\n".join(internal_wires) + "\n\n" + "\n".join(assignments) + "\n"
 
+# def main():
+#     test_bit_widths = [8]
+    
+#     for bits in test_bit_widths:
+
+#         temp_generator = MultiplierGeneratorArbitrary(n_bits=bits)
+#         total_columns = 2 * bits - 1
+#         required_compressors = temp_generator._count_required_compressors(total_columns)
+        
+#         print(f"{bits}-bit multiplier requires approximate compressors: {required_compressors}")
+        
+#         compressor_types = []
+#         if required_compressors > 0:
+#             print(f"Please enter {required_compressors} compressor types for {bits}-bit multiplier (separated by spaces):")
+#             print("1: ACCI1, 2: kong2, 3: antonio, 4: momeni, 5: ha, 6: akbar1, 7: akbar2, 8: sabetz")
+            
+#             try:
+#                 user_input = input().strip()
+#                 if user_input:
+#                     compressor_types = [int(x) for x in user_input.split()]
+#                 else:
+#                     compressor_types = [1] * required_compressors
+#             except (ValueError, EOFError):
+#                 print("Invalid input, using default compressor ACCI1")
+#                 compressor_types = [1] * required_compressors
+        
+
+#         generator = MultiplierGeneratorArbitrary(n_bits=bits, compressor_types=compressor_types)
+#         verilog_code = generator.generate_verilog_code()
+        
+#         compressor_names = []
+#         for comp_type in compressor_types:
+#             name = generator.compressor_mapping.get(comp_type, "ACCI1")
+#             compressor_names.append(name)
+        
+#         filename = "mult{}_approx.v".format(bits)
+#         with open(filename, "w", encoding="utf-8") as f:
+#             f.write(verilog_code)
+        
+#         compression_width = generator.compression_width
+#         print("Generated {}-bit approximate multiplier code to file: {} (Number of stages: {}, Compressors used: {})".format(
+#             bits, filename, generator.stage_count, ", ".join(compressor_names)))
+#         print()
+
 def generate_Appro_4_2(test_bit_widths):
 
     for bits in test_bit_widths:
-        generator = MultiplierGeneratorArbitrary(n_bits=bits)
+        temp_generator = MultiplierGeneratorArbitrary(n_bits=bits)
+        
+        total_columns = 2 * bits - 1
+        required_compressors = temp_generator._count_required_compressors(total_columns)
+        
+        print(f"{bits}-bit multiplier requires approximate compressors: {required_compressors}")
+        
+        compressor_types = []
+        if required_compressors > 0:
+            print(f"Please enter {required_compressors} compressor types for {bits}-bit multiplier (separated by spaces):")
+            print("1: ACCI1, 2: kong2, 3: antonio, 4: momeni, 5: ha, 6: akbar1, 7: akbar2, 8: sabetz")
+            
+            try:
+                user_input = input().strip()
+                if user_input:
+                    compressor_types = [int(x) for x in user_input.split()]
+                else:
+                    compressor_types = [1] * required_compressors
+            except (ValueError, EOFError):
+                print("Invalid input, using default compressor ACCI1")
+                compressor_types = [1] * required_compressors
+        
+
+        generator = MultiplierGeneratorArbitrary(n_bits=bits, compressor_types=compressor_types)
         verilog_code = generator.generate_verilog_code()
+        
+        compressor_names = []
+        for comp_type in compressor_types:
+            name = generator.compressor_mapping.get(comp_type, "ACCI1")
+            compressor_names.append(name)
 
         filename = f"Appro4_2_{bits}bit.v"
         with open(filename, "w", encoding="utf-8") as f:
             f.write(verilog_code)
-
-   

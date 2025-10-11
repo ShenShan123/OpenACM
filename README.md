@@ -92,6 +92,20 @@ multiplier\_compiler.py  \[options]
 
 
 
+Note:
+
+We have updated the function generate\_Appro\_4\_2(test\_bit\_widths) to enhance the flexibility of the multiplier compiler. This update enables the program to automatically calculate the required number of approximate 4-2 compressors for a given bit width. The function supports batch generation for multiple bit widths and provides an interactive interface that allows users to choose combinations from eight predefined classic approximate compressors: Yang1, kong2, antonio, momeni, ha, akbar1, akbar2, and sabetz. If no input is provided, the system will default to Yang1.
+
+
+
+\### Truth Table of Approximate 4-2 Compressors
+
+
+
+!\[Approximate 4-2 Compressor Truth Table](./compressor.png)
+
+
+
 \##Usage##
 
 
@@ -114,7 +128,7 @@ python pe\_compiler.py --data\_width 8 --addr\_count 16 --multiplier\_module Exa
 
 SRAM.py​​ configures the bit width of the SRAM behavioral model.
 
-pe\_compiler.py​​ configures the bit width and multiplier type of the system 
+pe\_compiler.py​​ configures the bit width and multiplier type of the system
 
 Finally, ./DCIM/tcl/eda.sh​​ finally executes the EDA flow.
 
