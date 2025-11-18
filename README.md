@@ -142,7 +142,7 @@ Version Note
 
 Note:
 
-This is the initial release of OpenACM.
+This is the initial release of OpenACMv2.
 
 Some parts are still under development, and we will continuously improve and expand its functionality in future versions.
 
