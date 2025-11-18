@@ -1,8 +1,6 @@
-# OpenACM
+# OpenACMv2
 
-The initial version of paper" OpenACM: An Open-Source SRAM-Based Approximate CiM Compiler"
-
-
+The initial version of paper" OpenACMv2: An Accuracy-Constrained Co-Optimization Framework for Approximate DCiM"
 
 \##Arguments##
 
