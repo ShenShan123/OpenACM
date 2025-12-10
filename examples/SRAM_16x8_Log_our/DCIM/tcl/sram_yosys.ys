@@ -1,0 +1,36 @@
+#File Name: sram_yosys.ys
+# 1. Read the Technology Library​
+read_liberty -lib ./DCIM/nangate45/lib/NangateOpenCellLibrary.lib
+read_liberty -lib ./DCIM/nangate45/lib/SRAM_6T_CORE_16x8_MC_TB.lib
+
+# 2. Read All RTL Files​
+read_verilog ./DCIM/results/synth/sram_syn.v
+read_verilog ./DCIM/rtl/sram_control.v
+read_verilog ./DCIM/multiplier/Log_our_8bit.v
+
+# 3. Set the Top Module
+hierarchy -top sram_multiplier_system
+
+
+# 4. Black-box Declaration (e.g., SRAM Macro)​
+blackbox SRAM_6T_CORE_16x8_MC_TB
+setattr -mod -set dont_touch 1 SRAM_6T_CORE_16x8_MC_TB
+setattr -mod -set blackbox 1 SRAM_6T_CORE_16x8_MC_TB
+setattr -mod -set macro 1 SRAM_6T_CORE_16x8_MC_TB
+
+# 5. Synthesis and Optimization​
+synth -top sram_multiplier_system
+
+# 6. ​​Technology Mapping​
+techmap -map +/techmap.v
+dfflibmap -liberty ./DCIM/nangate45/lib/NangateOpenCellLibrary_typical.lib
+abc -liberty ./DCIM/nangate45/lib/NangateOpenCellLibrary_typical.lib
+
+# opt -fast -full
+
+# 8. Export the Netlist​
+write_verilog -noattr -selected ./DCIM/results/synth/sram_sim_synth.v
+
+# 9. Generate Statistical Report​
+stat
+stat -liberty ./DCIM/nangate45/lib/NangateOpenCellLibrary_typical.lib

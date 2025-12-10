@@ -1,0 +1,335 @@
+
+==========================================================================
+resizer report_tns
+--------------------------------------------------------------------------
+tns 0.00
+
+==========================================================================
+resizer report_wns
+--------------------------------------------------------------------------
+wns 0.00
+
+==========================================================================
+resizer report_worst_slack
+--------------------------------------------------------------------------
+worst slack 4.62
+
+==========================================================================
+resizer report_checks -path_delay min
+--------------------------------------------------------------------------
+Startpoint: _619_ (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: _619_ (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                  0.00    0.00    0.00 ^ _619_/CK (DFF_X1)
+     1    1.76    0.01    0.06    0.06 ^ _619_/QN (DFF_X1)
+                                         _407_ (net)
+                  0.01    0.00    0.06 ^ _520_/A1 (OAI22_X1)
+     1    1.27    0.01    0.01    0.07 v _520_/ZN (OAI22_X1)
+                                         _173_ (net)
+                  0.01    0.00    0.07 v _619_/D (DFF_X1)
+                                  0.07   data arrival time
+
+                  0.00    0.00    0.00   clock core_clock (rise edge)
+                          0.00    0.00   clock network delay (ideal)
+                          0.10    0.10   clock uncertainty
+                          0.00    0.10   clock reconvergence pessimism
+                                  0.10 ^ _619_/CK (DFF_X1)
+                          0.00    0.10   library hold time
+                                  0.10   data required time
+-----------------------------------------------------------------------------
+                                  0.10   data required time
+                                 -0.07   data arrival time
+-----------------------------------------------------------------------------
+                                 -0.03   slack (VIOLATED)
+
+
+
+==========================================================================
+resizer report_checks -path_delay max
+--------------------------------------------------------------------------
+Startpoint: sram_inst (falling edge-triggered flip-flop clocked by core_clock)
+Endpoint: _601_ (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    5.00    5.00   clock core_clock (fall edge)
+                          0.00    5.00   clock network delay (ideal)
+                  0.00    0.00    5.00 v sram_inst/clk (SRAM_6T_CORE_32x16_MC_TB)
+     1    1.78    0.00    0.21    5.21 v sram_inst/rd_out[7] (SRAM_6T_CORE_32x16_MC_TB)
+                                         sram_rdata[7] (net)
+                  0.00    0.00    5.21 v _447_/A2 (AND2_X1)
+     1    1.39    0.01    0.03    5.23 v _447_/ZN (AND2_X1)
+                                         _188_ (net)
+                  0.01    0.00    5.23 v _601_/D (DFF_X2)
+                                  5.23   data arrival time
+
+                  0.00   10.00   10.00   clock core_clock (rise edge)
+                          0.00   10.00   clock network delay (ideal)
+                         -0.10    9.90   clock uncertainty
+                          0.00    9.90   clock reconvergence pessimism
+                                  9.90 ^ _601_/CK (DFF_X2)
+                         -0.04    9.86   library setup time
+                                  9.86   data required time
+-----------------------------------------------------------------------------
+                                  9.86   data required time
+                                 -5.23   data arrival time
+-----------------------------------------------------------------------------
+                                  4.62   slack (MET)
+
+
+
+==========================================================================
+resizer report_checks -unconstrained
+--------------------------------------------------------------------------
+Startpoint: sram_inst (falling edge-triggered flip-flop clocked by core_clock)
+Endpoint: _601_ (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+Fanout     Cap    Slew   Delay    Time   Description
+-----------------------------------------------------------------------------
+                  0.00    5.00    5.00   clock core_clock (fall edge)
+                          0.00    5.00   clock network delay (ideal)
+                  0.00    0.00    5.00 v sram_inst/clk (SRAM_6T_CORE_32x16_MC_TB)
+     1    1.78    0.00    0.21    5.21 v sram_inst/rd_out[7] (SRAM_6T_CORE_32x16_MC_TB)
+                                         sram_rdata[7] (net)
+                  0.00    0.00    5.21 v _447_/A2 (AND2_X1)
+     1    1.39    0.01    0.03    5.23 v _447_/ZN (AND2_X1)
+                                         _188_ (net)
+                  0.01    0.00    5.23 v _601_/D (DFF_X2)
+                                  5.23   data arrival time
+
+                  0.00   10.00   10.00   clock core_clock (rise edge)
+                          0.00   10.00   clock network delay (ideal)
+                         -0.10    9.90   clock uncertainty
+                          0.00    9.90   clock reconvergence pessimism
+                                  9.90 ^ _601_/CK (DFF_X2)
+                         -0.04    9.86   library setup time
+                                  9.86   data required time
+-----------------------------------------------------------------------------
+                                  9.86   data required time
+                                 -5.23   data arrival time
+-----------------------------------------------------------------------------
+                                  4.62   slack (MET)
+
+
+
+==========================================================================
+resizer report_check_types -max_slew -max_cap -max_fanout -violators
+--------------------------------------------------------------------------
+max slew
+
+Pin                                    Limit    Slew   Slack
+------------------------------------------------------------
+sram_inst/addr_in[0]                    0.04    0.04   -0.00 (VIOLATED)
+
+max capacitance
+
+Pin                                    Limit     Cap   Slack
+------------------------------------------------------------
+sram_inst/rd_out[7]                     0.84    1.86   -1.02 (VIOLATED)
+sram_inst/rd_out[11]                    0.84    1.76   -0.92 (VIOLATED)
+sram_inst/rd_out[6]                     0.84    1.69   -0.85 (VIOLATED)
+sram_inst/rd_out[15]                    0.84    1.64   -0.81 (VIOLATED)
+sram_inst/rd_out[10]                    0.84    1.56   -0.72 (VIOLATED)
+sram_inst/rd_out[13]                    0.84    1.55   -0.71 (VIOLATED)
+sram_inst/rd_out[5]                     0.84    1.53   -0.70 (VIOLATED)
+sram_inst/rd_out[14]                    0.84    1.52   -0.69 (VIOLATED)
+sram_inst/rd_out[12]                    0.84    1.50   -0.67 (VIOLATED)
+sram_inst/rd_out[9]                     0.84    1.48   -0.64 (VIOLATED)
+sram_inst/rd_out[2]                     0.84    1.41   -0.57 (VIOLATED)
+sram_inst/rd_out[3]                     0.84    1.41   -0.57 (VIOLATED)
+sram_inst/rd_out[8]                     0.84    1.40   -0.57 (VIOLATED)
+sram_inst/rd_out[0]                     0.84    1.30   -0.46 (VIOLATED)
+sram_inst/rd_out[4]                     0.84    1.27   -0.43 (VIOLATED)
+sram_inst/rd_out[1]                     0.84    1.26   -0.43 (VIOLATED)
+
+
+==========================================================================
+resizer max_slew_check_slack
+--------------------------------------------------------------------------
+-0.000470914994366467
+
+==========================================================================
+resizer max_slew_check_limit
+--------------------------------------------------------------------------
+0.03999999910593033
+
+==========================================================================
+resizer max_slew_check_slack_limit
+--------------------------------------------------------------------------
+-0.0118
+
+==========================================================================
+resizer max_fanout_check_slack
+--------------------------------------------------------------------------
+3.0
+
+==========================================================================
+resizer max_fanout_check_limit
+--------------------------------------------------------------------------
+4.0
+
+==========================================================================
+resizer max_fanout_check_slack_limit
+--------------------------------------------------------------------------
+0.7500
+
+==========================================================================
+resizer max_capacitance_check_slack
+--------------------------------------------------------------------------
+-1.0194334983825684
+
+==========================================================================
+resizer max_capacitance_check_limit
+--------------------------------------------------------------------------
+0.836400032043457
+
+==========================================================================
+resizer max_capacitance_check_slack_limit
+--------------------------------------------------------------------------
+-1.2188
+
+==========================================================================
+resizer max_slew_violation_count
+--------------------------------------------------------------------------
+max slew violation count 1
+
+==========================================================================
+resizer max_fanout_violation_count
+--------------------------------------------------------------------------
+max fanout violation count 0
+
+==========================================================================
+resizer max_cap_violation_count
+--------------------------------------------------------------------------
+max cap violation count 16
+
+==========================================================================
+resizer setup_violation_count
+--------------------------------------------------------------------------
+setup violation count 0
+
+==========================================================================
+resizer hold_violation_count
+--------------------------------------------------------------------------
+hold violation count 14
+
+==========================================================================
+resizer report_checks -path_delay max reg to reg
+--------------------------------------------------------------------------
+Startpoint: sram_inst (falling edge-triggered flip-flop clocked by core_clock)
+Endpoint: _601_ (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   5.00    5.00   clock core_clock (fall edge)
+   0.00    5.00   clock network delay (ideal)
+   0.00    5.00 v sram_inst/clk (SRAM_6T_CORE_32x16_MC_TB)
+   0.21    5.21 v sram_inst/rd_out[7] (SRAM_6T_CORE_32x16_MC_TB)
+   0.03    5.23 v _447_/ZN (AND2_X1)
+   0.00    5.23 v _601_/D (DFF_X2)
+           5.23   data arrival time
+
+  10.00   10.00   clock core_clock (rise edge)
+   0.00   10.00   clock network delay (ideal)
+  -0.10    9.90   clock uncertainty
+   0.00    9.90   clock reconvergence pessimism
+           9.90 ^ _601_/CK (DFF_X2)
+  -0.04    9.86   library setup time
+           9.86   data required time
+---------------------------------------------------------
+           9.86   data required time
+          -5.23   data arrival time
+---------------------------------------------------------
+           4.62   slack (MET)
+
+
+
+==========================================================================
+resizer report_checks -path_delay min reg to reg
+--------------------------------------------------------------------------
+Startpoint: _619_ (rising edge-triggered flip-flop clocked by core_clock)
+Endpoint: _619_ (rising edge-triggered flip-flop clocked by core_clock)
+Path Group: core_clock
+Path Type: min
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   0.00    0.00 ^ _619_/CK (DFF_X1)
+   0.06    0.06 ^ _619_/QN (DFF_X1)
+   0.01    0.07 v _520_/ZN (OAI22_X1)
+   0.00    0.07 v _619_/D (DFF_X1)
+           0.07   data arrival time
+
+   0.00    0.00   clock core_clock (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   0.10    0.10   clock uncertainty
+   0.00    0.10   clock reconvergence pessimism
+           0.10 ^ _619_/CK (DFF_X1)
+   0.00    0.10   library hold time
+           0.10   data required time
+---------------------------------------------------------
+           0.10   data required time
+          -0.07   data arrival time
+---------------------------------------------------------
+          -0.03   slack (VIOLATED)
+
+
+
+==========================================================================
+resizer critical path target clock latency max path
+--------------------------------------------------------------------------
+0.0000
+
+==========================================================================
+resizer critical path target clock latency min path
+--------------------------------------------------------------------------
+0.0000
+
+==========================================================================
+resizer critical path source clock latency min path
+--------------------------------------------------------------------------
+0.0000
+
+==========================================================================
+resizer critical path delay
+--------------------------------------------------------------------------
+5.2347
+
+==========================================================================
+resizer critical path slack
+--------------------------------------------------------------------------
+4.6235
+
+==========================================================================
+resizer slack div critical path delay
+--------------------------------------------------------------------------
+88.324068
+
+==========================================================================
+resizer report_power
+--------------------------------------------------------------------------
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power (Watts)
+----------------------------------------------------------------
+Sequential             5.28e-05   4.11e-06   8.03e-06   6.50e-05  36.7%
+Combinational          1.62e-06   1.74e-06   5.87e-05   6.20e-05  35.0%
+Clock                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Macro                  4.88e-05   0.00e+00   1.53e-06   5.03e-05  28.4%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  1.03e-04   5.85e-06   6.82e-05   1.77e-04 100.0%
+                          58.2%       3.3%      38.5%

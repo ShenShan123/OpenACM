@@ -1,0 +1,3 @@
+[submodule "src/sram_compiler"]
+	path = src/sram_compiler
+	url = https://github.com/ShenShan123/OpenYield.git

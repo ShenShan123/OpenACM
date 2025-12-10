@@ -1,0 +1,2582 @@
+module sram_multiplier_system (clk,
+    init_done,
+    init_enable,
+    pe_ce,
+    rst_n,
+    valid_out,
+    data_in,
+    data_out);
+ input clk;
+ output init_done;
+ input init_enable;
+ input pe_ce;
+ input rst_n;
+ output valid_out;
+ input [7:0] data_in;
+ output [15:0] data_out;
+
+ wire _006_;
+ wire _007_;
+ wire _008_;
+ wire _009_;
+ wire _010_;
+ wire _011_;
+ wire _012_;
+ wire _013_;
+ wire _014_;
+ wire _015_;
+ wire _016_;
+ wire _017_;
+ wire _018_;
+ wire _019_;
+ wire _020_;
+ wire _021_;
+ wire _022_;
+ wire _023_;
+ wire _024_;
+ wire _025_;
+ wire _026_;
+ wire _027_;
+ wire _028_;
+ wire _029_;
+ wire _030_;
+ wire _031_;
+ wire _032_;
+ wire _033_;
+ wire _034_;
+ wire _035_;
+ wire _036_;
+ wire _037_;
+ wire _038_;
+ wire _039_;
+ wire _040_;
+ wire _041_;
+ wire _042_;
+ wire _043_;
+ wire _044_;
+ wire _045_;
+ wire _046_;
+ wire _047_;
+ wire _048_;
+ wire _049_;
+ wire _050_;
+ wire _051_;
+ wire _081_;
+ wire _082_;
+ wire _083_;
+ wire _084_;
+ wire _085_;
+ wire _086_;
+ wire _087_;
+ wire _088_;
+ wire _089_;
+ wire _090_;
+ wire _091_;
+ wire _092_;
+ wire _093_;
+ wire _094_;
+ wire _095_;
+ wire _096_;
+ wire _097_;
+ wire _098_;
+ wire _099_;
+ wire _100_;
+ wire _101_;
+ wire _102_;
+ wire _103_;
+ wire _104_;
+ wire _105_;
+ wire _106_;
+ wire _107_;
+ wire _108_;
+ wire _109_;
+ wire _110_;
+ wire _111_;
+ wire _112_;
+ wire _113_;
+ wire _222_;
+ wire _223_;
+ wire _224_;
+ wire _225_;
+ wire _226_;
+ wire _227_;
+ wire _228_;
+ wire _229_;
+ wire _230_;
+ wire _231_;
+ wire _232_;
+ wire _233_;
+ wire _234_;
+ wire _235_;
+ wire _236_;
+ wire _237_;
+ wire _238_;
+ wire _239_;
+ wire _240_;
+ wire _241_;
+ wire _242_;
+ wire _243_;
+ wire _244_;
+ wire _245_;
+ wire _246_;
+ wire _247_;
+ wire _248_;
+ wire _249_;
+ wire _250_;
+ wire _251_;
+ wire _252_;
+ wire _253_;
+ wire _254_;
+ wire _255_;
+ wire _256_;
+ wire _257_;
+ wire _258_;
+ wire _259_;
+ wire _260_;
+ wire _261_;
+ wire _262_;
+ wire _263_;
+ wire _264_;
+ wire _265_;
+ wire net12;
+ wire net13;
+ wire net14;
+ wire net15;
+ wire net16;
+ wire net17;
+ wire net18;
+ wire net19;
+ wire net20;
+ wire net21;
+ wire net22;
+ wire net23;
+ wire net24;
+ wire net25;
+ wire net26;
+ wire net27;
+ wire net28;
+ wire net29;
+ wire \u_multiplier/pp_0 ;
+ wire \u_multiplier/pp_14 ;
+ wire \u_multiplier/STAGE1/_016_ ;
+ wire \u_multiplier/STAGE1/_017_ ;
+ wire \u_multiplier/STAGE1/_018_ ;
+ wire \u_multiplier/STAGE1/_019_ ;
+ wire \u_multiplier/STAGE1/_020_ ;
+ wire \u_multiplier/STAGE1/_021_ ;
+ wire \u_multiplier/STAGE1/_022_ ;
+ wire \u_multiplier/STAGE1/_023_ ;
+ wire \u_multiplier/STAGE1/_024_ ;
+ wire \u_multiplier/STAGE1/_025_ ;
+ wire \u_multiplier/STAGE1/_026_ ;
+ wire \u_multiplier/STAGE1/_027_ ;
+ wire \u_multiplier/STAGE1/_028_ ;
+ wire \u_multiplier/STAGE1/_029_ ;
+ wire \u_multiplier/STAGE1/_030_ ;
+ wire \u_multiplier/STAGE1/_031_ ;
+ wire \u_multiplier/STAGE1/_032_ ;
+ wire \u_multiplier/STAGE1/_033_ ;
+ wire \u_multiplier/STAGE1/_034_ ;
+ wire \u_multiplier/STAGE1/_035_ ;
+ wire \u_multiplier/STAGE1/_036_ ;
+ wire \u_multiplier/STAGE1/_037_ ;
+ wire \u_multiplier/STAGE1/_038_ ;
+ wire \u_multiplier/STAGE1/_039_ ;
+ wire \u_multiplier/STAGE1/_040_ ;
+ wire \u_multiplier/STAGE1/_041_ ;
+ wire \u_multiplier/STAGE1/_042_ ;
+ wire \u_multiplier/STAGE1/_043_ ;
+ wire \u_multiplier/STAGE1/_044_ ;
+ wire \u_multiplier/STAGE1/_045_ ;
+ wire \u_multiplier/STAGE1/_046_ ;
+ wire \u_multiplier/STAGE1/_047_ ;
+ wire \u_multiplier/STAGE1/_048_ ;
+ wire \u_multiplier/STAGE1/_049_ ;
+ wire \u_multiplier/STAGE1/_050_ ;
+ wire \u_multiplier/STAGE1/_051_ ;
+ wire \u_multiplier/STAGE1/_052_ ;
+ wire \u_multiplier/STAGE1/_053_ ;
+ wire \u_multiplier/STAGE1/_054_ ;
+ wire \u_multiplier/STAGE1/pp_10_exa_c2 ;
+ wire \u_multiplier/STAGE1/pp_8_exa_c22 ;
+ wire \u_multiplier/STAGE1/pp_9_exa_c22 ;
+ wire net32;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_06_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_07_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_08_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_09_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_10_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_5/_11_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_06_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_07_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_08_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_09_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_10_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_6/_11_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_06_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_07_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_08_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_09_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_10_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_1/_11_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_06_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_07_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_08_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_09_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_10_ ;
+ wire \u_multiplier/STAGE1/ACCI1_pp_7_2/_11_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_08_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_09_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_10_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_11_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_12_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_13_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_10/_14_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_08_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_09_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_10_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_11_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_12_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_13_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_8/_14_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_08_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_09_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_10_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_11_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_12_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_13_ ;
+ wire \u_multiplier/STAGE1/Exact_42_pp_9/_14_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_11/_05_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_11/_06_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_11/_07_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_11/_08_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_8/_05_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_8/_06_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_8/_07_ ;
+ wire \u_multiplier/STAGE1/Full_adder_pp_8/_08_ ;
+ wire \u_multiplier/STAGE2/pp_10_exa_c1 ;
+ wire \u_multiplier/STAGE2/pp_10_exa_c2 ;
+ wire \u_multiplier/STAGE2/pp_10_exa_s ;
+ wire \u_multiplier/STAGE2/pp_11_exa_c1 ;
+ wire \u_multiplier/STAGE2/pp_11_exa_c2 ;
+ wire \u_multiplier/STAGE2/pp_11_exa_s ;
+ wire \u_multiplier/STAGE2/pp_12_exa_c1 ;
+ wire \u_multiplier/STAGE2/pp_12_exa_c2 ;
+ wire \u_multiplier/STAGE2/pp_12_exa_s ;
+ wire \u_multiplier/STAGE2/pp_13_exa_c ;
+ wire \u_multiplier/STAGE2/pp_13_exa_s ;
+ wire \u_multiplier/STAGE2/pp_2_exa_c ;
+ wire \u_multiplier/STAGE2/pp_2_exa_s ;
+ wire \u_multiplier/STAGE2/pp_3_pro_c ;
+ wire \u_multiplier/STAGE2/pp_3_pro_s ;
+ wire \u_multiplier/STAGE2/pp_4_pro_c ;
+ wire \u_multiplier/STAGE2/pp_4_pro_s ;
+ wire \u_multiplier/STAGE2/pp_5_pro_c ;
+ wire \u_multiplier/STAGE2/pp_5_pro_s ;
+ wire \u_multiplier/STAGE2/pp_6_pro_c ;
+ wire \u_multiplier/STAGE2/pp_6_pro_s ;
+ wire \u_multiplier/STAGE2/pp_7_pro_c ;
+ wire \u_multiplier/STAGE2/pp_7_pro_s ;
+ wire \u_multiplier/STAGE2/pp_8_exa_c1 ;
+ wire \u_multiplier/STAGE2/pp_8_exa_c2 ;
+ wire \u_multiplier/STAGE2/pp_8_exa_s ;
+ wire \u_multiplier/STAGE2/pp_9_exa_c1 ;
+ wire \u_multiplier/STAGE2/pp_9_exa_c2 ;
+ wire \u_multiplier/STAGE2/pp_9_exa_s ;
+ wire net45;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_06_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_07_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_08_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_09_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_10_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_3/_11_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_06_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_07_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_08_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_09_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_10_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_4/_11_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_06_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_07_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_08_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_09_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_10_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_5/_11_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_06_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_07_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_08_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_09_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_10_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_6/_11_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_06_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_07_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_08_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_09_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_10_ ;
+ wire \u_multiplier/STAGE2/ACCI1_pp_7/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_08_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_09_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_10_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_12_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_13_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_10/_14_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_08_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_09_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_10_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_12_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_13_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_11/_14_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_08_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_09_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_10_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_12_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_13_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_12/_14_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_08_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_09_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_10_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_12_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_13_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_8/_14_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_08_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_09_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_10_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_11_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_12_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_13_ ;
+ wire \u_multiplier/STAGE2/Exact_42_pp_9/_14_ ;
+ wire \u_multiplier/STAGE2/Final_add/Cout ;
+ wire \u_multiplier/STAGE2/Final_add/c1 ;
+ wire \u_multiplier/STAGE2/Final_add/c2 ;
+ wire \u_multiplier/STAGE2/Final_add/c3 ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_14_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_15_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_16_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_17_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_18_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_19_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_20_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_21_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_22_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_23_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_24_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_25_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_26_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_27_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla1/_28_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_14_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_15_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_16_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_17_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_18_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_19_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_20_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_21_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_22_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_23_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_24_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_25_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_26_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_27_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla2/_28_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_14_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_15_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_16_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_17_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_18_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_19_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_20_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_21_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_22_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_23_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_24_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_25_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_26_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_27_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla3/_28_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_14_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_15_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_16_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_17_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_18_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_19_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_20_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_21_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_22_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_23_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_24_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_25_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_26_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_27_ ;
+ wire \u_multiplier/STAGE2/Final_add/cla4/_28_ ;
+ wire \u_multiplier/STAGE2/Full_adder_pp_13/_05_ ;
+ wire \u_multiplier/STAGE2/Full_adder_pp_13/_06_ ;
+ wire \u_multiplier/STAGE2/Full_adder_pp_13/_07_ ;
+ wire \u_multiplier/STAGE2/Full_adder_pp_13/_08_ ;
+ wire net1;
+ wire net2;
+ wire net3;
+ wire net4;
+ wire net5;
+ wire net6;
+ wire net7;
+ wire net8;
+ wire net9;
+ wire net10;
+ wire net11;
+ wire valid_reg_out;
+ wire net30;
+ wire net31;
+ wire net33;
+ wire net34;
+ wire net35;
+ wire net36;
+ wire net37;
+ wire net38;
+ wire net39;
+ wire net40;
+ wire net41;
+ wire net42;
+ wire net43;
+ wire net44;
+ wire net46;
+ wire net47;
+ wire net48;
+ wire net49;
+ wire net50;
+ wire net51;
+ wire net52;
+ wire net53;
+ wire net54;
+ wire net55;
+ wire net56;
+ wire net57;
+ wire net58;
+ wire net59;
+ wire net60;
+ wire net61;
+ wire net62;
+ wire net63;
+ wire net64;
+ wire net65;
+ wire net66;
+ wire clknet_0_clk;
+ wire clknet_2_0__leaf_clk;
+ wire clknet_2_1__leaf_clk;
+ wire clknet_2_2__leaf_clk;
+ wire clknet_2_3__leaf_clk;
+ wire net67;
+ wire net68;
+ wire net69;
+ wire net70;
+ wire net71;
+ wire net72;
+ wire net73;
+ wire net74;
+ wire net75;
+ wire net76;
+ wire net77;
+ wire net78;
+ wire net79;
+ wire net80;
+ wire net81;
+ wire net82;
+ wire net83;
+ wire net84;
+ wire net85;
+ wire net86;
+ wire net87;
+ wire net88;
+ wire net89;
+ wire net90;
+ wire net91;
+ wire net92;
+ wire net93;
+ wire net94;
+ wire net95;
+ wire net96;
+ wire net97;
+ wire net98;
+ wire net99;
+ wire net100;
+ wire net101;
+ wire net102;
+ wire net103;
+ wire net104;
+ wire net105;
+ wire net106;
+ wire net107;
+ wire net108;
+ wire net109;
+ wire net110;
+ wire [3:0] addr_ptr;
+ wire [2:0] curr_state;
+ wire [7:0] data_in_reg;
+ wire [3:0] init_count;
+ wire [15:0] product;
+ wire [7:0] sram_rdata;
+ wire [7:0] sram_rdata_reg;
+ wire [1:0] \u_multiplier/pp_1 ;
+ wire [3:0] \u_multiplier/pp_10 ;
+ wire [3:0] \u_multiplier/pp_11 ;
+ wire [3:0] \u_multiplier/pp_12 ;
+ wire [1:0] \u_multiplier/pp_13 ;
+ wire [2:0] \u_multiplier/pp_2 ;
+ wire [3:0] \u_multiplier/pp_3 ;
+ wire [3:0] \u_multiplier/pp_4 ;
+ wire [3:0] \u_multiplier/pp_5 ;
+ wire [3:0] \u_multiplier/pp_6 ;
+ wire [3:0] \u_multiplier/pp_7 ;
+ wire [3:0] \u_multiplier/pp_8 ;
+ wire [3:0] \u_multiplier/pp_9 ;
+
+ INV_X2 _275_ (.A(net10),
+    .ZN(_050_));
+ INV_X1 _276_ (.A(init_count[2]),
+    .ZN(_081_));
+ INV_X1 _277_ (.A(addr_ptr[3]),
+    .ZN(_082_));
+ AND2_X4 _278_ (.A1(net11),
+    .A2(net109),
+    .ZN(_046_));
+ INV_X1 _279_ (.A(_046_),
+    .ZN(_083_));
+ AND2_X1 _280_ (.A1(product[12]),
+    .A2(_046_),
+    .ZN(_021_));
+ AND2_X1 _281_ (.A1(product[13]),
+    .A2(_046_),
+    .ZN(_022_));
+ AND2_X1 _282_ (.A1(product[14]),
+    .A2(_046_),
+    .ZN(_023_));
+ AND2_X1 _283_ (.A1(product[15]),
+    .A2(_046_),
+    .ZN(_024_));
+ AND2_X1 _284_ (.A1(net11),
+    .A2(net1),
+    .ZN(_010_));
+ AND2_X1 _285_ (.A1(net11),
+    .A2(net2),
+    .ZN(_011_));
+ AND2_X1 _286_ (.A1(net11),
+    .A2(net3),
+    .ZN(_012_));
+ AND2_X1 _287_ (.A1(net11),
+    .A2(net4),
+    .ZN(_013_));
+ AND2_X1 _288_ (.A1(net11),
+    .A2(net5),
+    .ZN(_014_));
+ AND2_X1 _289_ (.A1(net11),
+    .A2(net6),
+    .ZN(_015_));
+ AND2_X1 _290_ (.A1(net11),
+    .A2(net7),
+    .ZN(_016_));
+ AND2_X1 _291_ (.A1(net11),
+    .A2(net8),
+    .ZN(_017_));
+ NAND2_X1 _292_ (.A1(init_count[2]),
+    .A2(init_count[3]),
+    .ZN(_084_));
+ OAI21_X1 _293_ (.A(init_count[0]),
+    .B1(net80),
+    .B2(_084_),
+    .ZN(_085_));
+ AND2_X1 _294_ (.A1(net11),
+    .A2(net10),
+    .ZN(_086_));
+ NAND2_X2 _295_ (.A1(net11),
+    .A2(net93),
+    .ZN(_051_));
+ NOR2_X2 _296_ (.A1(_050_),
+    .A2(_051_),
+    .ZN(_087_));
+ INV_X1 _297_ (.A(_087_),
+    .ZN(_088_));
+ AND2_X1 _298_ (.A1(net10),
+    .A2(_046_),
+    .ZN(_089_));
+ NAND2_X1 _299_ (.A1(net10),
+    .A2(_046_),
+    .ZN(_090_));
+ NAND2_X2 _300_ (.A1(net11),
+    .A2(_050_),
+    .ZN(_091_));
+ AOI22_X1 _301_ (.A1(_085_),
+    .A2(_087_),
+    .B1(_089_),
+    .B2(init_count[0]),
+    .ZN(_092_));
+ OAI21_X1 _302_ (.A(_092_),
+    .B1(_091_),
+    .B2(net84),
+    .ZN(_034_));
+ NAND2_X1 _303_ (.A1(init_count[0]),
+    .A2(init_count[1]),
+    .ZN(_093_));
+ NAND3_X1 _304_ (.A1(init_count[0]),
+    .A2(init_count[1]),
+    .A3(_084_),
+    .ZN(_094_));
+ AOI22_X1 _305_ (.A1(net12),
+    .A2(init_count[1]),
+    .B1(curr_state[2]),
+    .B2(_094_),
+    .ZN(_095_));
+ OAI21_X1 _306_ (.A(_086_),
+    .B1(init_count[1]),
+    .B2(init_count[0]),
+    .ZN(_096_));
+ OAI22_X1 _307_ (.A1(net81),
+    .A2(_091_),
+    .B1(_095_),
+    .B2(_096_),
+    .ZN(_035_));
+ NAND2_X1 _308_ (.A1(_081_),
+    .A2(_093_),
+    .ZN(_097_));
+ OAI211_X1 _309_ (.A(_087_),
+    .B(_097_),
+    .C1(_094_),
+    .C2(_081_),
+    .ZN(_098_));
+ OAI221_X1 _310_ (.A(_098_),
+    .B1(_091_),
+    .B2(net58),
+    .C1(_081_),
+    .C2(_090_),
+    .ZN(_036_));
+ OAI21_X1 _311_ (.A(net86),
+    .B1(_093_),
+    .B2(_264_),
+    .ZN(_099_));
+ AOI22_X1 _312_ (.A1(init_count[3]),
+    .A2(_089_),
+    .B1(_099_),
+    .B2(_087_),
+    .ZN(_100_));
+ OAI21_X1 _313_ (.A(_100_),
+    .B1(_091_),
+    .B2(net87),
+    .ZN(_037_));
+ NAND4_X4 _314_ (.A1(net107),
+    .A2(init_count[1]),
+    .A3(init_count[2]),
+    .A4(init_count[3]),
+    .ZN(_101_));
+ NAND3_X1 _315_ (.A1(net67),
+    .A2(_087_),
+    .A3(_101_),
+    .ZN(_102_));
+ OAI221_X1 _316_ (.A(net68),
+    .B1(_091_),
+    .B2(net60),
+    .C1(net94),
+    .C2(_090_),
+    .ZN(_006_));
+ AOI21_X1 _317_ (.A(_089_),
+    .B1(_101_),
+    .B2(_087_),
+    .ZN(_103_));
+ NAND2_X1 _318_ (.A1(addr_ptr[0]),
+    .A2(addr_ptr[1]),
+    .ZN(_104_));
+ XNOR2_X1 _319_ (.A(addr_ptr[0]),
+    .B(addr_ptr[1]),
+    .ZN(_105_));
+ OAI22_X1 _320_ (.A1(net45),
+    .A2(_091_),
+    .B1(_103_),
+    .B2(_105_),
+    .ZN(_007_));
+ XOR2_X1 _321_ (.A(addr_ptr[2]),
+    .B(_104_),
+    .Z(_106_));
+ OAI22_X1 _322_ (.A1(net78),
+    .A2(_091_),
+    .B1(_103_),
+    .B2(_106_),
+    .ZN(_008_));
+ AOI21_X1 _323_ (.A(_082_),
+    .B1(_101_),
+    .B2(curr_state[2]),
+    .ZN(_107_));
+ NAND4_X1 _324_ (.A1(net10),
+    .A2(addr_ptr[0]),
+    .A3(addr_ptr[1]),
+    .A4(addr_ptr[2]),
+    .ZN(_108_));
+ OR2_X1 _325_ (.A1(_107_),
+    .A2(_108_),
+    .ZN(_109_));
+ AOI211_X1 _326_ (.A(net12),
+    .B(_050_),
+    .C1(curr_state[2]),
+    .C2(_101_),
+    .ZN(_110_));
+ OAI21_X1 _327_ (.A(net11),
+    .B1(net71),
+    .B2(_108_),
+    .ZN(_111_));
+ AOI211_X1 _328_ (.A(_110_),
+    .B(net72),
+    .C1(net50),
+    .C2(_109_),
+    .ZN(_009_));
+ NOR2_X1 _329_ (.A1(_050_),
+    .A2(_101_),
+    .ZN(_112_));
+ OAI21_X1 _330_ (.A(_083_),
+    .B1(_088_),
+    .B2(net108),
+    .ZN(_048_));
+ NAND3_X1 _331_ (.A1(net9),
+    .A2(net74),
+    .A3(_086_),
+    .ZN(_113_));
+ OAI21_X1 _332_ (.A(net75),
+    .B1(_112_),
+    .B2(_051_),
+    .ZN(_049_));
+ AOI22_X1 _333_ (.A1(net11),
+    .A2(net47),
+    .B1(_086_),
+    .B2(net9),
+    .ZN(_047_));
+ AND2_X1 _334_ (.A1(net11),
+    .A2(sram_rdata[0]),
+    .ZN(_038_));
+ AND2_X1 _335_ (.A1(net11),
+    .A2(sram_rdata[1]),
+    .ZN(_039_));
+ AND2_X1 _336_ (.A1(net11),
+    .A2(sram_rdata[2]),
+    .ZN(_040_));
+ AND2_X1 _337_ (.A1(net11),
+    .A2(sram_rdata[3]),
+    .ZN(_041_));
+ AND2_X1 _338_ (.A1(net11),
+    .A2(sram_rdata[4]),
+    .ZN(_042_));
+ AND2_X1 _339_ (.A1(net11),
+    .A2(sram_rdata[5]),
+    .ZN(_043_));
+ AND2_X1 _340_ (.A1(net11),
+    .A2(sram_rdata[6]),
+    .ZN(_044_));
+ AND2_X1 _341_ (.A1(net11),
+    .A2(sram_rdata[7]),
+    .ZN(_045_));
+ AND2_X1 _342_ (.A1(product[0]),
+    .A2(_046_),
+    .ZN(_018_));
+ AND2_X1 _343_ (.A1(product[1]),
+    .A2(_046_),
+    .ZN(_025_));
+ AND2_X1 _344_ (.A1(product[2]),
+    .A2(_046_),
+    .ZN(_026_));
+ AND2_X1 _345_ (.A1(product[3]),
+    .A2(_046_),
+    .ZN(_027_));
+ AND2_X1 _346_ (.A1(product[4]),
+    .A2(_046_),
+    .ZN(_028_));
+ AND2_X1 _347_ (.A1(product[5]),
+    .A2(_046_),
+    .ZN(_029_));
+ AND2_X1 _348_ (.A1(product[6]),
+    .A2(_046_),
+    .ZN(_030_));
+ AND2_X1 _349_ (.A1(product[7]),
+    .A2(_046_),
+    .ZN(_031_));
+ AND2_X1 _350_ (.A1(product[8]),
+    .A2(_046_),
+    .ZN(_032_));
+ AND2_X1 _351_ (.A1(product[9]),
+    .A2(_046_),
+    .ZN(_033_));
+ AND2_X1 _352_ (.A1(product[10]),
+    .A2(_046_),
+    .ZN(_019_));
+ AND2_X1 _353_ (.A1(product[11]),
+    .A2(_046_),
+    .ZN(_020_));
+ DFF_X1 _354_ (.D(net48),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(curr_state[0]),
+    .QN(_222_));
+ DFF_X2 _355_ (.D(_048_),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(net12),
+    .QN(_223_));
+ DFF_X2 _356_ (.D(net76),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(curr_state[2]),
+    .QN(_224_));
+ DFF_X1 _357_ (.D(_018_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net13),
+    .QN(_225_));
+ DFF_X2 _358_ (.D(_025_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net20),
+    .QN(_226_));
+ DFF_X1 _359_ (.D(_026_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(net21),
+    .QN(_227_));
+ DFF_X2 _360_ (.D(_027_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(net22),
+    .QN(_228_));
+ DFF_X1 _361_ (.D(_028_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(net23),
+    .QN(_229_));
+ DFF_X1 _362_ (.D(_029_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(net24),
+    .QN(_230_));
+ DFF_X1 _363_ (.D(_030_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net25),
+    .QN(_231_));
+ DFF_X1 _364_ (.D(_031_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net26),
+    .QN(_232_));
+ DFF_X1 _365_ (.D(_032_),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(net27),
+    .QN(_233_));
+ DFF_X2 _366_ (.D(_033_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net28),
+    .QN(_234_));
+ DFF_X1 _367_ (.D(_019_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net14),
+    .QN(_235_));
+ DFF_X2 _368_ (.D(_020_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net15),
+    .QN(_236_));
+ DFF_X1 _369_ (.D(_021_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net16),
+    .QN(_237_));
+ DFF_X1 _370_ (.D(_022_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net17),
+    .QN(_238_));
+ DFF_X2 _371_ (.D(_023_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(net18),
+    .QN(_239_));
+ DFF_X1 _372_ (.D(_024_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net19),
+    .QN(_240_));
+ DFF_X2 _373_ (.D(_010_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(data_in_reg[0]),
+    .QN(_241_));
+ DFF_X2 _374_ (.D(_011_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(data_in_reg[1]),
+    .QN(_242_));
+ DFF_X2 _375_ (.D(_012_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(data_in_reg[2]),
+    .QN(_243_));
+ DFF_X2 _376_ (.D(_013_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(data_in_reg[3]),
+    .QN(_244_));
+ DFF_X2 _377_ (.D(_014_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(data_in_reg[4]),
+    .QN(_245_));
+ DFF_X2 _378_ (.D(_015_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(data_in_reg[5]),
+    .QN(_246_));
+ DFF_X2 _379_ (.D(_016_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(data_in_reg[6]),
+    .QN(_247_));
+ DFF_X2 _380_ (.D(_017_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(data_in_reg[7]),
+    .QN(_248_));
+ DFF_X2 _381_ (.D(_038_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(sram_rdata_reg[0]),
+    .QN(_249_));
+ DFF_X2 _382_ (.D(_039_),
+    .CK(clknet_2_0__leaf_clk),
+    .Q(sram_rdata_reg[1]),
+    .QN(_250_));
+ DFF_X2 _383_ (.D(_040_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(sram_rdata_reg[2]),
+    .QN(_251_));
+ DFF_X2 _384_ (.D(_041_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(sram_rdata_reg[3]),
+    .QN(_252_));
+ DFF_X2 _385_ (.D(_042_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(sram_rdata_reg[4]),
+    .QN(_253_));
+ DFF_X2 _386_ (.D(_043_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(sram_rdata_reg[5]),
+    .QN(_254_));
+ DFF_X2 _387_ (.D(_044_),
+    .CK(clknet_2_2__leaf_clk),
+    .Q(sram_rdata_reg[6]),
+    .QN(_255_));
+ DFF_X2 _388_ (.D(_045_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(sram_rdata_reg[7]),
+    .QN(_256_));
+ DFF_X1 _389_ (.D(_046_),
+    .CK(clknet_2_3__leaf_clk),
+    .Q(net29),
+    .QN(_257_));
+ DFF_X2 _390_ (.D(net69),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(addr_ptr[0]),
+    .QN(_258_));
+ DFF_X1 _391_ (.D(net46),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(addr_ptr[1]),
+    .QN(_259_));
+ DFF_X2 _392_ (.D(net79),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(addr_ptr[2]),
+    .QN(_260_));
+ DFF_X1 _393_ (.D(net73),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(addr_ptr[3]),
+    .QN(_261_));
+ DFF_X2 _394_ (.D(net85),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(init_count[0]),
+    .QN(_262_));
+ DFF_X2 _395_ (.D(net82),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(init_count[1]),
+    .QN(_263_));
+ DFF_X2 _396_ (.D(net98),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(init_count[2]),
+    .QN(_264_));
+ DFF_X2 _397_ (.D(net88),
+    .CK(clknet_2_1__leaf_clk),
+    .Q(init_count[3]),
+    .QN(_265_));
+ SRAM_6T_CORE_16x8_MC_TB sram_inst (.ce_in(_050_),
+    .we_in(_051_),
+    .clk(clknet_2_0__leaf_clk),
+    .addr_in({net92,
+    net56,
+    net90,
+    net57}),
+    .rd_out({sram_rdata[7],
+    sram_rdata[6],
+    sram_rdata[5],
+    sram_rdata[4],
+    sram_rdata[3],
+    sram_rdata[2],
+    sram_rdata[1],
+    sram_rdata[0]}),
+    .wd_in({net62,
+    net59,
+    net61,
+    net65,
+    net70,
+    net66,
+    net64,
+    net63}));
+ NAND3_X1 \u_multiplier/STAGE1/ACCI1_pp_5/_21_  (.A1(\u_multiplier/STAGE1/_019_ ),
+    .A2(\u_multiplier/STAGE1/_018_ ),
+    .A3(\u_multiplier/STAGE1/_020_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_5/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_5/_22_  (.A(\u_multiplier/STAGE1/_019_ ),
+    .B(\u_multiplier/STAGE1/_018_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_5/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_5/_23_  (.A(\u_multiplier/STAGE1/_020_ ),
+    .B(\u_multiplier/STAGE1/_021_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_5/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_5/_24_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_5/_10_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_5/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_5/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE1/ACCI1_pp_5/_25_  (.A(\u_multiplier/STAGE1/ACCI1_pp_5/_10_ ),
+    .B(\u_multiplier/STAGE1/ACCI1_pp_5/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_5/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_5/_26_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_5/_09_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_5/_07_ ),
+    .ZN(\u_multiplier/pp_5 [1]));
+ AOI22_X2 \u_multiplier/STAGE1/ACCI1_pp_5/_27_  (.A1(\u_multiplier/STAGE1/_019_ ),
+    .A2(\u_multiplier/STAGE1/_018_ ),
+    .B1(\u_multiplier/STAGE1/_020_ ),
+    .B2(\u_multiplier/STAGE1/_021_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_5/_08_ ));
+ NAND2_X2 \u_multiplier/STAGE1/ACCI1_pp_5/_28_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_5/_06_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_5/_08_ ),
+    .ZN(\u_multiplier/pp_6 [0]));
+ NAND3_X1 \u_multiplier/STAGE1/ACCI1_pp_6/_21_  (.A1(\u_multiplier/STAGE1/_023_ ),
+    .A2(\u_multiplier/STAGE1/_022_ ),
+    .A3(\u_multiplier/STAGE1/_024_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_6/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_6/_22_  (.A(\u_multiplier/STAGE1/_023_ ),
+    .B(\u_multiplier/STAGE1/_022_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_6/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_6/_23_  (.A(\u_multiplier/STAGE1/_024_ ),
+    .B(\u_multiplier/STAGE1/_025_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_6/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_6/_24_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_6/_10_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_6/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_6/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE1/ACCI1_pp_6/_25_  (.A(\u_multiplier/STAGE1/ACCI1_pp_6/_10_ ),
+    .B(\u_multiplier/STAGE1/ACCI1_pp_6/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_6/_07_ ));
+ NAND2_X2 \u_multiplier/STAGE1/ACCI1_pp_6/_26_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_6/_09_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_6/_07_ ),
+    .ZN(\u_multiplier/pp_6 [1]));
+ AOI22_X2 \u_multiplier/STAGE1/ACCI1_pp_6/_27_  (.A1(\u_multiplier/STAGE1/_023_ ),
+    .A2(\u_multiplier/STAGE1/_022_ ),
+    .B1(\u_multiplier/STAGE1/_024_ ),
+    .B2(\u_multiplier/STAGE1/_025_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_6/_08_ ));
+ NAND2_X2 \u_multiplier/STAGE1/ACCI1_pp_6/_28_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_6/_06_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_6/_08_ ),
+    .ZN(\u_multiplier/pp_7 [0]));
+ NAND3_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_21_  (.A1(\u_multiplier/STAGE1/_029_ ),
+    .A2(\u_multiplier/STAGE1/_028_ ),
+    .A3(\u_multiplier/STAGE1/_030_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_1/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_7_1/_22_  (.A(\u_multiplier/STAGE1/_029_ ),
+    .B(\u_multiplier/STAGE1/_028_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_7_1/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_7_1/_23_  (.A(\u_multiplier/STAGE1/_030_ ),
+    .B(\u_multiplier/STAGE1/_031_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_7_1/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_24_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_1/_10_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_1/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_1/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_25_  (.A(\u_multiplier/STAGE1/ACCI1_pp_7_1/_10_ ),
+    .B(\u_multiplier/STAGE1/ACCI1_pp_7_1/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_1/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_26_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_1/_09_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_1/_07_ ),
+    .ZN(\u_multiplier/pp_7 [3]));
+ AOI22_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_27_  (.A1(\u_multiplier/STAGE1/_029_ ),
+    .A2(\u_multiplier/STAGE1/_028_ ),
+    .B1(\u_multiplier/STAGE1/_030_ ),
+    .B2(\u_multiplier/STAGE1/_031_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_1/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_1/_28_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_1/_06_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_1/_08_ ),
+    .ZN(\u_multiplier/pp_8 [0]));
+ NAND3_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_21_  (.A1(\u_multiplier/STAGE1/_033_ ),
+    .A2(\u_multiplier/STAGE1/_032_ ),
+    .A3(\u_multiplier/STAGE1/_034_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_2/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_7_2/_22_  (.A(\u_multiplier/STAGE1/_033_ ),
+    .B(\u_multiplier/STAGE1/_032_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_7_2/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/ACCI1_pp_7_2/_23_  (.A(\u_multiplier/STAGE1/_034_ ),
+    .B(\u_multiplier/STAGE1/_035_ ),
+    .Z(\u_multiplier/STAGE1/ACCI1_pp_7_2/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_24_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_2/_10_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_2/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_2/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_25_  (.A(\u_multiplier/STAGE1/ACCI1_pp_7_2/_10_ ),
+    .B(\u_multiplier/STAGE1/ACCI1_pp_7_2/_11_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_2/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_26_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_2/_09_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_2/_07_ ),
+    .ZN(\u_multiplier/pp_7 [2]));
+ AOI22_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_27_  (.A1(\u_multiplier/STAGE1/_033_ ),
+    .A2(\u_multiplier/STAGE1/_032_ ),
+    .B1(\u_multiplier/STAGE1/_034_ ),
+    .B2(\u_multiplier/STAGE1/_035_ ),
+    .ZN(\u_multiplier/STAGE1/ACCI1_pp_7_2/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE1/ACCI1_pp_7_2/_28_  (.A1(\u_multiplier/STAGE1/ACCI1_pp_7_2/_06_ ),
+    .A2(\u_multiplier/STAGE1/ACCI1_pp_7_2/_08_ ),
+    .ZN(\u_multiplier/pp_8 [1]));
+ INV_X1 \u_multiplier/STAGE1/Exact_42_pp_10/_18_  (.A(\u_multiplier/STAGE1/pp_9_exa_c22 ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_10/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_10/_19_  (.A1(\u_multiplier/STAGE1/_050_ ),
+    .A2(\u_multiplier/STAGE1/_049_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_10/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_10/_20_  (.A(\u_multiplier/STAGE1/_050_ ),
+    .B(\u_multiplier/STAGE1/_049_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_10/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_10/_21_  (.A1(\u_multiplier/STAGE1/_051_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_10/_09_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_10/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_10/_22_  (.A(\u_multiplier/STAGE1/_051_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_10/_09_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_10/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_10/_23_  (.A1(\u_multiplier/STAGE1/_052_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_10/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_10/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_10/_24_  (.A(\u_multiplier/STAGE1/_052_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_10/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_10/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_10/_25_  (.A(\u_multiplier/STAGE1/pp_9_exa_c22 ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_10/_13_ ),
+    .ZN(\u_multiplier/pp_10 [2]));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_10/_26_  (.A1(\u_multiplier/STAGE1/Exact_42_pp_10/_08_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_10/_10_ ),
+    .ZN(\u_multiplier/STAGE1/pp_10_exa_c2 ));
+ OAI21_X2 \u_multiplier/STAGE1/Exact_42_pp_10/_27_  (.A(\u_multiplier/STAGE1/Exact_42_pp_10/_12_ ),
+    .B1(\u_multiplier/STAGE1/Exact_42_pp_10/_13_ ),
+    .B2(\u_multiplier/STAGE1/Exact_42_pp_10/_14_ ),
+    .ZN(\u_multiplier/pp_11 [0]));
+ INV_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_18_  (.A(net30),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_8/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_19_  (.A1(\u_multiplier/STAGE1/_040_ ),
+    .A2(\u_multiplier/STAGE1/_039_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_8/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_8/_20_  (.A(\u_multiplier/STAGE1/_040_ ),
+    .B(\u_multiplier/STAGE1/_039_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_8/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_21_  (.A1(\u_multiplier/STAGE1/_041_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_8/_09_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_8/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_8/_22_  (.A(\u_multiplier/STAGE1/_041_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_8/_09_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_8/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_23_  (.A1(\u_multiplier/STAGE1/_042_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_8/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_8/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_8/_24_  (.A(\u_multiplier/STAGE1/_042_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_8/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_8/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_8/_25_  (.A(net31),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_8/_13_ ),
+    .ZN(\u_multiplier/pp_8 [2]));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_26_  (.A1(\u_multiplier/STAGE1/Exact_42_pp_8/_08_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_8/_10_ ),
+    .ZN(\u_multiplier/STAGE1/pp_8_exa_c22 ));
+ OAI21_X2 \u_multiplier/STAGE1/Exact_42_pp_8/_27_  (.A(\u_multiplier/STAGE1/Exact_42_pp_8/_12_ ),
+    .B1(\u_multiplier/STAGE1/Exact_42_pp_8/_13_ ),
+    .B2(\u_multiplier/STAGE1/Exact_42_pp_8/_14_ ),
+    .ZN(\u_multiplier/pp_9 [1]));
+ INV_X1 \u_multiplier/STAGE1/Exact_42_pp_9/_18_  (.A(\u_multiplier/STAGE1/pp_8_exa_c22 ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_9/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_9/_19_  (.A1(\u_multiplier/STAGE1/_046_ ),
+    .A2(\u_multiplier/STAGE1/_045_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_9/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_9/_20_  (.A(\u_multiplier/STAGE1/_046_ ),
+    .B(\u_multiplier/STAGE1/_045_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_9/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_9/_21_  (.A1(\u_multiplier/STAGE1/_047_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_9/_09_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_9/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_9/_22_  (.A(\u_multiplier/STAGE1/_047_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_9/_09_ ),
+    .Z(\u_multiplier/STAGE1/Exact_42_pp_9/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_9/_23_  (.A1(\u_multiplier/STAGE1/_048_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_9/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_9/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_9/_24_  (.A(\u_multiplier/STAGE1/_048_ ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_9/_11_ ),
+    .ZN(\u_multiplier/STAGE1/Exact_42_pp_9/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE1/Exact_42_pp_9/_25_  (.A(\u_multiplier/STAGE1/pp_8_exa_c22 ),
+    .B(\u_multiplier/STAGE1/Exact_42_pp_9/_13_ ),
+    .ZN(\u_multiplier/pp_9 [2]));
+ NAND2_X1 \u_multiplier/STAGE1/Exact_42_pp_9/_26_  (.A1(\u_multiplier/STAGE1/Exact_42_pp_9/_08_ ),
+    .A2(\u_multiplier/STAGE1/Exact_42_pp_9/_10_ ),
+    .ZN(\u_multiplier/STAGE1/pp_9_exa_c22 ));
+ OAI21_X2 \u_multiplier/STAGE1/Exact_42_pp_9/_27_  (.A(\u_multiplier/STAGE1/Exact_42_pp_9/_12_ ),
+    .B1(\u_multiplier/STAGE1/Exact_42_pp_9/_13_ ),
+    .B2(\u_multiplier/STAGE1/Exact_42_pp_9/_14_ ),
+    .ZN(\u_multiplier/pp_10 [1]));
+ INV_X1 \u_multiplier/STAGE1/Full_adder_pp_11/_12_  (.A(\u_multiplier/STAGE1/pp_10_exa_c2 ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_11/_05_ ));
+ NAND3_X2 \u_multiplier/STAGE1/Full_adder_pp_11/_13_  (.A1(\u_multiplier/STAGE1/_054_ ),
+    .A2(\u_multiplier/STAGE1/_053_ ),
+    .A3(\u_multiplier/STAGE1/pp_10_exa_c2 ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_11/_06_ ));
+ NOR2_X2 \u_multiplier/STAGE1/Full_adder_pp_11/_14_  (.A1(\u_multiplier/STAGE1/_054_ ),
+    .A2(\u_multiplier/STAGE1/_053_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_11/_07_ ));
+ AOI21_X1 \u_multiplier/STAGE1/Full_adder_pp_11/_15_  (.A(\u_multiplier/STAGE1/pp_10_exa_c2 ),
+    .B1(\u_multiplier/STAGE1/_053_ ),
+    .B2(\u_multiplier/STAGE1/_054_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_11/_08_ ));
+ NOR2_X2 \u_multiplier/STAGE1/Full_adder_pp_11/_16_  (.A1(\u_multiplier/STAGE1/Full_adder_pp_11/_07_ ),
+    .A2(\u_multiplier/STAGE1/Full_adder_pp_11/_08_ ),
+    .ZN(\u_multiplier/pp_12 [0]));
+ AOI22_X4 \u_multiplier/STAGE1/Full_adder_pp_11/_17_  (.A1(\u_multiplier/STAGE1/Full_adder_pp_11/_05_ ),
+    .A2(\u_multiplier/STAGE1/Full_adder_pp_11/_07_ ),
+    .B1(\u_multiplier/pp_12 [0]),
+    .B2(\u_multiplier/STAGE1/Full_adder_pp_11/_06_ ),
+    .ZN(\u_multiplier/pp_11 [1]));
+ INV_X1 \u_multiplier/STAGE1/Full_adder_pp_8/_12_  (.A(\u_multiplier/STAGE1/_038_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_8/_05_ ));
+ NAND3_X2 \u_multiplier/STAGE1/Full_adder_pp_8/_13_  (.A1(\u_multiplier/STAGE1/_037_ ),
+    .A2(\u_multiplier/STAGE1/_036_ ),
+    .A3(\u_multiplier/STAGE1/_038_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_8/_06_ ));
+ NOR2_X2 \u_multiplier/STAGE1/Full_adder_pp_8/_14_  (.A1(\u_multiplier/STAGE1/_037_ ),
+    .A2(\u_multiplier/STAGE1/_036_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_8/_07_ ));
+ AOI21_X1 \u_multiplier/STAGE1/Full_adder_pp_8/_15_  (.A(\u_multiplier/STAGE1/_038_ ),
+    .B1(\u_multiplier/STAGE1/_036_ ),
+    .B2(\u_multiplier/STAGE1/_037_ ),
+    .ZN(\u_multiplier/STAGE1/Full_adder_pp_8/_08_ ));
+ NOR2_X2 \u_multiplier/STAGE1/Full_adder_pp_8/_16_  (.A1(\u_multiplier/STAGE1/Full_adder_pp_8/_07_ ),
+    .A2(\u_multiplier/STAGE1/Full_adder_pp_8/_08_ ),
+    .ZN(\u_multiplier/pp_9 [0]));
+ AOI22_X4 \u_multiplier/STAGE1/Full_adder_pp_8/_17_  (.A1(\u_multiplier/STAGE1/Full_adder_pp_8/_05_ ),
+    .A2(\u_multiplier/STAGE1/Full_adder_pp_8/_07_ ),
+    .B1(\u_multiplier/pp_9 [0]),
+    .B2(\u_multiplier/STAGE1/Full_adder_pp_8/_06_ ),
+    .ZN(\u_multiplier/pp_8 [3]));
+ AND2_X1 \u_multiplier/STAGE1/Half_adder_pp_4/_4_  (.A1(\u_multiplier/STAGE1/_017_ ),
+    .A2(\u_multiplier/STAGE1/_016_ ),
+    .ZN(\u_multiplier/pp_5 [0]));
+ XOR2_X2 \u_multiplier/STAGE1/Half_adder_pp_4/_5_  (.A(\u_multiplier/STAGE1/_017_ ),
+    .B(\u_multiplier/STAGE1/_016_ ),
+    .Z(\u_multiplier/pp_4 [0]));
+ AND2_X1 \u_multiplier/STAGE1/Half_adder_pp_6/_4_  (.A1(\u_multiplier/STAGE1/_027_ ),
+    .A2(\u_multiplier/STAGE1/_026_ ),
+    .ZN(\u_multiplier/pp_7 [1]));
+ XOR2_X2 \u_multiplier/STAGE1/Half_adder_pp_6/_5_  (.A(\u_multiplier/STAGE1/_027_ ),
+    .B(\u_multiplier/STAGE1/_026_ ),
+    .Z(\u_multiplier/pp_6 [2]));
+ AND2_X1 \u_multiplier/STAGE1/Half_adder_pp_9/_4_  (.A1(\u_multiplier/STAGE1/_044_ ),
+    .A2(\u_multiplier/STAGE1/_043_ ),
+    .ZN(\u_multiplier/pp_10 [0]));
+ XOR2_X2 \u_multiplier/STAGE1/Half_adder_pp_9/_5_  (.A(\u_multiplier/STAGE1/_044_ ),
+    .B(\u_multiplier/STAGE1/_043_ ),
+    .Z(\u_multiplier/pp_9 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_119_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[0]),
+    .ZN(\u_multiplier/pp_0 ));
+ AND2_X1 \u_multiplier/STAGE1/_120_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[1]),
+    .ZN(\u_multiplier/pp_1 [0]));
+ AND2_X1 \u_multiplier/STAGE1/_121_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[1]),
+    .ZN(\u_multiplier/pp_1 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_122_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[2]),
+    .ZN(\u_multiplier/pp_2 [0]));
+ AND2_X1 \u_multiplier/STAGE1/_123_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[1]),
+    .ZN(\u_multiplier/pp_2 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_124_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[2]),
+    .ZN(\u_multiplier/pp_2 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_125_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[3]),
+    .ZN(\u_multiplier/pp_3 [0]));
+ AND2_X1 \u_multiplier/STAGE1/_126_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[2]),
+    .ZN(\u_multiplier/pp_3 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_127_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[2]),
+    .ZN(\u_multiplier/pp_3 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_128_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[3]),
+    .ZN(\u_multiplier/pp_3 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_129_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[2]),
+    .ZN(\u_multiplier/pp_4 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_130_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[3]),
+    .ZN(\u_multiplier/pp_4 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_131_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[4]),
+    .ZN(\u_multiplier/pp_4 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_132_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[4]),
+    .ZN(\u_multiplier/pp_5 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_133_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[5]),
+    .ZN(\u_multiplier/pp_5 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_134_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[6]),
+    .ZN(\u_multiplier/pp_6 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_135_  (.A1(data_in_reg[3]),
+    .A2(sram_rdata_reg[7]),
+    .ZN(\u_multiplier/pp_10 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_136_  (.A1(sram_rdata_reg[6]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/pp_11 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_137_  (.A1(sram_rdata_reg[7]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/pp_11 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_138_  (.A1(sram_rdata_reg[5]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/pp_12 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_139_  (.A1(sram_rdata_reg[6]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/pp_12 [2]));
+ AND2_X1 \u_multiplier/STAGE1/_140_  (.A1(sram_rdata_reg[7]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/pp_12 [3]));
+ AND2_X1 \u_multiplier/STAGE1/_141_  (.A1(sram_rdata_reg[6]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/pp_13 [0]));
+ AND2_X1 \u_multiplier/STAGE1/_142_  (.A1(sram_rdata_reg[7]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/pp_13 [1]));
+ AND2_X1 \u_multiplier/STAGE1/_143_  (.A1(sram_rdata_reg[7]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/pp_14 ));
+ AND2_X1 \u_multiplier/STAGE1/_144_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_016_ ));
+ AND2_X1 \u_multiplier/STAGE1/_145_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[3]),
+    .ZN(\u_multiplier/STAGE1/_017_ ));
+ AND2_X1 \u_multiplier/STAGE1/_146_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_018_ ));
+ AND2_X1 \u_multiplier/STAGE1/_147_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_019_ ));
+ AND2_X1 \u_multiplier/STAGE1/_148_  (.A1(sram_rdata_reg[2]),
+    .A2(data_in_reg[3]),
+    .ZN(\u_multiplier/STAGE1/_020_ ));
+ AND2_X1 \u_multiplier/STAGE1/_149_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[3]),
+    .ZN(\u_multiplier/STAGE1/_021_ ));
+ AND2_X1 \u_multiplier/STAGE1/_150_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_022_ ));
+ AND2_X1 \u_multiplier/STAGE1/_151_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_023_ ));
+ AND2_X1 \u_multiplier/STAGE1/_152_  (.A1(sram_rdata_reg[2]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_024_ ));
+ AND2_X1 \u_multiplier/STAGE1/_153_  (.A1(data_in_reg[3]),
+    .A2(sram_rdata_reg[3]),
+    .ZN(\u_multiplier/STAGE1/_025_ ));
+ AND2_X1 \u_multiplier/STAGE1/_154_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_026_ ));
+ AND2_X1 \u_multiplier/STAGE1/_155_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_027_ ));
+ AND2_X1 \u_multiplier/STAGE1/_156_  (.A1(data_in_reg[0]),
+    .A2(sram_rdata_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_028_ ));
+ AND2_X1 \u_multiplier/STAGE1/_157_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_029_ ));
+ AND2_X1 \u_multiplier/STAGE1/_158_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_030_ ));
+ AND2_X1 \u_multiplier/STAGE1/_159_  (.A1(data_in_reg[3]),
+    .A2(sram_rdata_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_031_ ));
+ AND2_X1 \u_multiplier/STAGE1/_160_  (.A1(sram_rdata_reg[3]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_032_ ));
+ AND2_X1 \u_multiplier/STAGE1/_161_  (.A1(sram_rdata_reg[2]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_033_ ));
+ AND2_X1 \u_multiplier/STAGE1/_162_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_034_ ));
+ AND2_X1 \u_multiplier/STAGE1/_163_  (.A1(sram_rdata_reg[0]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_035_ ));
+ AND2_X1 \u_multiplier/STAGE1/_164_  (.A1(data_in_reg[1]),
+    .A2(sram_rdata_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_036_ ));
+ AND2_X1 \u_multiplier/STAGE1/_165_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_037_ ));
+ AND2_X1 \u_multiplier/STAGE1/_166_  (.A1(data_in_reg[3]),
+    .A2(sram_rdata_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_038_ ));
+ AND2_X1 \u_multiplier/STAGE1/_167_  (.A1(sram_rdata_reg[4]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_039_ ));
+ AND2_X1 \u_multiplier/STAGE1/_168_  (.A1(sram_rdata_reg[3]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_040_ ));
+ AND2_X1 \u_multiplier/STAGE1/_169_  (.A1(sram_rdata_reg[2]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_041_ ));
+ AND2_X1 \u_multiplier/STAGE1/_170_  (.A1(sram_rdata_reg[1]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_042_ ));
+ AND2_X1 \u_multiplier/STAGE1/_171_  (.A1(data_in_reg[2]),
+    .A2(sram_rdata_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_043_ ));
+ AND2_X1 \u_multiplier/STAGE1/_172_  (.A1(data_in_reg[3]),
+    .A2(sram_rdata_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_044_ ));
+ AND2_X1 \u_multiplier/STAGE1/_173_  (.A1(sram_rdata_reg[5]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_045_ ));
+ AND2_X1 \u_multiplier/STAGE1/_174_  (.A1(sram_rdata_reg[4]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_046_ ));
+ AND2_X1 \u_multiplier/STAGE1/_175_  (.A1(sram_rdata_reg[3]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_047_ ));
+ AND2_X1 \u_multiplier/STAGE1/_176_  (.A1(sram_rdata_reg[2]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_048_ ));
+ AND2_X1 \u_multiplier/STAGE1/_177_  (.A1(sram_rdata_reg[6]),
+    .A2(data_in_reg[4]),
+    .ZN(\u_multiplier/STAGE1/_049_ ));
+ AND2_X1 \u_multiplier/STAGE1/_178_  (.A1(sram_rdata_reg[5]),
+    .A2(data_in_reg[5]),
+    .ZN(\u_multiplier/STAGE1/_050_ ));
+ AND2_X1 \u_multiplier/STAGE1/_179_  (.A1(sram_rdata_reg[4]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_051_ ));
+ AND2_X1 \u_multiplier/STAGE1/_180_  (.A1(sram_rdata_reg[3]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_052_ ));
+ AND2_X1 \u_multiplier/STAGE1/_181_  (.A1(sram_rdata_reg[5]),
+    .A2(data_in_reg[6]),
+    .ZN(\u_multiplier/STAGE1/_053_ ));
+ AND2_X1 \u_multiplier/STAGE1/_182_  (.A1(sram_rdata_reg[4]),
+    .A2(data_in_reg[7]),
+    .ZN(\u_multiplier/STAGE1/_054_ ));
+ NAND3_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_21_  (.A1(\u_multiplier/pp_3 [1]),
+    .A2(\u_multiplier/pp_3 [0]),
+    .A3(\u_multiplier/pp_3 [2]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_3/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_3/_22_  (.A(\u_multiplier/pp_3 [1]),
+    .B(\u_multiplier/pp_3 [0]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_3/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_3/_23_  (.A(\u_multiplier/pp_3 [2]),
+    .B(\u_multiplier/pp_3 [3]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_3/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_24_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_3/_10_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_3/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_3/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_25_  (.A(\u_multiplier/STAGE2/ACCI1_pp_3/_10_ ),
+    .B(\u_multiplier/STAGE2/ACCI1_pp_3/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_3/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_26_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_3/_09_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_3/_07_ ),
+    .ZN(\u_multiplier/STAGE2/pp_3_pro_s ));
+ AOI22_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_27_  (.A1(\u_multiplier/pp_3 [1]),
+    .A2(\u_multiplier/pp_3 [0]),
+    .B1(\u_multiplier/pp_3 [2]),
+    .B2(\u_multiplier/pp_3 [3]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_3/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_3/_28_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_3/_06_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_3/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_3_pro_c ));
+ NAND3_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_21_  (.A1(\u_multiplier/pp_4 [1]),
+    .A2(\u_multiplier/pp_4 [0]),
+    .A3(\u_multiplier/pp_4 [2]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_4/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_4/_22_  (.A(\u_multiplier/pp_4 [1]),
+    .B(\u_multiplier/pp_4 [0]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_4/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_4/_23_  (.A(\u_multiplier/pp_4 [2]),
+    .B(\u_multiplier/pp_4 [3]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_4/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_24_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_4/_10_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_4/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_4/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_25_  (.A(\u_multiplier/STAGE2/ACCI1_pp_4/_10_ ),
+    .B(\u_multiplier/STAGE2/ACCI1_pp_4/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_4/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_26_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_4/_09_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_4/_07_ ),
+    .ZN(\u_multiplier/STAGE2/pp_4_pro_s ));
+ AOI22_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_27_  (.A1(\u_multiplier/pp_4 [1]),
+    .A2(\u_multiplier/pp_4 [0]),
+    .B1(\u_multiplier/pp_4 [2]),
+    .B2(\u_multiplier/pp_4 [3]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_4/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_4/_28_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_4/_06_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_4/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_4_pro_c ));
+ NAND3_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_21_  (.A1(\u_multiplier/pp_5 [1]),
+    .A2(\u_multiplier/pp_5 [0]),
+    .A3(\u_multiplier/pp_5 [2]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_5/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_5/_22_  (.A(\u_multiplier/pp_5 [1]),
+    .B(\u_multiplier/pp_5 [0]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_5/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_5/_23_  (.A(\u_multiplier/pp_5 [2]),
+    .B(\u_multiplier/pp_5 [3]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_5/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_24_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_5/_10_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_5/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_5/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_25_  (.A(\u_multiplier/STAGE2/ACCI1_pp_5/_10_ ),
+    .B(\u_multiplier/STAGE2/ACCI1_pp_5/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_5/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_26_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_5/_09_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_5/_07_ ),
+    .ZN(\u_multiplier/STAGE2/pp_5_pro_s ));
+ AOI22_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_27_  (.A1(\u_multiplier/pp_5 [1]),
+    .A2(\u_multiplier/pp_5 [0]),
+    .B1(\u_multiplier/pp_5 [2]),
+    .B2(\u_multiplier/pp_5 [3]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_5/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_5/_28_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_5/_06_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_5/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_5_pro_c ));
+ NAND3_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_21_  (.A1(\u_multiplier/pp_6 [1]),
+    .A2(\u_multiplier/pp_6 [0]),
+    .A3(\u_multiplier/pp_6 [2]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_6/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_6/_22_  (.A(\u_multiplier/pp_6 [1]),
+    .B(\u_multiplier/pp_6 [0]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_6/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_6/_23_  (.A(\u_multiplier/pp_6 [2]),
+    .B(\u_multiplier/pp_6 [3]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_6/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_24_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_6/_10_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_6/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_6/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_25_  (.A(\u_multiplier/STAGE2/ACCI1_pp_6/_10_ ),
+    .B(\u_multiplier/STAGE2/ACCI1_pp_6/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_6/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_26_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_6/_09_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_6/_07_ ),
+    .ZN(\u_multiplier/STAGE2/pp_6_pro_s ));
+ AOI22_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_27_  (.A1(\u_multiplier/pp_6 [1]),
+    .A2(\u_multiplier/pp_6 [0]),
+    .B1(\u_multiplier/pp_6 [2]),
+    .B2(\u_multiplier/pp_6 [3]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_6/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_6/_28_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_6/_06_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_6/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_6_pro_c ));
+ NAND3_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_21_  (.A1(\u_multiplier/pp_7 [1]),
+    .A2(\u_multiplier/pp_7 [0]),
+    .A3(\u_multiplier/pp_7 [2]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_7/_09_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_7/_22_  (.A(\u_multiplier/pp_7 [1]),
+    .B(\u_multiplier/pp_7 [0]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_7/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/ACCI1_pp_7/_23_  (.A(\u_multiplier/pp_7 [2]),
+    .B(\u_multiplier/pp_7 [3]),
+    .Z(\u_multiplier/STAGE2/ACCI1_pp_7/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_24_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_7/_10_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_7/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_7/_06_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_25_  (.A(\u_multiplier/STAGE2/ACCI1_pp_7/_10_ ),
+    .B(\u_multiplier/STAGE2/ACCI1_pp_7/_11_ ),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_7/_07_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_26_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_7/_09_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_7/_07_ ),
+    .ZN(\u_multiplier/STAGE2/pp_7_pro_s ));
+ AOI22_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_27_  (.A1(\u_multiplier/pp_7 [1]),
+    .A2(\u_multiplier/pp_7 [0]),
+    .B1(\u_multiplier/pp_7 [2]),
+    .B2(\u_multiplier/pp_7 [3]),
+    .ZN(\u_multiplier/STAGE2/ACCI1_pp_7/_08_ ));
+ NAND2_X1 \u_multiplier/STAGE2/ACCI1_pp_7/_28_  (.A1(\u_multiplier/STAGE2/ACCI1_pp_7/_06_ ),
+    .A2(\u_multiplier/STAGE2/ACCI1_pp_7/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_7_pro_c ));
+ INV_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_18_  (.A(\u_multiplier/STAGE2/pp_9_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_10/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_19_  (.A1(\u_multiplier/pp_10 [2]),
+    .A2(\u_multiplier/pp_10 [3]),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_10/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_10/_20_  (.A(\u_multiplier/pp_10 [2]),
+    .B(\u_multiplier/pp_10 [3]),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_10/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_21_  (.A1(\u_multiplier/pp_10 [1]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_10/_09_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_10/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_10/_22_  (.A(\u_multiplier/pp_10 [1]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_10/_09_ ),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_10/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_23_  (.A1(\u_multiplier/pp_10 [0]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_10/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_10/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_10/_24_  (.A(\u_multiplier/pp_10 [0]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_10/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_10/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_10/_25_  (.A(\u_multiplier/STAGE2/pp_9_exa_c2 ),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_10/_13_ ),
+    .ZN(\u_multiplier/STAGE2/pp_10_exa_s ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_26_  (.A1(\u_multiplier/STAGE2/Exact_42_pp_10/_08_ ),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_10/_10_ ),
+    .ZN(\u_multiplier/STAGE2/pp_10_exa_c2 ));
+ OAI21_X1 \u_multiplier/STAGE2/Exact_42_pp_10/_27_  (.A(\u_multiplier/STAGE2/Exact_42_pp_10/_12_ ),
+    .B1(\u_multiplier/STAGE2/Exact_42_pp_10/_13_ ),
+    .B2(\u_multiplier/STAGE2/Exact_42_pp_10/_14_ ),
+    .ZN(\u_multiplier/STAGE2/pp_10_exa_c1 ));
+ INV_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_18_  (.A(\u_multiplier/STAGE2/pp_10_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_11/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_19_  (.A1(\u_multiplier/pp_11 [2]),
+    .A2(\u_multiplier/pp_11 [3]),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_11/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_11/_20_  (.A(\u_multiplier/pp_11 [2]),
+    .B(\u_multiplier/pp_11 [3]),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_11/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_21_  (.A1(\u_multiplier/pp_11 [1]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_11/_09_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_11/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_11/_22_  (.A(\u_multiplier/pp_11 [1]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_11/_09_ ),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_11/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_23_  (.A1(\u_multiplier/pp_11 [0]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_11/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_11/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_11/_24_  (.A(\u_multiplier/pp_11 [0]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_11/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_11/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_11/_25_  (.A(\u_multiplier/STAGE2/pp_10_exa_c2 ),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_11/_13_ ),
+    .ZN(\u_multiplier/STAGE2/pp_11_exa_s ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_26_  (.A1(\u_multiplier/STAGE2/Exact_42_pp_11/_08_ ),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_11/_10_ ),
+    .ZN(\u_multiplier/STAGE2/pp_11_exa_c2 ));
+ OAI21_X1 \u_multiplier/STAGE2/Exact_42_pp_11/_27_  (.A(\u_multiplier/STAGE2/Exact_42_pp_11/_12_ ),
+    .B1(\u_multiplier/STAGE2/Exact_42_pp_11/_13_ ),
+    .B2(\u_multiplier/STAGE2/Exact_42_pp_11/_14_ ),
+    .ZN(\u_multiplier/STAGE2/pp_11_exa_c1 ));
+ INV_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_18_  (.A(\u_multiplier/STAGE2/pp_11_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_12/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_19_  (.A1(\u_multiplier/pp_12 [2]),
+    .A2(\u_multiplier/pp_12 [3]),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_12/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_12/_20_  (.A(\u_multiplier/pp_12 [2]),
+    .B(\u_multiplier/pp_12 [3]),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_12/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_21_  (.A1(\u_multiplier/pp_12 [1]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_12/_09_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_12/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_12/_22_  (.A(\u_multiplier/pp_12 [1]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_12/_09_ ),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_12/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_23_  (.A1(\u_multiplier/pp_12 [0]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_12/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_12/_12_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_24_  (.A(\u_multiplier/pp_12 [0]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_12/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_12/_13_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_25_  (.A(\u_multiplier/STAGE2/pp_11_exa_c2 ),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_12/_13_ ),
+    .ZN(\u_multiplier/STAGE2/pp_12_exa_s ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_26_  (.A1(\u_multiplier/STAGE2/Exact_42_pp_12/_08_ ),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_12/_10_ ),
+    .ZN(\u_multiplier/STAGE2/pp_12_exa_c2 ));
+ OAI21_X1 \u_multiplier/STAGE2/Exact_42_pp_12/_27_  (.A(\u_multiplier/STAGE2/Exact_42_pp_12/_12_ ),
+    .B1(\u_multiplier/STAGE2/Exact_42_pp_12/_13_ ),
+    .B2(\u_multiplier/STAGE2/Exact_42_pp_12/_14_ ),
+    .ZN(\u_multiplier/STAGE2/pp_12_exa_c1 ));
+ INV_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_18_  (.A(net32),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_8/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_19_  (.A1(\u_multiplier/pp_8 [2]),
+    .A2(\u_multiplier/pp_8 [3]),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_8/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_8/_20_  (.A(\u_multiplier/pp_8 [2]),
+    .B(\u_multiplier/pp_8 [3]),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_8/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_21_  (.A1(\u_multiplier/pp_8 [1]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_8/_09_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_8/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_8/_22_  (.A(\u_multiplier/pp_8 [1]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_8/_09_ ),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_8/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_23_  (.A1(\u_multiplier/pp_8 [0]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_8/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_8/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_8/_24_  (.A(\u_multiplier/pp_8 [0]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_8/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_8/_13_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_25_  (.A(net33),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_8/_13_ ),
+    .ZN(\u_multiplier/STAGE2/pp_8_exa_s ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_26_  (.A1(\u_multiplier/STAGE2/Exact_42_pp_8/_08_ ),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_8/_10_ ),
+    .ZN(\u_multiplier/STAGE2/pp_8_exa_c2 ));
+ OAI21_X2 \u_multiplier/STAGE2/Exact_42_pp_8/_27_  (.A(\u_multiplier/STAGE2/Exact_42_pp_8/_12_ ),
+    .B1(\u_multiplier/STAGE2/Exact_42_pp_8/_13_ ),
+    .B2(\u_multiplier/STAGE2/Exact_42_pp_8/_14_ ),
+    .ZN(\u_multiplier/STAGE2/pp_8_exa_c1 ));
+ INV_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_18_  (.A(\u_multiplier/STAGE2/pp_8_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_9/_14_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_19_  (.A1(\u_multiplier/pp_9 [2]),
+    .A2(\u_multiplier/pp_9 [3]),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_9/_08_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_9/_20_  (.A(\u_multiplier/pp_9 [2]),
+    .B(\u_multiplier/pp_9 [3]),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_9/_09_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_21_  (.A1(\u_multiplier/pp_9 [1]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_9/_09_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_9/_10_ ));
+ XOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_9/_22_  (.A(\u_multiplier/pp_9 [1]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_9/_09_ ),
+    .Z(\u_multiplier/STAGE2/Exact_42_pp_9/_11_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_23_  (.A1(\u_multiplier/pp_9 [0]),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_9/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_9/_12_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_9/_24_  (.A(\u_multiplier/pp_9 [0]),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_9/_11_ ),
+    .ZN(\u_multiplier/STAGE2/Exact_42_pp_9/_13_ ));
+ XNOR2_X2 \u_multiplier/STAGE2/Exact_42_pp_9/_25_  (.A(\u_multiplier/STAGE2/pp_8_exa_c2 ),
+    .B(\u_multiplier/STAGE2/Exact_42_pp_9/_13_ ),
+    .ZN(\u_multiplier/STAGE2/pp_9_exa_s ));
+ NAND2_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_26_  (.A1(\u_multiplier/STAGE2/Exact_42_pp_9/_08_ ),
+    .A2(\u_multiplier/STAGE2/Exact_42_pp_9/_10_ ),
+    .ZN(\u_multiplier/STAGE2/pp_9_exa_c2 ));
+ OAI21_X1 \u_multiplier/STAGE2/Exact_42_pp_9/_27_  (.A(\u_multiplier/STAGE2/Exact_42_pp_9/_12_ ),
+    .B1(\u_multiplier/STAGE2/Exact_42_pp_9/_13_ ),
+    .B2(\u_multiplier/STAGE2/Exact_42_pp_9/_14_ ),
+    .ZN(\u_multiplier/STAGE2/pp_9_exa_c1 ));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla1/_40_  (.A1(\u_multiplier/STAGE2/pp_2_exa_c ),
+    .A2(\u_multiplier/STAGE2/pp_3_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_14_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla1/_41_  (.A1(\u_multiplier/pp_2 [2]),
+    .A2(\u_multiplier/STAGE2/pp_2_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_15_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla1/_42_  (.A1(\u_multiplier/pp_1 [1]),
+    .A2(\u_multiplier/pp_1 [0]),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_16_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla1/_43_  (.A1(net34),
+    .A2(\u_multiplier/pp_0 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_17_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_44_  (.A1(net35),
+    .A2(\u_multiplier/pp_0 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_18_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_45_  (.A(net36),
+    .B(\u_multiplier/pp_0 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_19_ ));
+ AOI21_X1 \u_multiplier/STAGE2/Final_add/cla1/_46_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_17_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla1/_18_ ),
+    .B2(net37),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_20_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_47_  (.A1(\u_multiplier/pp_1 [1]),
+    .A2(\u_multiplier/pp_1 [0]),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_21_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_48_  (.A(\u_multiplier/pp_1 [1]),
+    .B(\u_multiplier/pp_1 [0]),
+    .Z(\u_multiplier/STAGE2/Final_add/cla1/_22_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla1/_49_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_16_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla1/_20_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla1/_21_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_23_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_50_  (.A1(\u_multiplier/pp_2 [2]),
+    .A2(\u_multiplier/STAGE2/pp_2_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_24_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_51_  (.A(\u_multiplier/pp_2 [2]),
+    .B(\u_multiplier/STAGE2/pp_2_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_25_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla1/_52_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_15_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla1/_23_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla1/_24_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_26_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_53_  (.A1(\u_multiplier/STAGE2/pp_2_exa_c ),
+    .A2(\u_multiplier/STAGE2/pp_3_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla1/_27_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_54_  (.A(\u_multiplier/STAGE2/pp_2_exa_c ),
+    .B(\u_multiplier/STAGE2/pp_3_pro_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla1/_28_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla1/_55_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_14_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla1/_26_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla1/_27_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/c1 ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_56_  (.A(net38),
+    .B(\u_multiplier/STAGE2/Final_add/cla1/_19_ ),
+    .ZN(product[0]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_57_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_20_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla1/_22_ ),
+    .ZN(product[1]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_58_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_23_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla1/_25_ ),
+    .ZN(product[2]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla1/_59_  (.A(\u_multiplier/STAGE2/Final_add/cla1/_26_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla1/_28_ ),
+    .ZN(product[3]));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla2/_40_  (.A1(\u_multiplier/STAGE2/pp_6_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_7_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_14_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla2/_41_  (.A1(\u_multiplier/STAGE2/pp_5_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_6_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_15_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla2/_42_  (.A1(\u_multiplier/STAGE2/pp_4_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_5_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_16_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla2/_43_  (.A1(\u_multiplier/STAGE2/pp_3_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_4_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_17_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_44_  (.A1(\u_multiplier/STAGE2/pp_3_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_4_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_18_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_45_  (.A(\u_multiplier/STAGE2/pp_3_pro_c ),
+    .B(\u_multiplier/STAGE2/pp_4_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_19_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla2/_46_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_17_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla2/_18_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/c1 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_20_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_47_  (.A1(\u_multiplier/STAGE2/pp_4_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_5_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_21_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_48_  (.A(\u_multiplier/STAGE2/pp_4_pro_c ),
+    .B(\u_multiplier/STAGE2/pp_5_pro_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla2/_22_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla2/_49_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_16_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla2/_20_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla2/_21_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_23_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_50_  (.A1(\u_multiplier/STAGE2/pp_5_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_6_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_24_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_51_  (.A(\u_multiplier/STAGE2/pp_5_pro_c ),
+    .B(\u_multiplier/STAGE2/pp_6_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_25_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla2/_52_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_15_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla2/_23_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla2/_24_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_26_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_53_  (.A1(\u_multiplier/STAGE2/pp_6_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_7_pro_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla2/_27_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_54_  (.A(\u_multiplier/STAGE2/pp_6_pro_c ),
+    .B(\u_multiplier/STAGE2/pp_7_pro_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla2/_28_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla2/_55_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_14_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla2/_26_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla2/_27_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/c2 ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_56_  (.A(\u_multiplier/STAGE2/Final_add/c1 ),
+    .B(\u_multiplier/STAGE2/Final_add/cla2/_19_ ),
+    .ZN(product[4]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_57_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_20_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla2/_22_ ),
+    .ZN(product[5]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_58_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_23_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla2/_25_ ),
+    .ZN(product[6]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla2/_59_  (.A(\u_multiplier/STAGE2/Final_add/cla2/_26_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla2/_28_ ),
+    .ZN(product[7]));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla3/_40_  (.A1(\u_multiplier/STAGE2/pp_10_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_11_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_14_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla3/_41_  (.A1(\u_multiplier/STAGE2/pp_9_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_10_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_15_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla3/_42_  (.A1(\u_multiplier/STAGE2/pp_8_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_9_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_16_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla3/_43_  (.A1(\u_multiplier/STAGE2/pp_7_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_8_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_17_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_44_  (.A1(\u_multiplier/STAGE2/pp_7_pro_c ),
+    .A2(\u_multiplier/STAGE2/pp_8_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_18_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_45_  (.A(\u_multiplier/STAGE2/pp_7_pro_c ),
+    .B(\u_multiplier/STAGE2/pp_8_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_19_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla3/_46_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_17_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla3/_18_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/c2 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_20_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_47_  (.A1(\u_multiplier/STAGE2/pp_8_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_9_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_21_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_48_  (.A(\u_multiplier/STAGE2/pp_8_exa_c1 ),
+    .B(\u_multiplier/STAGE2/pp_9_exa_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla3/_22_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla3/_49_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_16_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla3/_20_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla3/_21_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_23_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_50_  (.A1(\u_multiplier/STAGE2/pp_9_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_10_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_24_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_51_  (.A(\u_multiplier/STAGE2/pp_9_exa_c1 ),
+    .B(\u_multiplier/STAGE2/pp_10_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_25_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla3/_52_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_15_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla3/_23_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla3/_24_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_26_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_53_  (.A1(\u_multiplier/STAGE2/pp_10_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_11_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla3/_27_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_54_  (.A(\u_multiplier/STAGE2/pp_10_exa_c1 ),
+    .B(\u_multiplier/STAGE2/pp_11_exa_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla3/_28_ ));
+ OAI21_X2 \u_multiplier/STAGE2/Final_add/cla3/_55_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_14_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla3/_26_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla3/_27_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/c3 ));
+ XNOR2_X2 \u_multiplier/STAGE2/Final_add/cla3/_56_  (.A(\u_multiplier/STAGE2/Final_add/c2 ),
+    .B(\u_multiplier/STAGE2/Final_add/cla3/_19_ ),
+    .ZN(product[8]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_57_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_20_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla3/_22_ ),
+    .ZN(product[9]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_58_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_23_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla3/_25_ ),
+    .ZN(product[10]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla3/_59_  (.A(\u_multiplier/STAGE2/Final_add/cla3/_26_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla3/_28_ ),
+    .ZN(product[11]));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla4/_40_  (.A1(net39),
+    .A2(net40),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_14_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla4/_41_  (.A1(\u_multiplier/STAGE2/pp_13_exa_c ),
+    .A2(\u_multiplier/pp_14 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_15_ ));
+ NAND2_X1 \u_multiplier/STAGE2/Final_add/cla4/_42_  (.A1(\u_multiplier/STAGE2/pp_12_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_13_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_16_ ));
+ AND2_X1 \u_multiplier/STAGE2/Final_add/cla4/_43_  (.A1(\u_multiplier/STAGE2/pp_11_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_12_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_17_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_44_  (.A1(\u_multiplier/STAGE2/pp_11_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_12_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_18_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_45_  (.A(\u_multiplier/STAGE2/pp_11_exa_c1 ),
+    .B(\u_multiplier/STAGE2/pp_12_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_19_ ));
+ AOI21_X2 \u_multiplier/STAGE2/Final_add/cla4/_46_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_17_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla4/_18_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/c3 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_20_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_47_  (.A1(\u_multiplier/STAGE2/pp_12_exa_c1 ),
+    .A2(\u_multiplier/STAGE2/pp_13_exa_s ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_21_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_48_  (.A(\u_multiplier/STAGE2/pp_12_exa_c1 ),
+    .B(\u_multiplier/STAGE2/pp_13_exa_s ),
+    .Z(\u_multiplier/STAGE2/Final_add/cla4/_22_ ));
+ OAI21_X1 \u_multiplier/STAGE2/Final_add/cla4/_49_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_16_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla4/_20_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla4/_21_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_23_ ));
+ OR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_50_  (.A1(\u_multiplier/STAGE2/pp_13_exa_c ),
+    .A2(\u_multiplier/pp_14 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_24_ ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_51_  (.A(\u_multiplier/STAGE2/pp_13_exa_c ),
+    .B(\u_multiplier/pp_14 ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_25_ ));
+ AOI21_X1 \u_multiplier/STAGE2/Final_add/cla4/_52_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_15_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla4/_23_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla4/_24_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_26_ ));
+ NOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_53_  (.A1(net41),
+    .A2(net42),
+    .ZN(\u_multiplier/STAGE2/Final_add/cla4/_27_ ));
+ XOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_54_  (.A(net43),
+    .B(net44),
+    .Z(\u_multiplier/STAGE2/Final_add/cla4/_28_ ));
+ OAI21_X1 \u_multiplier/STAGE2/Final_add/cla4/_55_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_14_ ),
+    .B1(\u_multiplier/STAGE2/Final_add/cla4/_26_ ),
+    .B2(\u_multiplier/STAGE2/Final_add/cla4/_27_ ),
+    .ZN(\u_multiplier/STAGE2/Final_add/Cout ));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_56_  (.A(\u_multiplier/STAGE2/Final_add/c3 ),
+    .B(\u_multiplier/STAGE2/Final_add/cla4/_19_ ),
+    .ZN(product[12]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_57_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_20_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla4/_22_ ),
+    .ZN(product[13]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_58_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_23_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla4/_25_ ),
+    .ZN(product[14]));
+ XNOR2_X1 \u_multiplier/STAGE2/Final_add/cla4/_59_  (.A(\u_multiplier/STAGE2/Final_add/cla4/_26_ ),
+    .B(\u_multiplier/STAGE2/Final_add/cla4/_28_ ),
+    .ZN(product[15]));
+ INV_X1 \u_multiplier/STAGE2/Full_adder_pp_13/_12_  (.A(\u_multiplier/STAGE2/pp_12_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Full_adder_pp_13/_05_ ));
+ NAND3_X2 \u_multiplier/STAGE2/Full_adder_pp_13/_13_  (.A1(\u_multiplier/pp_13 [0]),
+    .A2(\u_multiplier/pp_13 [1]),
+    .A3(\u_multiplier/STAGE2/pp_12_exa_c2 ),
+    .ZN(\u_multiplier/STAGE2/Full_adder_pp_13/_06_ ));
+ NOR2_X2 \u_multiplier/STAGE2/Full_adder_pp_13/_14_  (.A1(\u_multiplier/pp_13 [0]),
+    .A2(\u_multiplier/pp_13 [1]),
+    .ZN(\u_multiplier/STAGE2/Full_adder_pp_13/_07_ ));
+ AOI21_X1 \u_multiplier/STAGE2/Full_adder_pp_13/_15_  (.A(\u_multiplier/STAGE2/pp_12_exa_c2 ),
+    .B1(\u_multiplier/pp_13 [1]),
+    .B2(\u_multiplier/pp_13 [0]),
+    .ZN(\u_multiplier/STAGE2/Full_adder_pp_13/_08_ ));
+ NOR2_X2 \u_multiplier/STAGE2/Full_adder_pp_13/_16_  (.A1(\u_multiplier/STAGE2/Full_adder_pp_13/_07_ ),
+    .A2(\u_multiplier/STAGE2/Full_adder_pp_13/_08_ ),
+    .ZN(\u_multiplier/STAGE2/pp_13_exa_c ));
+ AOI22_X4 \u_multiplier/STAGE2/Full_adder_pp_13/_17_  (.A1(\u_multiplier/STAGE2/Full_adder_pp_13/_05_ ),
+    .A2(\u_multiplier/STAGE2/Full_adder_pp_13/_07_ ),
+    .B1(\u_multiplier/STAGE2/pp_13_exa_c ),
+    .B2(\u_multiplier/STAGE2/Full_adder_pp_13/_06_ ),
+    .ZN(\u_multiplier/STAGE2/pp_13_exa_s ));
+ AND2_X1 \u_multiplier/STAGE2/Half_adder_pp_2/_4_  (.A1(\u_multiplier/pp_2 [1]),
+    .A2(\u_multiplier/pp_2 [0]),
+    .ZN(\u_multiplier/STAGE2/pp_2_exa_c ));
+ XOR2_X2 \u_multiplier/STAGE2/Half_adder_pp_2/_5_  (.A(\u_multiplier/pp_2 [1]),
+    .B(\u_multiplier/pp_2 [0]),
+    .Z(\u_multiplier/STAGE2/pp_2_exa_s ));
+ TAPCELL_X1 PHY_EDGE_ROW_0_Right_0 ();
+ TAPCELL_X1 PHY_EDGE_ROW_1_Right_1 ();
+ TAPCELL_X1 PHY_EDGE_ROW_2_Right_2 ();
+ TAPCELL_X1 PHY_EDGE_ROW_3_Right_3 ();
+ TAPCELL_X1 PHY_EDGE_ROW_4_Right_4 ();
+ TAPCELL_X1 PHY_EDGE_ROW_79_Right_5 ();
+ TAPCELL_X1 PHY_EDGE_ROW_80_Right_6 ();
+ TAPCELL_X1 PHY_EDGE_ROW_81_Right_7 ();
+ TAPCELL_X1 PHY_EDGE_ROW_82_Right_8 ();
+ TAPCELL_X1 PHY_EDGE_ROW_83_Right_9 ();
+ TAPCELL_X1 PHY_EDGE_ROW_84_Right_10 ();
+ TAPCELL_X1 PHY_EDGE_ROW_85_Right_11 ();
+ TAPCELL_X1 PHY_EDGE_ROW_86_Right_12 ();
+ TAPCELL_X1 PHY_EDGE_ROW_87_Right_13 ();
+ TAPCELL_X1 PHY_EDGE_ROW_5_2_Right_14 ();
+ TAPCELL_X1 PHY_EDGE_ROW_6_2_Right_15 ();
+ TAPCELL_X1 PHY_EDGE_ROW_7_2_Right_16 ();
+ TAPCELL_X1 PHY_EDGE_ROW_8_2_Right_17 ();
+ TAPCELL_X1 PHY_EDGE_ROW_9_2_Right_18 ();
+ TAPCELL_X1 PHY_EDGE_ROW_10_2_Right_19 ();
+ TAPCELL_X1 PHY_EDGE_ROW_11_2_Right_20 ();
+ TAPCELL_X1 PHY_EDGE_ROW_12_2_Right_21 ();
+ TAPCELL_X1 PHY_EDGE_ROW_13_2_Right_22 ();
+ TAPCELL_X1 PHY_EDGE_ROW_14_2_Right_23 ();
+ TAPCELL_X1 PHY_EDGE_ROW_15_2_Right_24 ();
+ TAPCELL_X1 PHY_EDGE_ROW_16_2_Right_25 ();
+ TAPCELL_X1 PHY_EDGE_ROW_17_2_Right_26 ();
+ TAPCELL_X1 PHY_EDGE_ROW_18_2_Right_27 ();
+ TAPCELL_X1 PHY_EDGE_ROW_19_2_Right_28 ();
+ TAPCELL_X1 PHY_EDGE_ROW_20_2_Right_29 ();
+ TAPCELL_X1 PHY_EDGE_ROW_21_2_Right_30 ();
+ TAPCELL_X1 PHY_EDGE_ROW_22_2_Right_31 ();
+ TAPCELL_X1 PHY_EDGE_ROW_23_2_Right_32 ();
+ TAPCELL_X1 PHY_EDGE_ROW_24_2_Right_33 ();
+ TAPCELL_X1 PHY_EDGE_ROW_25_2_Right_34 ();
+ TAPCELL_X1 PHY_EDGE_ROW_26_2_Right_35 ();
+ TAPCELL_X1 PHY_EDGE_ROW_27_2_Right_36 ();
+ TAPCELL_X1 PHY_EDGE_ROW_28_2_Right_37 ();
+ TAPCELL_X1 PHY_EDGE_ROW_29_2_Right_38 ();
+ TAPCELL_X1 PHY_EDGE_ROW_30_2_Right_39 ();
+ TAPCELL_X1 PHY_EDGE_ROW_31_2_Right_40 ();
+ TAPCELL_X1 PHY_EDGE_ROW_32_2_Right_41 ();
+ TAPCELL_X1 PHY_EDGE_ROW_33_2_Right_42 ();
+ TAPCELL_X1 PHY_EDGE_ROW_34_2_Right_43 ();
+ TAPCELL_X1 PHY_EDGE_ROW_35_2_Right_44 ();
+ TAPCELL_X1 PHY_EDGE_ROW_36_2_Right_45 ();
+ TAPCELL_X1 PHY_EDGE_ROW_37_2_Right_46 ();
+ TAPCELL_X1 PHY_EDGE_ROW_38_2_Right_47 ();
+ TAPCELL_X1 PHY_EDGE_ROW_39_2_Right_48 ();
+ TAPCELL_X1 PHY_EDGE_ROW_40_2_Right_49 ();
+ TAPCELL_X1 PHY_EDGE_ROW_41_2_Right_50 ();
+ TAPCELL_X1 PHY_EDGE_ROW_42_2_Right_51 ();
+ TAPCELL_X1 PHY_EDGE_ROW_43_2_Right_52 ();
+ TAPCELL_X1 PHY_EDGE_ROW_44_2_Right_53 ();
+ TAPCELL_X1 PHY_EDGE_ROW_45_2_Right_54 ();
+ TAPCELL_X1 PHY_EDGE_ROW_46_2_Right_55 ();
+ TAPCELL_X1 PHY_EDGE_ROW_47_2_Right_56 ();
+ TAPCELL_X1 PHY_EDGE_ROW_48_2_Right_57 ();
+ TAPCELL_X1 PHY_EDGE_ROW_49_2_Right_58 ();
+ TAPCELL_X1 PHY_EDGE_ROW_50_2_Right_59 ();
+ TAPCELL_X1 PHY_EDGE_ROW_51_2_Right_60 ();
+ TAPCELL_X1 PHY_EDGE_ROW_52_2_Right_61 ();
+ TAPCELL_X1 PHY_EDGE_ROW_53_2_Right_62 ();
+ TAPCELL_X1 PHY_EDGE_ROW_54_2_Right_63 ();
+ TAPCELL_X1 PHY_EDGE_ROW_55_2_Right_64 ();
+ TAPCELL_X1 PHY_EDGE_ROW_56_2_Right_65 ();
+ TAPCELL_X1 PHY_EDGE_ROW_57_2_Right_66 ();
+ TAPCELL_X1 PHY_EDGE_ROW_58_2_Right_67 ();
+ TAPCELL_X1 PHY_EDGE_ROW_59_2_Right_68 ();
+ TAPCELL_X1 PHY_EDGE_ROW_60_2_Right_69 ();
+ TAPCELL_X1 PHY_EDGE_ROW_61_2_Right_70 ();
+ TAPCELL_X1 PHY_EDGE_ROW_62_2_Right_71 ();
+ TAPCELL_X1 PHY_EDGE_ROW_63_2_Right_72 ();
+ TAPCELL_X1 PHY_EDGE_ROW_64_2_Right_73 ();
+ TAPCELL_X1 PHY_EDGE_ROW_65_2_Right_74 ();
+ TAPCELL_X1 PHY_EDGE_ROW_66_2_Right_75 ();
+ TAPCELL_X1 PHY_EDGE_ROW_67_2_Right_76 ();
+ TAPCELL_X1 PHY_EDGE_ROW_68_2_Right_77 ();
+ TAPCELL_X1 PHY_EDGE_ROW_69_2_Right_78 ();
+ TAPCELL_X1 PHY_EDGE_ROW_70_2_Right_79 ();
+ TAPCELL_X1 PHY_EDGE_ROW_71_2_Right_80 ();
+ TAPCELL_X1 PHY_EDGE_ROW_72_2_Right_81 ();
+ TAPCELL_X1 PHY_EDGE_ROW_73_2_Right_82 ();
+ TAPCELL_X1 PHY_EDGE_ROW_74_2_Right_83 ();
+ TAPCELL_X1 PHY_EDGE_ROW_75_2_Right_84 ();
+ TAPCELL_X1 PHY_EDGE_ROW_76_2_Right_85 ();
+ TAPCELL_X1 PHY_EDGE_ROW_77_2_Right_86 ();
+ TAPCELL_X1 PHY_EDGE_ROW_78_2_Right_87 ();
+ TAPCELL_X1 PHY_EDGE_ROW_0_Left_88 ();
+ TAPCELL_X1 PHY_EDGE_ROW_1_Left_89 ();
+ TAPCELL_X1 PHY_EDGE_ROW_2_Left_90 ();
+ TAPCELL_X1 PHY_EDGE_ROW_3_Left_91 ();
+ TAPCELL_X1 PHY_EDGE_ROW_4_Left_92 ();
+ TAPCELL_X1 PHY_EDGE_ROW_6_1_Left_93 ();
+ TAPCELL_X1 PHY_EDGE_ROW_7_1_Left_94 ();
+ TAPCELL_X1 PHY_EDGE_ROW_8_1_Left_95 ();
+ TAPCELL_X1 PHY_EDGE_ROW_9_1_Left_96 ();
+ TAPCELL_X1 PHY_EDGE_ROW_10_1_Left_97 ();
+ TAPCELL_X1 PHY_EDGE_ROW_11_1_Left_98 ();
+ TAPCELL_X1 PHY_EDGE_ROW_12_1_Left_99 ();
+ TAPCELL_X1 PHY_EDGE_ROW_13_1_Left_100 ();
+ TAPCELL_X1 PHY_EDGE_ROW_14_1_Left_101 ();
+ TAPCELL_X1 PHY_EDGE_ROW_15_1_Left_102 ();
+ TAPCELL_X1 PHY_EDGE_ROW_16_1_Left_103 ();
+ TAPCELL_X1 PHY_EDGE_ROW_17_1_Left_104 ();
+ TAPCELL_X1 PHY_EDGE_ROW_18_1_Left_105 ();
+ TAPCELL_X1 PHY_EDGE_ROW_19_1_Left_106 ();
+ TAPCELL_X1 PHY_EDGE_ROW_20_1_Left_107 ();
+ TAPCELL_X1 PHY_EDGE_ROW_21_1_Left_108 ();
+ TAPCELL_X1 PHY_EDGE_ROW_22_1_Left_109 ();
+ TAPCELL_X1 PHY_EDGE_ROW_23_1_Left_110 ();
+ TAPCELL_X1 PHY_EDGE_ROW_24_1_Left_111 ();
+ TAPCELL_X1 PHY_EDGE_ROW_25_1_Left_112 ();
+ TAPCELL_X1 PHY_EDGE_ROW_26_1_Left_113 ();
+ TAPCELL_X1 PHY_EDGE_ROW_27_1_Left_114 ();
+ TAPCELL_X1 PHY_EDGE_ROW_28_1_Left_115 ();
+ TAPCELL_X1 PHY_EDGE_ROW_29_1_Left_116 ();
+ TAPCELL_X1 PHY_EDGE_ROW_30_1_Left_117 ();
+ TAPCELL_X1 PHY_EDGE_ROW_31_1_Left_118 ();
+ TAPCELL_X1 PHY_EDGE_ROW_32_1_Left_119 ();
+ TAPCELL_X1 PHY_EDGE_ROW_33_1_Left_120 ();
+ TAPCELL_X1 PHY_EDGE_ROW_34_1_Left_121 ();
+ TAPCELL_X1 PHY_EDGE_ROW_35_1_Left_122 ();
+ TAPCELL_X1 PHY_EDGE_ROW_36_1_Left_123 ();
+ TAPCELL_X1 PHY_EDGE_ROW_37_1_Left_124 ();
+ TAPCELL_X1 PHY_EDGE_ROW_38_1_Left_125 ();
+ TAPCELL_X1 PHY_EDGE_ROW_39_1_Left_126 ();
+ TAPCELL_X1 PHY_EDGE_ROW_40_1_Left_127 ();
+ TAPCELL_X1 PHY_EDGE_ROW_41_1_Left_128 ();
+ TAPCELL_X1 PHY_EDGE_ROW_42_1_Left_129 ();
+ TAPCELL_X1 PHY_EDGE_ROW_43_1_Left_130 ();
+ TAPCELL_X1 PHY_EDGE_ROW_44_1_Left_131 ();
+ TAPCELL_X1 PHY_EDGE_ROW_45_1_Left_132 ();
+ TAPCELL_X1 PHY_EDGE_ROW_46_1_Left_133 ();
+ TAPCELL_X1 PHY_EDGE_ROW_47_1_Left_134 ();
+ TAPCELL_X1 PHY_EDGE_ROW_48_1_Left_135 ();
+ TAPCELL_X1 PHY_EDGE_ROW_49_1_Left_136 ();
+ TAPCELL_X1 PHY_EDGE_ROW_50_1_Left_137 ();
+ TAPCELL_X1 PHY_EDGE_ROW_51_1_Left_138 ();
+ TAPCELL_X1 PHY_EDGE_ROW_52_1_Left_139 ();
+ TAPCELL_X1 PHY_EDGE_ROW_53_1_Left_140 ();
+ TAPCELL_X1 PHY_EDGE_ROW_54_1_Left_141 ();
+ TAPCELL_X1 PHY_EDGE_ROW_55_1_Left_142 ();
+ TAPCELL_X1 PHY_EDGE_ROW_56_1_Left_143 ();
+ TAPCELL_X1 PHY_EDGE_ROW_57_1_Left_144 ();
+ TAPCELL_X1 PHY_EDGE_ROW_58_1_Left_145 ();
+ TAPCELL_X1 PHY_EDGE_ROW_59_1_Left_146 ();
+ TAPCELL_X1 PHY_EDGE_ROW_60_1_Left_147 ();
+ TAPCELL_X1 PHY_EDGE_ROW_61_1_Left_148 ();
+ TAPCELL_X1 PHY_EDGE_ROW_62_1_Left_149 ();
+ TAPCELL_X1 PHY_EDGE_ROW_63_1_Left_150 ();
+ TAPCELL_X1 PHY_EDGE_ROW_64_1_Left_151 ();
+ TAPCELL_X1 PHY_EDGE_ROW_65_1_Left_152 ();
+ TAPCELL_X1 PHY_EDGE_ROW_66_1_Left_153 ();
+ TAPCELL_X1 PHY_EDGE_ROW_67_1_Left_154 ();
+ TAPCELL_X1 PHY_EDGE_ROW_68_1_Left_155 ();
+ TAPCELL_X1 PHY_EDGE_ROW_69_1_Left_156 ();
+ TAPCELL_X1 PHY_EDGE_ROW_70_1_Left_157 ();
+ TAPCELL_X1 PHY_EDGE_ROW_71_1_Left_158 ();
+ TAPCELL_X1 PHY_EDGE_ROW_72_1_Left_159 ();
+ TAPCELL_X1 PHY_EDGE_ROW_73_1_Left_160 ();
+ TAPCELL_X1 PHY_EDGE_ROW_74_1_Left_161 ();
+ TAPCELL_X1 PHY_EDGE_ROW_75_1_Left_162 ();
+ TAPCELL_X1 PHY_EDGE_ROW_76_1_Left_163 ();
+ TAPCELL_X1 PHY_EDGE_ROW_77_1_Left_164 ();
+ TAPCELL_X1 PHY_EDGE_ROW_78_1_Left_165 ();
+ TAPCELL_X1 PHY_EDGE_ROW_79_Left_166 ();
+ TAPCELL_X1 PHY_EDGE_ROW_80_Left_167 ();
+ TAPCELL_X1 PHY_EDGE_ROW_81_Left_168 ();
+ TAPCELL_X1 PHY_EDGE_ROW_82_Left_169 ();
+ TAPCELL_X1 PHY_EDGE_ROW_83_Left_170 ();
+ TAPCELL_X1 PHY_EDGE_ROW_84_Left_171 ();
+ TAPCELL_X1 PHY_EDGE_ROW_85_Left_172 ();
+ TAPCELL_X1 PHY_EDGE_ROW_86_Left_173 ();
+ TAPCELL_X1 PHY_EDGE_ROW_87_Left_174 ();
+ TAPCELL_X1 PHY_EDGE_ROW_5_1_Left_175 ();
+ TAPCELL_X1 PHY_EDGE_ROW_5_2_Left_176 ();
+ TAPCELL_X1 PHY_EDGE_ROW_6_2_Left_177 ();
+ TAPCELL_X1 PHY_EDGE_ROW_7_2_Left_178 ();
+ TAPCELL_X1 PHY_EDGE_ROW_8_2_Left_179 ();
+ TAPCELL_X1 PHY_EDGE_ROW_9_2_Left_180 ();
+ TAPCELL_X1 PHY_EDGE_ROW_10_2_Left_181 ();
+ TAPCELL_X1 PHY_EDGE_ROW_11_2_Left_182 ();
+ TAPCELL_X1 PHY_EDGE_ROW_12_2_Left_183 ();
+ TAPCELL_X1 PHY_EDGE_ROW_13_2_Left_184 ();
+ TAPCELL_X1 PHY_EDGE_ROW_14_2_Left_185 ();
+ TAPCELL_X1 PHY_EDGE_ROW_15_2_Left_186 ();
+ TAPCELL_X1 PHY_EDGE_ROW_16_2_Left_187 ();
+ TAPCELL_X1 PHY_EDGE_ROW_17_2_Left_188 ();
+ TAPCELL_X1 PHY_EDGE_ROW_18_2_Left_189 ();
+ TAPCELL_X1 PHY_EDGE_ROW_19_2_Left_190 ();
+ TAPCELL_X1 PHY_EDGE_ROW_20_2_Left_191 ();
+ TAPCELL_X1 PHY_EDGE_ROW_21_2_Left_192 ();
+ TAPCELL_X1 PHY_EDGE_ROW_22_2_Left_193 ();
+ TAPCELL_X1 PHY_EDGE_ROW_23_2_Left_194 ();
+ TAPCELL_X1 PHY_EDGE_ROW_24_2_Left_195 ();
+ TAPCELL_X1 PHY_EDGE_ROW_25_2_Left_196 ();
+ TAPCELL_X1 PHY_EDGE_ROW_26_2_Left_197 ();
+ TAPCELL_X1 PHY_EDGE_ROW_27_2_Left_198 ();
+ TAPCELL_X1 PHY_EDGE_ROW_28_2_Left_199 ();
+ TAPCELL_X1 PHY_EDGE_ROW_29_2_Left_200 ();
+ TAPCELL_X1 PHY_EDGE_ROW_30_2_Left_201 ();
+ TAPCELL_X1 PHY_EDGE_ROW_31_2_Left_202 ();
+ TAPCELL_X1 PHY_EDGE_ROW_32_2_Left_203 ();
+ TAPCELL_X1 PHY_EDGE_ROW_33_2_Left_204 ();
+ TAPCELL_X1 PHY_EDGE_ROW_34_2_Left_205 ();
+ TAPCELL_X1 PHY_EDGE_ROW_35_2_Left_206 ();
+ TAPCELL_X1 PHY_EDGE_ROW_36_2_Left_207 ();
+ TAPCELL_X1 PHY_EDGE_ROW_37_2_Left_208 ();
+ TAPCELL_X1 PHY_EDGE_ROW_38_2_Left_209 ();
+ TAPCELL_X1 PHY_EDGE_ROW_39_2_Left_210 ();
+ TAPCELL_X1 PHY_EDGE_ROW_40_2_Left_211 ();
+ TAPCELL_X1 PHY_EDGE_ROW_41_2_Left_212 ();
+ TAPCELL_X1 PHY_EDGE_ROW_42_2_Left_213 ();
+ TAPCELL_X1 PHY_EDGE_ROW_43_2_Left_214 ();
+ TAPCELL_X1 PHY_EDGE_ROW_44_2_Left_215 ();
+ TAPCELL_X1 PHY_EDGE_ROW_45_2_Left_216 ();
+ TAPCELL_X1 PHY_EDGE_ROW_46_2_Left_217 ();
+ TAPCELL_X1 PHY_EDGE_ROW_47_2_Left_218 ();
+ TAPCELL_X1 PHY_EDGE_ROW_48_2_Left_219 ();
+ TAPCELL_X1 PHY_EDGE_ROW_49_2_Left_220 ();
+ TAPCELL_X1 PHY_EDGE_ROW_50_2_Left_221 ();
+ TAPCELL_X1 PHY_EDGE_ROW_51_2_Left_222 ();
+ TAPCELL_X1 PHY_EDGE_ROW_52_2_Left_223 ();
+ TAPCELL_X1 PHY_EDGE_ROW_53_2_Left_224 ();
+ TAPCELL_X1 PHY_EDGE_ROW_54_2_Left_225 ();
+ TAPCELL_X1 PHY_EDGE_ROW_55_2_Left_226 ();
+ TAPCELL_X1 PHY_EDGE_ROW_56_2_Left_227 ();
+ TAPCELL_X1 PHY_EDGE_ROW_57_2_Left_228 ();
+ TAPCELL_X1 PHY_EDGE_ROW_58_2_Left_229 ();
+ TAPCELL_X1 PHY_EDGE_ROW_59_2_Left_230 ();
+ TAPCELL_X1 PHY_EDGE_ROW_60_2_Left_231 ();
+ TAPCELL_X1 PHY_EDGE_ROW_61_2_Left_232 ();
+ TAPCELL_X1 PHY_EDGE_ROW_62_2_Left_233 ();
+ TAPCELL_X1 PHY_EDGE_ROW_63_2_Left_234 ();
+ TAPCELL_X1 PHY_EDGE_ROW_64_2_Left_235 ();
+ TAPCELL_X1 PHY_EDGE_ROW_65_2_Left_236 ();
+ TAPCELL_X1 PHY_EDGE_ROW_66_2_Left_237 ();
+ TAPCELL_X1 PHY_EDGE_ROW_67_2_Left_238 ();
+ TAPCELL_X1 PHY_EDGE_ROW_68_2_Left_239 ();
+ TAPCELL_X1 PHY_EDGE_ROW_69_2_Left_240 ();
+ TAPCELL_X1 PHY_EDGE_ROW_70_2_Left_241 ();
+ TAPCELL_X1 PHY_EDGE_ROW_71_2_Left_242 ();
+ TAPCELL_X1 PHY_EDGE_ROW_72_2_Left_243 ();
+ TAPCELL_X1 PHY_EDGE_ROW_73_2_Left_244 ();
+ TAPCELL_X1 PHY_EDGE_ROW_74_2_Left_245 ();
+ TAPCELL_X1 PHY_EDGE_ROW_75_2_Left_246 ();
+ TAPCELL_X1 PHY_EDGE_ROW_76_2_Left_247 ();
+ TAPCELL_X1 PHY_EDGE_ROW_77_2_Left_248 ();
+ TAPCELL_X1 PHY_EDGE_ROW_78_2_Left_249 ();
+ TAPCELL_X1 PHY_EDGE_ROW_6_1_Right_250 ();
+ TAPCELL_X1 PHY_EDGE_ROW_7_1_Right_251 ();
+ TAPCELL_X1 PHY_EDGE_ROW_8_1_Right_252 ();
+ TAPCELL_X1 PHY_EDGE_ROW_9_1_Right_253 ();
+ TAPCELL_X1 PHY_EDGE_ROW_10_1_Right_254 ();
+ TAPCELL_X1 PHY_EDGE_ROW_11_1_Right_255 ();
+ TAPCELL_X1 PHY_EDGE_ROW_12_1_Right_256 ();
+ TAPCELL_X1 PHY_EDGE_ROW_13_1_Right_257 ();
+ TAPCELL_X1 PHY_EDGE_ROW_14_1_Right_258 ();
+ TAPCELL_X1 PHY_EDGE_ROW_15_1_Right_259 ();
+ TAPCELL_X1 PHY_EDGE_ROW_16_1_Right_260 ();
+ TAPCELL_X1 PHY_EDGE_ROW_17_1_Right_261 ();
+ TAPCELL_X1 PHY_EDGE_ROW_18_1_Right_262 ();
+ TAPCELL_X1 PHY_EDGE_ROW_19_1_Right_263 ();
+ TAPCELL_X1 PHY_EDGE_ROW_20_1_Right_264 ();
+ TAPCELL_X1 PHY_EDGE_ROW_21_1_Right_265 ();
+ TAPCELL_X1 PHY_EDGE_ROW_22_1_Right_266 ();
+ TAPCELL_X1 PHY_EDGE_ROW_23_1_Right_267 ();
+ TAPCELL_X1 PHY_EDGE_ROW_24_1_Right_268 ();
+ TAPCELL_X1 PHY_EDGE_ROW_25_1_Right_269 ();
+ TAPCELL_X1 PHY_EDGE_ROW_26_1_Right_270 ();
+ TAPCELL_X1 PHY_EDGE_ROW_27_1_Right_271 ();
+ TAPCELL_X1 PHY_EDGE_ROW_28_1_Right_272 ();
+ TAPCELL_X1 PHY_EDGE_ROW_29_1_Right_273 ();
+ TAPCELL_X1 PHY_EDGE_ROW_30_1_Right_274 ();
+ TAPCELL_X1 PHY_EDGE_ROW_31_1_Right_275 ();
+ TAPCELL_X1 PHY_EDGE_ROW_32_1_Right_276 ();
+ TAPCELL_X1 PHY_EDGE_ROW_33_1_Right_277 ();
+ TAPCELL_X1 PHY_EDGE_ROW_34_1_Right_278 ();
+ TAPCELL_X1 PHY_EDGE_ROW_35_1_Right_279 ();
+ TAPCELL_X1 PHY_EDGE_ROW_36_1_Right_280 ();
+ TAPCELL_X1 PHY_EDGE_ROW_37_1_Right_281 ();
+ TAPCELL_X1 PHY_EDGE_ROW_38_1_Right_282 ();
+ TAPCELL_X1 PHY_EDGE_ROW_39_1_Right_283 ();
+ TAPCELL_X1 PHY_EDGE_ROW_40_1_Right_284 ();
+ TAPCELL_X1 PHY_EDGE_ROW_41_1_Right_285 ();
+ TAPCELL_X1 PHY_EDGE_ROW_42_1_Right_286 ();
+ TAPCELL_X1 PHY_EDGE_ROW_43_1_Right_287 ();
+ TAPCELL_X1 PHY_EDGE_ROW_44_1_Right_288 ();
+ TAPCELL_X1 PHY_EDGE_ROW_45_1_Right_289 ();
+ TAPCELL_X1 PHY_EDGE_ROW_46_1_Right_290 ();
+ TAPCELL_X1 PHY_EDGE_ROW_47_1_Right_291 ();
+ TAPCELL_X1 PHY_EDGE_ROW_48_1_Right_292 ();
+ TAPCELL_X1 PHY_EDGE_ROW_49_1_Right_293 ();
+ TAPCELL_X1 PHY_EDGE_ROW_50_1_Right_294 ();
+ TAPCELL_X1 PHY_EDGE_ROW_51_1_Right_295 ();
+ TAPCELL_X1 PHY_EDGE_ROW_52_1_Right_296 ();
+ TAPCELL_X1 PHY_EDGE_ROW_53_1_Right_297 ();
+ TAPCELL_X1 PHY_EDGE_ROW_54_1_Right_298 ();
+ TAPCELL_X1 PHY_EDGE_ROW_55_1_Right_299 ();
+ TAPCELL_X1 PHY_EDGE_ROW_56_1_Right_300 ();
+ TAPCELL_X1 PHY_EDGE_ROW_57_1_Right_301 ();
+ TAPCELL_X1 PHY_EDGE_ROW_58_1_Right_302 ();
+ TAPCELL_X1 PHY_EDGE_ROW_59_1_Right_303 ();
+ TAPCELL_X1 PHY_EDGE_ROW_60_1_Right_304 ();
+ TAPCELL_X1 PHY_EDGE_ROW_61_1_Right_305 ();
+ TAPCELL_X1 PHY_EDGE_ROW_62_1_Right_306 ();
+ TAPCELL_X1 PHY_EDGE_ROW_63_1_Right_307 ();
+ TAPCELL_X1 PHY_EDGE_ROW_64_1_Right_308 ();
+ TAPCELL_X1 PHY_EDGE_ROW_65_1_Right_309 ();
+ TAPCELL_X1 PHY_EDGE_ROW_66_1_Right_310 ();
+ TAPCELL_X1 PHY_EDGE_ROW_67_1_Right_311 ();
+ TAPCELL_X1 PHY_EDGE_ROW_68_1_Right_312 ();
+ TAPCELL_X1 PHY_EDGE_ROW_69_1_Right_313 ();
+ TAPCELL_X1 PHY_EDGE_ROW_70_1_Right_314 ();
+ TAPCELL_X1 PHY_EDGE_ROW_71_1_Right_315 ();
+ TAPCELL_X1 PHY_EDGE_ROW_72_1_Right_316 ();
+ TAPCELL_X1 PHY_EDGE_ROW_73_1_Right_317 ();
+ TAPCELL_X1 PHY_EDGE_ROW_74_1_Right_318 ();
+ TAPCELL_X1 PHY_EDGE_ROW_75_1_Right_319 ();
+ TAPCELL_X1 PHY_EDGE_ROW_76_1_Right_320 ();
+ TAPCELL_X1 PHY_EDGE_ROW_77_1_Right_321 ();
+ TAPCELL_X1 PHY_EDGE_ROW_78_1_Right_322 ();
+ TAPCELL_X1 PHY_EDGE_ROW_5_1_Right_323 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_0_324 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_2_325 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_4_326 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_79_327 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_80_328 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_82_329 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_84_330 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_86_331 ();
+ TAPCELL_X1 TAP_TAPCELL_ROW_87_332 ();
+ LOGIC0_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_18__32  (.Z(net32));
+ CLKBUF_X1 hold45 (.A(net95),
+    .Z(net45));
+ BUF_X2 input1 (.A(data_in[0]),
+    .Z(net1));
+ BUF_X1 input2 (.A(data_in[1]),
+    .Z(net2));
+ BUF_X1 input3 (.A(data_in[2]),
+    .Z(net3));
+ BUF_X1 input4 (.A(data_in[3]),
+    .Z(net4));
+ BUF_X1 input5 (.A(data_in[4]),
+    .Z(net5));
+ BUF_X1 input6 (.A(data_in[5]),
+    .Z(net6));
+ BUF_X2 input7 (.A(data_in[6]),
+    .Z(net7));
+ BUF_X2 input8 (.A(data_in[7]),
+    .Z(net8));
+ BUF_X2 input9 (.A(init_enable),
+    .Z(net9));
+ CLKBUF_X2 input10 (.A(pe_ce),
+    .Z(net10));
+ BUF_X8 input11 (.A(rst_n),
+    .Z(net11));
+ BUF_X1 output12 (.A(net12),
+    .Z(curr_state[1]));
+ BUF_X1 output13 (.A(net13),
+    .Z(data_out[0]));
+ BUF_X1 output14 (.A(net14),
+    .Z(data_out[10]));
+ BUF_X1 output15 (.A(net15),
+    .Z(data_out[11]));
+ BUF_X1 output16 (.A(net16),
+    .Z(data_out[12]));
+ BUF_X1 output17 (.A(net17),
+    .Z(data_out[13]));
+ BUF_X1 output18 (.A(net18),
+    .Z(data_out[14]));
+ BUF_X1 output19 (.A(net19),
+    .Z(data_out[15]));
+ BUF_X1 output20 (.A(net20),
+    .Z(data_out[1]));
+ BUF_X1 output21 (.A(net21),
+    .Z(data_out[2]));
+ BUF_X1 output22 (.A(net22),
+    .Z(data_out[3]));
+ BUF_X1 output23 (.A(net23),
+    .Z(data_out[4]));
+ BUF_X1 output24 (.A(net24),
+    .Z(data_out[5]));
+ BUF_X1 output25 (.A(net25),
+    .Z(data_out[6]));
+ BUF_X1 output26 (.A(net26),
+    .Z(data_out[7]));
+ BUF_X1 output27 (.A(net27),
+    .Z(data_out[8]));
+ BUF_X1 output28 (.A(net28),
+    .Z(data_out[9]));
+ BUF_X1 output29 (.A(net29),
+    .Z(valid_reg_out));
+ LOGIC0_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_18__30  (.Z(net30));
+ LOGIC0_X1 \u_multiplier/STAGE1/Exact_42_pp_8/_25__31  (.Z(net31));
+ LOGIC0_X1 \u_multiplier/STAGE2/Exact_42_pp_8/_25__33  (.Z(net33));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla1/_43__34  (.Z(net34));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla1/_44__35  (.Z(net35));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla1/_45__36  (.Z(net36));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla1/_46__37  (.Z(net37));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla1/_56__38  (.Z(net38));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_40__39  (.Z(net39));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_40__40  (.Z(net40));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_53__41  (.Z(net41));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_53__42  (.Z(net42));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_54__43  (.Z(net43));
+ LOGIC0_X1 \u_multiplier/STAGE2/Final_add/cla4/_54__44  (.Z(net44));
+ CLKBUF_X1 hold46 (.A(_007_),
+    .Z(net46));
+ CLKBUF_X1 hold47 (.A(net99),
+    .Z(net47));
+ CLKBUF_X1 hold48 (.A(_047_),
+    .Z(net48));
+ CLKBUF_X1 hold49 (.A(net77),
+    .Z(net49));
+ CLKBUF_X1 hold50 (.A(net71),
+    .Z(net50));
+ CLKBUF_X1 hold51 (.A(net83),
+    .Z(net51));
+ CLKBUF_X1 hold52 (.A(net80),
+    .Z(net52));
+ CLKBUF_X1 hold53 (.A(net91),
+    .Z(net53));
+ CLKBUF_X1 hold54 (.A(net89),
+    .Z(net54));
+ CLKBUF_X1 hold55 (.A(net86),
+    .Z(net55));
+ CLKBUF_X1 hold56 (.A(net96),
+    .Z(net56));
+ CLKBUF_X1 hold57 (.A(net94),
+    .Z(net57));
+ CLKBUF_X1 hold58 (.A(net97),
+    .Z(net58));
+ CLKBUF_X1 hold59 (.A(net104),
+    .Z(net59));
+ CLKBUF_X1 hold60 (.A(net67),
+    .Z(net60));
+ CLKBUF_X1 hold61 (.A(net100),
+    .Z(net61));
+ CLKBUF_X1 hold62 (.A(net103),
+    .Z(net62));
+ CLKBUF_X1 hold63 (.A(net101),
+    .Z(net63));
+ CLKBUF_X1 hold64 (.A(net102),
+    .Z(net64));
+ CLKBUF_X1 hold65 (.A(net106),
+    .Z(net65));
+ CLKBUF_X1 hold66 (.A(net105),
+    .Z(net66));
+ CLKBUF_X3 clkbuf_0_clk (.A(clk),
+    .Z(clknet_0_clk));
+ CLKBUF_X3 clkbuf_2_0__f_clk (.A(clknet_0_clk),
+    .Z(clknet_2_0__leaf_clk));
+ CLKBUF_X3 clkbuf_2_1__f_clk (.A(clknet_0_clk),
+    .Z(clknet_2_1__leaf_clk));
+ CLKBUF_X3 clkbuf_2_2__f_clk (.A(clknet_0_clk),
+    .Z(clknet_2_2__leaf_clk));
+ CLKBUF_X3 clkbuf_2_3__f_clk (.A(clknet_0_clk),
+    .Z(clknet_2_3__leaf_clk));
+ INV_X4 clkload0 (.A(clknet_2_0__leaf_clk));
+ CLKBUF_X1 clkload1 (.A(clknet_2_1__leaf_clk));
+ CLKBUF_X1 clkload2 (.A(clknet_2_3__leaf_clk));
+ CLKBUF_X1 hold1 (.A(_258_),
+    .Z(net67));
+ CLKBUF_X1 hold2 (.A(_102_),
+    .Z(net68));
+ CLKBUF_X1 hold3 (.A(_006_),
+    .Z(net69));
+ CLKBUF_X1 hold4 (.A(net110),
+    .Z(net70));
+ CLKBUF_X1 hold5 (.A(_261_),
+    .Z(net71));
+ CLKBUF_X1 hold6 (.A(_111_),
+    .Z(net72));
+ CLKBUF_X1 hold7 (.A(_009_),
+    .Z(net73));
+ CLKBUF_X1 hold8 (.A(curr_state[0]),
+    .Z(net74));
+ CLKBUF_X1 hold9 (.A(_113_),
+    .Z(net75));
+ CLKBUF_X1 hold10 (.A(_049_),
+    .Z(net76));
+ CLKBUF_X1 hold11 (.A(_260_),
+    .Z(net77));
+ CLKBUF_X1 hold12 (.A(net49),
+    .Z(net78));
+ CLKBUF_X1 hold13 (.A(_008_),
+    .Z(net79));
+ CLKBUF_X1 hold14 (.A(_263_),
+    .Z(net80));
+ CLKBUF_X1 hold15 (.A(net52),
+    .Z(net81));
+ CLKBUF_X1 hold16 (.A(_035_),
+    .Z(net82));
+ CLKBUF_X1 hold17 (.A(_262_),
+    .Z(net83));
+ CLKBUF_X1 hold18 (.A(net51),
+    .Z(net84));
+ CLKBUF_X1 hold19 (.A(_034_),
+    .Z(net85));
+ CLKBUF_X1 hold20 (.A(_265_),
+    .Z(net86));
+ CLKBUF_X1 hold21 (.A(net55),
+    .Z(net87));
+ CLKBUF_X1 hold22 (.A(_037_),
+    .Z(net88));
+ CLKBUF_X1 hold23 (.A(addr_ptr[1]),
+    .Z(net89));
+ CLKBUF_X1 hold24 (.A(net54),
+    .Z(net90));
+ CLKBUF_X1 hold25 (.A(addr_ptr[3]),
+    .Z(net91));
+ CLKBUF_X1 hold26 (.A(net53),
+    .Z(net92));
+ CLKBUF_X1 hold27 (.A(curr_state[2]),
+    .Z(net93));
+ CLKBUF_X1 hold28 (.A(addr_ptr[0]),
+    .Z(net94));
+ CLKBUF_X1 hold29 (.A(_259_),
+    .Z(net95));
+ CLKBUF_X1 hold30 (.A(addr_ptr[2]),
+    .Z(net96));
+ CLKBUF_X1 hold31 (.A(_264_),
+    .Z(net97));
+ CLKBUF_X1 hold32 (.A(_036_),
+    .Z(net98));
+ CLKBUF_X1 hold33 (.A(_222_),
+    .Z(net99));
+ CLKBUF_X1 hold34 (.A(data_in_reg[5]),
+    .Z(net100));
+ CLKBUF_X1 hold35 (.A(data_in_reg[0]),
+    .Z(net101));
+ CLKBUF_X1 hold36 (.A(data_in_reg[1]),
+    .Z(net102));
+ CLKBUF_X1 hold37 (.A(data_in_reg[7]),
+    .Z(net103));
+ CLKBUF_X1 hold38 (.A(data_in_reg[6]),
+    .Z(net104));
+ CLKBUF_X1 hold39 (.A(data_in_reg[2]),
+    .Z(net105));
+ CLKBUF_X1 hold40 (.A(data_in_reg[4]),
+    .Z(net106));
+ CLKBUF_X1 hold41 (.A(init_count[0]),
+    .Z(net107));
+ CLKBUF_X1 hold42 (.A(_101_),
+    .Z(net108));
+ CLKBUF_X1 hold43 (.A(net12),
+    .Z(net109));
+ CLKBUF_X1 hold44 (.A(data_in_reg[3]),
+    .Z(net110));
+ assign init_done = curr_state[1];
+ assign valid_out = valid_reg_out;
+endmodule
