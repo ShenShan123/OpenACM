@@ -79,9 +79,7 @@ OpenACMv2 introduces **Accuracy-Constrained Co-Optimization (ACCO)** to jointly 
 ---
 
 ## 📁 Repository Structure
-
-This repository keeps the existing directory organization and adds four subdirectories under `src/` for OpenACMv2:
-
+```
 OpenACM/
 ├── docs/ Documentation, notes, figures
 ├── examples/ Example flows 
@@ -100,7 +98,7 @@ OpenACM/
 ├── templates/
 ├── LICENSE
 └── README.md
-
+```
 ---
 
 ## ⚙️ Installation
