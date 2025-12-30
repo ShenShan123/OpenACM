@@ -259,8 +259,8 @@ openacm/optimization_algorithm/ Supported optimizers (MOEA/D, NSGA-II, SMAC, MOB
 
 ![flow.png](./docs/flow.png)
 
-After the two-level ACCO optimization completes, the selected **multiplier and SRAM designs**
-together with their generated **RTL and Liberty (.lib) files** are automatically exported to the
+After the two-level ACCO optimization completes, the selected multiplier and SRAM designs
+together with their generated RTL and Liberty (.lib) files are automatically exported to the
 corresponding directories under `DCIM/`. These optimized components are then used as inputs to
 the OpenROAD-based backend flow for final ASIC implementation.
 ---
