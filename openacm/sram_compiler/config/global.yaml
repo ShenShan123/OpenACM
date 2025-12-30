@@ -1,0 +1,69 @@
+# ============================================================================
+# SRAM 6T Circuit Optimization Configuration File
+# ============================================================================
+
+# Simulation parameters
+vdd: 1.0                          # Supply voltage (V)
+temperature: 27                   # Temperature (Celsius)
+num_rows: 32                     # Number of SRAM rows
+num_cols: 8                      # Number of SRAM columns
+# num_rows: 4                       # Number of SRAM rows
+# num_cols: 4                       # Number of SRAM columns
+monte_carlo_runs: 1               # Monte Carlo simulation runs
+timeout: None                      # Simulation timeout (seconds)
+choose_columnmux: False             # Enable column mux
+pdk_path_TT: "tran_models/models_TT.spice" # PDK path
+pdk_path_FF: "tran_models/models_FF.spice"
+pdk_path_SS: "tran_models/models_SS.spice"
+pdk_path_FS: "tran_models/models_FS.spice"
+pdk_path_SF: "tran_models/models_SF.spice"
+
+# Evaluator configuration
+evaluator:
+  class_name: "SRAMEvaluator"    # Evaluator class name
+  module_path: "evaluators.sram_evaluator"  # Module path
+
+# Simulator configuration
+simulator:
+  class_name: "Sram6TCoreMcTestbench"  # Testbench class name
+  # Testbench module path
+  module_path: "testbenches.sram_6t_core_MC_testbench"
+
+# Performance Metrics Definition
+performance_metrics:
+  snm:
+    type: "continuous list"      # Parameter type: continuous list
+    names: ['hold_snm', 'read_snm', 'write_snm'] # Static Noise Margins
+    upper: [1.0, 2.0, 3.0]       # Parameter upper bounds
+    lower: [-1.0, -2.0, -3.0]    # Parameter lower bounds
+    aggregation: 'min'           # Aggregation type: average, max, min
+    description: "Static noise margins"
+  power:
+    type: "continuous list"      # Parameter type: continuous list
+    names: ['read_power', 'write_power'] # Read Write power
+    upper: [1.0, 2.0]            # Parameter upper bounds
+    lower: [0.0, 0.0]          # Parameter lower bounds
+    aggregation: 'max'           # Aggregation type: average, max, min
+    description: "Operation power consumption"
+  delay:
+    type: "continuous list"      # Parameter type: continuous list
+    names: ['read_delay', 'write_delay'] # Read Write delay
+    # These are constraints
+    upper: [2.0e-10, 1.0e-10]        # Parameter upper bounds
+    lower: [0.0, 0.0]            # Parameter lower bounds
+    # penalty: [1.0e6, 1.0e6]
+    description: "Read and write operation delay"
+  area:
+    type: "continuous scalar"    # Parameter type: continuous scalar
+    names: "area"
+    upper: 1.0
+    lower: 0.0
+    formula: "estimate_bitcell_area(pd_width, pu_width, pg_width, length)"  # Calculation formula
+    description: "SRAM cell area"
+
+# Composite Objective Function Configuration
+objectives:
+  type: "merit_function"       # Composite function type: merit function
+  formula: "log10(snm / (power * sqrt(area)))"  # Merit function formula
+  constraints: 'delay'
+  description: "SRAM Merit function combining SNM, power and area"

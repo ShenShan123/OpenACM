@@ -1,0 +1,63 @@
+# ===============================
+# Core Python & Utilities
+# ===============================
+numpy==2.1.2
+scipy==1.13.1
+pandas==2.3.3
+matplotlib==3.9.4
+seaborn==0.13.2
+tqdm==4.67.1
+psutil==7.1.0
+pyyaml==6.0.2
+requests==2.32.3
+rich==13.9.4
+
+# ===============================
+# PyTorch / CUDA (cu128)
+# ===============================
+torch==2.8.0+cu128
+torchvision==0.23.0+cu128
+triton==3.4.0
+
+# ===============================
+# GNN / Graph Learning
+# ===============================
+torch-geometric==2.6.1
+torch_scatter==2.1.2+pt28cu128
+networkx==3.3
+
+# ===============================
+# Optimization / BO / SMAC / RL
+# ===============================
+botorch==0.10.0
+gpytorch==1.11
+smac==2.3.1
+ConfigSpace==1.2.1
+pyrfr==0.9.0
+emcee==3.1.6
+scikit-learn==1.6.1
+joblib==1.5.1
+gymnasium==1.1.1
+
+# ===============================
+# Distributed / Parallel
+# ===============================
+dask==2024.8.0
+distributed==2024.8.0
+cloudpickle==3.1.1
+
+# ===============================
+# SPICE / EDA / SRAM
+# ===============================
+PySpice==1.5
+openram==1.2.48
+schemdraw==0.19
+skidl==2.0.1
+graphviz==0.21
+
+# ===============================
+# Parsing / Visualization / Misc
+# ===============================
+regex==2024.11.6
+sympy==1.13.3
+svgwrite==1.4.3

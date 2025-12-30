@@ -1,0 +1,128 @@
+# ============================================================================
+# SRAM 6T Circuit Optimization Configuration File
+# ============================================================================
+
+# Simulation parameters
+sim_params:
+  vdd: 1.0                             # Supply voltage (V)
+  temperature: 27                       # Temperature (Celsius)
+  num_rows: 32                         # Number of SRAM rows
+  num_cols: 2                      # Number of SRAM columns
+  monte_carlo_runs: 2                 # Monte Carlo simulation runs
+  timeout: 120                         # Simulation timeout (seconds)
+  
+# PDK configuration
+pdk:
+  path: "model_lib/models.spice"       # PDK path
+
+subcircuit:
+  name: "SRAM_6T_Cell"
+
+  # Parameter Space Configuration
+  parameter_space:
+    # Parameter dimensions
+    # dimensions: 6
+    
+    # Parameter definitions
+    parameters:
+      pmos_width:
+        type: "continuous list"   # Parameter type: continuous list
+        names: ["pu"]           # PMOS device names
+        upper: [1.08e-7]
+        lower: [7.2e-8]
+        default: [9.0e-8]           # Default value: base pd width
+        description: "Pull-up transistor width"
+        other_default: 1.0e-9
+        
+      nmos_width:
+        type: "continuous list"               # Parameter type: continuous
+        names: ['pd', 'pg']
+        upper: [1.08e-7, 1.62e-7]
+        lower: [7.2e-8, 1.08e-7]
+        default: [9.0e-8, 1.35e-7]
+        description: "Pull-up, pull-down transistor width"
+        other_default: 1.0e-9
+
+        
+      length:
+        type: "continuous value"     # Parameter type: continuous scalar
+        names: 'l'
+        upper: 6e-8
+        lower: 4e-8
+        default: 5e-8
+        description: "Transistor channel length"
+        
+      nmos_model:
+        type: "categorical list"                   # Parameter type: categorical
+        names: ['pd', 'pg']
+        choices: ["NMOS_VTL", "NMOS_VTG", "NMOS_VTH"]  # Choices: low Vt, regular Vt, high Vt
+        default: ["NMOS_VTG", "NMOS_VTG"]               # Default value: regular Vt
+        description: "NMOS transistor model"
+        
+      pmos_model:
+        type: "categorical list"                   # Parameter type: categorical
+        names: ['pu']
+        choices: ["PMOS_VTL", "PMOS_VTG", "PMOS_VTH"]  # Choices: low Vt, regular Vt, high Vt
+        default: ["PMOS_VTG"]                  # Default value: regular Vt
+        description: "PMOS transistor model"
+
+  # Evaluation Function Configuration
+  evaluation:
+    # Evaluator configuration
+    evaluator:
+      class_name: "SRAMEvaluator"            # Evaluator class name
+      module_path: "evaluators.sram_evaluator"  # Module path
+    
+  # Simulation configuration
+  simulation:
+    testbench:
+      class_name: "Sram6TCoreMcTestbench"  # Testbench class name
+      module_path: "testbenches.sram_6t_core_MC_testbench"  # Testbench module path
+
+  # Performance Metrics Definition
+  performance_metrics:
+    snm:
+      type: "continuous scalar"              # Metric type: simulation result
+      names: ['hold_snm', 'read_snm', 'write_snm']
+      upper: [inf, inf, inf]
+      lower: [-inf, -inf, -inf]
+      # source:                                # Key name in simulation output
+      description: "Static noise margins"
+      aggregation: 'min'
+      
+    power:
+      type: "continuous scalar"              # Metric type: simulation result
+      names: ['read_power', 'write_power']
+      upper: [inf, inf]
+      lower: [-inf, -inf]
+      # source: "write.power"                  # Key name in simulation output
+      aggregation: 'max'
+      description: "Operation power consumption"
+      
+    delay:
+      type: "continuous list"
+      names: ['read_delay', 'write_delay']  
+      upper: [5e-9, 5e-9]                  
+      lower: [0.0, 0.0]
+      penalty: [1.0e6, 1.0e6]
+      # source: "read.delay"                   # Key name in simulation output
+      description: "Read and write operation delay"
+      
+    area:
+      type: "continuous scalar"              # Metric type: calculated metric
+      names: "area"
+      upper: "inf"                 
+      lower: 0.0
+      formula: "estimate_bitcell_area(pd_width, pu_width, pg_width, length)"  # Calculation formula
+      description: "SRAM cell area"
+
+  # Objective Function Configuration
+  objectives:
+    # Composite objective function
+    composite_objective:
+      enabled: true                          # Enable composite objective
+      type: "merit_function"                 # Composite function type: merit function
+      formula: "log10(min_snm / (max_power * sqrt(area)))"  # Merit function formula
+      description: "SRAM Merit function combining SNM, power and area"
+
+    

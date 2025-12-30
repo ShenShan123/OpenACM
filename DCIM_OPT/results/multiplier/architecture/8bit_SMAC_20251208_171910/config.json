@@ -1,0 +1,34 @@
+{
+    "circuit": "8bit",
+    "algo": "SMAC",
+    "dim": 9,
+    "step": 1.0,
+    "pop_size": 100,
+    "gen": 10,
+    "crossover": 20.0,
+    "mutation": 20.0,
+    "max_mred": null,
+    "max_pdp": null,
+    "min_max": {
+        "MRED": [
+            0.00086214,
+            0.15909895
+        ],
+        "NMED": [
+            9.676e-05,
+            0.00313291
+        ],
+        "Area": [
+            435.974,
+            480.928
+        ],
+        "Delay": [
+            1.3,
+            1.34
+        ],
+        "Power": [
+            0.000146,
+            0.000184
+        ]
+    }
+}

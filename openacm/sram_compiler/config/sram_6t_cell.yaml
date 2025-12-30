@@ -1,0 +1,41 @@
+# Subcircuit Name
+SRAM_6T_CELL:
+  # Design Parameter Space Configuration
+  parameters:
+    # This subckt has 1 pmos 2 nmos to be optimized
+    pmos_width:
+      type: "continuous scalar"   # Parameter type: continuous scalar
+      names: "pu"                 # The corresponding device instance names
+      upper: 1.2e-7                 # Parameter upper bounds
+      lower: 1.2e-7                 # Parameter lower bounds
+      value: 1.2e-7               # Default value: base pd width
+      description: "Pull-up MOS width"
+    nmos_width:
+      type: "continuous list"     # Parameter type: continuous list
+      names: ['pd', 'pg']         # The corresponding device instance names
+      upper: [1.8e-7, 0.7e-7]  # Parameter upper bounds
+      lower: [1.8e-7, 0.7e-7]    # Parameter lower bounds
+      value: [1.8e-7, 0.7e-7]
+      description: "0:Pull-up MOS width, 1:Pass MOS width"
+    length: # In this version, we use a unified gate length
+      type: "continuous scalar"   # Parameter type: continuous scalar
+      names: 'l'                  #
+      upper: 74.0e-9               # Parameter upper bounds
+      lower: 74.0e-9               # Parameter lower bounds
+      value: 74.0e-9
+      description: "MOS gate length"
+    pmos_model:
+      type: "discrete scalar"     # Parameter type: categorical scalar
+      names: 'pu'                 # The corresponding device instance names
+      # Choices: low Vt, regular Vt, high Vt
+      choices: ["PMOS_VTL", "PMOS_VTG", "PMOS_VTH"]
+      value: "PMOS_VTG"           # Default value: regular Vt
+      description: "PMOS transistor model"
+    nmos_model:
+      type: "categorical list"    # Parameter type: categorical list
+      names: ['pd', 'pg']         # The corresponding device instance names
+      # Choices: low Vt, regular Vt, high Vt MOS
+      choices: ["NMOS_VTL", "NMOS_VTG", "NMOS_VTH"]
+      # Default value: regular Vt
+      value: ["NMOS_VTH", "NMOS_VTH"]
+      description: "0:PD NMOS type, 1:PG NMOS type"

@@ -1,0 +1,42 @@
+
+# Column Mux
+COLUMNMUX:
+  # Design Parameter Space Configuration
+  # This subckt has 1 pmos and 1 nmos to be optimized
+  parameters:
+    pmos_width:
+      type: "continuous scalar"   # Parameter type: continuous scalar
+      names: 'p'                  # The corresponding device instance names
+      upper: 1.0e-6               # Parameter upper bounds
+      lower: 1.0e-8               # Parameter lower bounds
+      value: 0.135e-6             # Default value: base pd width
+      description: "PMOS width"
+    nmos_width:
+      type: "continuous scalar"   # Parameter type: continuous scalar
+      names: 'n'                  # The corresponding device instance names
+      upper: 1.0e-6               # Parameter upper bounds
+      lower: 1.0e-8               # Parameter lower bounds
+      value: 0.135e-6
+      description: "0:NAND NMOS width, 1:INV NMOS width"
+    length: # In this version, we use a unified gate length
+      type: "continuous scalar"   # Parameter type: continuous scalar
+      names: 'l'                  #
+      upper: 1.0e-7                 # Parameter upper bounds
+      lower: 3.0e-8                 # Parameter lower bounds
+      value: 50.0e-9
+      description: "MOS gate length"
+    pmos_model:
+      type: "discrete scalar"     # Parameter type: categorical scalar
+      names: 'p'                  # The corresponding device instance names
+      # Choices: low Vt, regular Vt, high Vt
+      choices: ["PMOS_VTL", "PMOS_VTG", "PMOS_VTH"]
+      value: 'PMOS_VTG'           # Default value: regular Vt
+      description: "PMOS type"
+    nmos_model:
+      type: "discrete scalar"     # Parameter type: categorical scalar
+      names: 'n'                  # The corresponding device instance names
+      # Choices: low Vt, regular Vt, high Vt MOS
+      choices: ["NMOS_VTL", "NMOS_VTG", "NMOS_VTH"]
+      # Default value: regular Vt
+      value: 'NMOS_VTG'
+      description: "NMOS type"
