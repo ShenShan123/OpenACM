@@ -92,7 +92,6 @@ OpenACM/
 │ ├── compressor_sizing/ Transistor-level optimization of 8 compressors (SPICE + lib gen)
 │ └── optimization_algorithm/ Implementations of supported optimization algorithms
 ├── DCIM/ ASIC DCiM full backend workflow (OpenROAD)
-
 ├── DCIM_OPT/ Two-level optimization workspace
 ├── LICENSE
 └── README.md
