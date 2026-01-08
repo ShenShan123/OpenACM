@@ -136,7 +136,7 @@ Required external tools:
 ```
 python openacm/flow_script_generator/flow_script_generator.py \
     --design_name dcim_pe \
-    --top_model top_pe \
+    --top_model sram_multiplier_system \
     --location_x 30 \
     --location_y 15 
 ```
@@ -151,7 +151,7 @@ The generated multiplier files are stored in `DCIM/tcl/`
 python openacm/pe_compiler/SRAM.py \
     --data_width 8 \
     --addr_count 16 \
-    --rtl_dir ./rtl 
+    --rtl_dir ./DCIM/rtl 
 ```
 
 The generated multiplier files are stored in `DCIM/rtl/`
