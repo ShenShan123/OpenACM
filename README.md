@@ -35,11 +35,11 @@ Two-level ACCO modules will be released incrementally under `examples/` and docu
 
 Digital Compute-in-Memory (DCiM) improves efficiency by performing arithmetic close to SRAM arrays.
 
-Approximate DCiM leverages neural networks’ error tolerance to further optimize power, area, and energy.
+Approximate DCiM leverages neural networks�?error tolerance to further optimize power, area, and energy.
 
 However, approximate DCiM requires navigating a coupled design space involving:
 
-- Approximate 4–2 compressor choices
+- Approximate 4�? compressor choices
 - Column-wise approximation patterns
 - SRAM macro and bank configuration
 - Transistor sizing under PVT conditions
@@ -49,7 +49,7 @@ OpenACMv2 introduces **Accuracy-Constrained Co-Optimization (ACCO)** to jointly 
 
 ---
 
-## ✨ Highlights
+## �?Highlights
 
 ### ✔️ Open-Source DCiM Front-End
 
@@ -84,13 +84,13 @@ OpenACM/
 ├── docs/ Documentation, notes, figures
 ├── examples/ Example flows 
 ├── openacm/
-│ ├── flow_script_generator/Generates OpenROAD backend flow scripts
-│ ├── sram_compiler/ SRAM circuit generation and SPICE evaluation
-│ ├── pe_compiler/Integrates multiplier + SRAM into DCiM PE
-│ ├── multiplier_compiler/ Generates exact and approximate multipliers
-│ ├── multiplier_gnn/ GNN surrogate models (PEA-GNN)
-│ ├── compressor_sizing/ Transistor-level optimization of 8 compressors (SPICE + lib gen)
-│ └── optimization_algorithm/ Implementations of supported optimization algorithms
+�?├── flow_script_generator/Generates OpenROAD backend flow scripts
+�?├── sram_compiler/ SRAM circuit generation and SPICE evaluation
+�?├── pe_compiler/Integrates multiplier + SRAM into DCiM PE
+�?├── multiplier_compiler/ Generates exact and approximate multipliers
+�?├── multiplier_gnn/ GNN surrogate models (PEA-GNN)
+�?├── compressor_sizing/ Transistor-level optimization of 8 compressors (SPICE + lib gen)
+�?└── optimization_algorithm/ Implementations of supported optimization algorithms
 ├── DCIM/ ASIC DCiM full backend workflow (OpenROAD)
 ├── DCIM_OPT/ Two-level optimization workspace
 ├── LICENSE
@@ -201,10 +201,10 @@ OpenACM provides a fully automated pipeline that transforms **architecture-level
 
 The compilation flow includes four major components:
 
-- **PE Compiler** – Generates the control logic for SRAM and multipliers, along with input/output buffering. The PE autonomously initializes the SRAM, performs data–SRAM multiplication, and outputs the final results.
-- **Multiplier Compiler** – Supports exact multipliers of arbitrary bit widths, precision-configurable approximate multipliers based on customizable 4–2 compressor trees, and logarithmic multipliers for ultra-efficient large-bit-width designs.
-- **SRAM Macro Compiler** – Constructs 6T SRAM arrays of any size and produces the associated read/write and peripheral circuitry.
-- **Flow-Script Generator** – Produces backend scripts for OpenROAD, performing synthesis, place-and-route, and sign-off analysis to deliver a tape-out–ready DCiM macro.
+- **PE Compiler** �?Generates the control logic for SRAM and multipliers, along with input/output buffering. The PE autonomously initializes the SRAM, performs data–SRAM multiplication, and outputs the final results.
+- **Multiplier Compiler** �?Supports exact multipliers of arbitrary bit widths, precision-configurable approximate multipliers based on customizable 4�? compressor trees, and logarithmic multipliers for ultra-efficient large-bit-width designs.
+- **SRAM Macro Compiler** �?Constructs 6T SRAM arrays of any size and produces the associated read/write and peripheral circuitry.
+- **Flow-Script Generator** �?Produces backend scripts for OpenROAD, performing synthesis, place-and-route, and sign-off analysis to deliver a tape-out–ready DCiM macro.
 
 Through this unified automation flow, OpenACM enables fast design exploration under different accuracy, power, and area constraints, providing a practical open-source solution for accuracy-aware DCiM co-optimization.
 
@@ -228,13 +228,6 @@ Includes:
 - Multi-objective optimizers (NSGA-II, MOEA/D, SMAC, MOBO)
 - Accuracy-feasible architecture search
 
-Scripts will be added in:
-
-```
-DCIM_OPT/tcl/level1_opt.py/ Level-I architecture optimization for multiplier/SRAM    
-openacm/optimization_algorithm/ Supported optimizers (MOEA/D, NSGA-II, SMAC, MOBO, etc.)
-```
-
 ---
 
 ## 🔧 Level-II Optimization (Transistor-Level)
@@ -246,13 +239,52 @@ Performs:
 - Correctness validation and PPA evaluation
 - Accuracy-constrained sizing search
 
-Will be available in:
+---
+
+### Optimization Usage (DCIM_OPT)
+
+The optimization entry point is `DCIM_OPT/run_optimization.py`.
+
+Please run the following commands inside the `DCIM_OPT` directory.
+
+Stages:
+
+- `--stage config` (Level-I, architecture-level): GNN-based MRED/PDP prediction and search.
+- `--stage width` (Level-II, transistor-level): SPICE-based compressor sizing and search.
+
+Examples:
 
 ```
-DCIM_OPT/tcl/level2_opt.py/ Level-II sizing optimization for multiplier/SRAM 
-openacm/optimization_algorithm/ Supported optimizers (MOEA/D, NSGA-II, SMAC, MOBO, etc.)
+# Level-I (architecture) search
+python DCIM_OPT/run_optimization.py \
+    --stage config \
+    --circuit 8bit \
+    --algo NSGA
+
+# Level-II (transistor) sizing
+python DCIM_OPT/run_optimization.py \
+    --stage width \
+    --compressor sabetz \
+    --algo MOBO
 ```
----
+
+Key options:
+
+- `--circuit`: `8bit` or `16bit`.
+- `--compressor`: `AKbar1`, `AKbar2`, `antonio`, `AP1`, `ha`, `kong2`, `momeni`, `sabetz`.
+- `--algo`: `NSGA`, `MOEAD`, `MOBO`, `SMAC`.
+
+Outputs are saved to:
+
+- `DCIM_OPT/result/<run_name>/config.json`
+- `DCIM_OPT/result/<run_name>/solutions.txt`
+- `DCIM_OPT/result/<run_name>/pareto_front.png`
+
+Notes:
+
+- `--stage config` uses `DCIM_OPT/multiplier_gnn/`.
+- `--stage width` uses `DCIM_OPT/compressor_sizing/` and requires Xyce in PATH.
+- `run_ppa.py` invokes `python3`; on Windows, ensure `python3` is available or change it to `python`.
 
 ## 🧩 ACCO Framework Diagram
 
@@ -286,19 +318,19 @@ New compressors can be added through `nbit_approx.py`.
 
 ## 📄 Citation
 
-[1] Z. Yang, J. Han, and F. Lombardi, “Approximate compressors for error-resilient multiplier design,” 2015 IEEE International Symposium on Defect and Fault Tolerance in VLSI and Nanotechnology Systems (DFTS), Amherst, MA, USA, 2015, pp. 183-186.
+[1] Z. Yang, J. Han, and F. Lombardi, “Approximate compressors for error-resilient multiplier design,�?2015 IEEE International Symposium on Defect and Fault Tolerance in VLSI and Nanotechnology Systems (DFTS), Amherst, MA, USA, 2015, pp. 183-186.
 
-[2] T. Kong and S. Li, “Design and Analysis of Approximate 4–2 Compressors for High-Accuracy Multipliers,” in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 29, no. 10, pp. 1771–1781, Oct. 2021.
+[2] T. Kong and S. Li, “Design and Analysis of Approximate 4�? Compressors for High-Accuracy Multipliers,�?in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 29, no. 10, pp. 1771�?781, Oct. 2021.
 
-[3] A. G. M. Strollo, E. Napoli, D. De Caro, N. Petra, and G. D. Meo, “Comparison and Extension of Approximate 4-2 Compressors for Low-Power Approximate Multipliers,” IEEE Trans. Circuits Syst. I Regul. Pap., vol. 67, no. 9, pp. 3021–3034, Sep. 2020.
+[3] A. G. M. Strollo, E. Napoli, D. De Caro, N. Petra, and G. D. Meo, “Comparison and Extension of Approximate 4-2 Compressors for Low-Power Approximate Multipliers,�?IEEE Trans. Circuits Syst. I Regul. Pap., vol. 67, no. 9, pp. 3021�?034, Sep. 2020.
 
-[4] A. Momeni, J. Han, P. Montuschi, and F. Lombardi, “Design and Analysis of Approximate Compressors for Multiplication,” IEEE Trans. Comput., vol. 64, no. 4, pp. 984–994, Apr. 2015.
+[4] A. Momeni, J. Han, P. Montuschi, and F. Lombardi, “Design and Analysis of Approximate Compressors for Multiplication,�?IEEE Trans. Comput., vol. 64, no. 4, pp. 984�?94, Apr. 2015.
 
-[5] M. Ha and S. Lee, “Multipliers With Approximate 4–2 Compressors and Error Recovery Modules,” IEEE Embed. Syst. Lett., vol. 10, no. 1, pp. 6–9, Mar. 2018.[6] O. Akbari, M. Kamal, A. Afzali-Kusha, and M. Pedram, “Dual-Quality 4:2 Compressors for Utilizing in Dynamic Accuracy Configurable Multipliers,” in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 25, no. 4, pp. 1352–1361, Apr. 2017.
+[5] M. Ha and S. Lee, “Multipliers With Approximate 4�? Compressors and Error Recovery Modules,�?IEEE Embed. Syst. Lett., vol. 10, no. 1, pp. 6�?, Mar. 2018.[6] O. Akbari, M. Kamal, A. Afzali-Kusha, and M. Pedram, “Dual-Quality 4:2 Compressors for Utilizing in Dynamic Accuracy Configurable Multipliers,�?in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 25, no. 4, pp. 1352�?361, Apr. 2017.
 
-[6] O. Akbari, M. Kamal, A. Afzali-Kusha, and M. Pedram, “Dual-Quality 4:2 Compressors for Utilizing in Dynamic Accuracy Configurable Multipliers,” in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 25, no. 4, pp. 1352–1361, Apr. 2017.
+[6] O. Akbari, M. Kamal, A. Afzali-Kusha, and M. Pedram, “Dual-Quality 4:2 Compressors for Utilizing in Dynamic Accuracy Configurable Multipliers,�?in IEEE Transactions on Very Large Scale Integration (VLSI), Systems, vol. 25, no. 4, pp. 1352�?361, Apr. 2017.
 
-[7] F. Sabetzadeh, M. H. Moaiyeri, and M. Ahmadinejad, “A Majority-Based Imprecise Multiplier for Ultra-Efficient Approximate Image Multiplication,” IEEE Trans. Circuits Syst. I Regul. Pap., vol. 66, no. 11, pp. 4200–4208, Nov. 2019.
+[7] F. Sabetzadeh, M. H. Moaiyeri, and M. Ahmadinejad, “A Majority-Based Imprecise Multiplier for Ultra-Efficient Approximate Image Multiplication,�?IEEE Trans. Circuits Syst. I Regul. Pap., vol. 66, no. 11, pp. 4200�?208, Nov. 2019.
 
 ## 📜 License
 
@@ -313,3 +345,5 @@ OpenACMv2 builds on:
 - OpenACM (approximate CiM compiler)
 - OpenYield (variation-aware optimization)
 - OpenROAD + FreePDK45
+
+
