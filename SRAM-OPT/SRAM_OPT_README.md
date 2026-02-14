@@ -21,7 +21,7 @@ SRAM-OPT addresses these challenges through:
 - **Monte Carlo Simulation**: PVT-aware SPICE simulation with threshold voltage variations
 - **Multi-Objective Optimization**: Simultaneous optimization of SNM, delay, power, and area
 - **Comprehensive Metrics**: Hold/Read/Write SNM, read/write delay, static/dynamic power
-- **Multiple Algorithms**: Seven state-of-the-art optimization algorithms
+- **Multiple Algorithms**: Eight optimization algorithms (including a random baseline)
 - **Full Peripheral Support**: Word-line driver, precharge, sense amplifier, write driver, decoder, column mux
 
 ---
@@ -54,7 +54,7 @@ SRAM-OPT addresses these challenges through:
 | SMAC | Model-based | Sequential Model-based Algorithm Configuration |
 | PSO | Swarm | Particle Swarm Optimization |
 | SA | Metaheuristic | Simulated Annealing with exponential cooling |
-| Random | Baseline | Random Search for comparison |
+| Random | Baseline | Random search for comparison |
 
 ### ✔️ Flexible Configuration System
 
@@ -117,44 +117,25 @@ SRAM-OPT/
 │   ├── models_FS.spice                 # Fast-Slow corner
 │   └── models_SF.spice                 # Slow-Fast corner
 ├── sim/                                # Simulation output directory
+├── environment.yml                     # Conda environment definition
 ├── config.py                           # Configuration loader
 ├── utils.py                            # Utility functions
 ├── main_sram.py                        # Main simulation entry
 ├── plot_data.py                        # Visualization utilities
-└── README.md
+├── experiment.py                       # Joint optimization entry
+└── SRAM_OPT_README.md                  # This document
 ```
 
 ---
 
 ## ⚙️ Installation
 
-### Clone the Repository
+SRAM-OPT is a subfolder inside OpenACM. Follow the OpenACM repository setup for cloning and Python environment, then enter this folder:
 
 ```bash
-git clone https://github.com/YourOrg/SRAM-OPT.git
+git clone https://github.com/ShenShan123/OpenACM.git
+cd OpenACM
 cd SRAM-OPT
-```
-
-### Python Environment
-
-```bash
-conda create -n sram_opt python=3.10
-conda activate sram_opt
-
-# Install PyTorch (optional, for some optimizers)
-pip install torch==2.0.0 --index-url https://download.pytorch.org/whl/cpu
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Required Dependencies
-
-```bash
-pip install numpy scipy matplotlib pandas pyyaml tqdm
-pip install PySpice scikit-learn
-pip install smac ConfigSpace    # For SMAC optimizer
-pip install botorch gpytorch    # For MOBO optimizer
 ```
 
 ### External Tools
@@ -188,7 +169,18 @@ This performs Monte Carlo simulation and outputs:
 - Read/Write delay
 - Read/Write power (average, static, dynamic)
 
-### 2. Configure Simulation Parameters
+### 2. Run Joint Optimization
+
+```bash
+python experiment.py
+```
+
+You will be prompted to select:
+- Circuit mode: real cell or equivalent cell
+- Maximum iterations
+- Optimization algorithm (SA/PSO/SMAC/CBO/RoSE_Opt/MOEAD/MOBO/NSGA-II)
+
+### 3. Configure Simulation Parameters
 
 Edit `sram_compiler/config_yaml/global.yaml`:
 
@@ -201,7 +193,7 @@ monte_carlo_runs: 30        # Number of MC iterations
 pdk_path_TT: "tran_models/models_TT.spice"
 ```
 
-### 3. Configure Transistor Sizing
+### 4. Configure Transistor Sizing
 
 Edit `sram_compiler/config_yaml/sram_6t_cell.yaml`:
 
@@ -229,7 +221,7 @@ SRAM_6T_CELL:
       value: ["NMOS_VTH", "NMOS_VTH"]
 ```
 
-### 4. Run Optimization Algorithms
+### 5. Run Optimization Algorithms (Standalone Demos)
 
 ```bash
 # Multi-objective: NSGA-II
@@ -251,10 +243,13 @@ python size_optimization/demo_cbo.py
 
 ### Design Parameter Space
 
-The framework supports an 8-dimensional mixed design space:
+The framework supports a mixed design space combining architecture and device parameters:
 
 | Parameter | Type | Range | Description |
 |-----------|------|-------|-------------|
+| Rows | Discrete | 16–512 | SRAM rows (power-of-two set) |
+| Cols | Discrete | 16–512 | SRAM columns (power-of-two set) |
+| Num Arrays | Derived | total_bits / (rows × cols) | Ensures 262,144 total bits |
 | W_PD | Continuous | 45nm - 135nm | Pull-down NMOS width |
 | W_PU | Continuous | 45nm - 135nm | Pull-up PMOS width |
 | W_PG | Continuous | 67.5nm - 202.5nm | Pass-gate NMOS width |
@@ -267,27 +262,28 @@ The framework supports an 8-dimensional mixed design space:
 The default optimization objective combines multiple metrics:
 
 ```
-FoM = log₁₀(min_SNM / (max_Power × max_Delay × √Area))
+FoM = log₁₀(min_SNM / (max_power × max_delay × √total_area))
 ```
 
 Where:
 - `min_SNM = min(Hold_SNM, Read_SNM, Write_SNM)`
-- `max_Power = max(P_read, P_write)`
-- `max_Delay = max(T_read, T_write)`
+- `max_power = max(P_read, P_write)`
+- `max_delay = max(T_read, T_write)`
 
 ### Algorithm Configurations
 
-All algorithms are configured with a budget of **1,500 SPICE simulations**:
+All algorithms use the runtime budget specified by `experiment.py` (max iterations).
 
-| Algorithm | Key Parameters |
-|-----------|----------------|
-| CBO | GP surrogate, constrained EI acquisition |
-| PSO | Population=20, w=0.7, c1=c2=1.4 |
-| SA | T₀=1000, T_min=10⁻⁷, α=0.98 |
-| SMAC | Random Forest surrogate |
-| RoSE-Opt | Bayesian Optimization + PPO agent |
-| MOEA/D | h=17, generations=800, T=20 |
-| NSGA-II | Population=1200, fast non-dominated sort |
+| Algorithm | Notes |
+|-----------|-------|
+| SA | Single-objective joint optimization |
+| PSO | Particle swarm over joint space |
+| SMAC | Model-based optimization |
+| CBO | Constrained Bayesian optimization |
+| RoSE-Opt | RL-assisted Bayesian optimization |
+| MOEA/D | Multi-objective decomposition |
+| MOBO | Multi-objective Bayesian optimization |
+| NSGA-II | Non-dominated sorting GA |
 
 ---
 
@@ -389,6 +385,8 @@ SRAM-OPT generates optimized configurations that feed into the OpenROAD backend:
 
 ### Optimization Algorithm Comparison (32KB SRAM, FreePDK45)
 
+The table below shows example results from a past evaluation run and may not match your current environment.
+
 | Measure | Baseline | MOEA/D | NSGA-II | SMAC | CBO | PSO |
 |---------|----------|--------|---------|------|-----|-----|
 | Array Size | 16×16 | 64×32 | 64×32 | 64×32 | 32×32 | 32×32 |
@@ -449,5 +447,3 @@ SRAM-OPT builds on:
 - **BoTorch** - Bayesian Optimization in PyTorch
 
 ---
-
-
