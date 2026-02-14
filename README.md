@@ -93,6 +93,7 @@ OpenACM/
 �?└── optimization_algorithm/ Implementations of supported optimization algorithms
 ├── DCIM/ ASIC DCiM full backend workflow (OpenROAD)
 ├── DCIM_OPT/ Two-level optimization workspace
+├── SRAM_OPT/ Two-level SRAM optimization workspace
 ├── LICENSE
 └── README.md
 ```
