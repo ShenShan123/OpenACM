@@ -429,8 +429,6 @@ SRAM-OPT generates optimized configurations that feed into the OpenROAD backend:
 | `evaluate_sram(params)` | Evaluate SRAM with given parameters |
 | `estimate_bitcell_area(...)` | Estimate bit-cell area from W/L |
 | `run_mc_simulation(...)` | Run Monte Carlo simulation |
-| `generate_sram_lef(...)` | Generate LEF file for P&R |
-
 ---
 
 ## 📜 License
