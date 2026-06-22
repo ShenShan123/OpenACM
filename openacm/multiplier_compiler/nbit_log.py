@@ -1,4 +1,5 @@
 import math
+from pathlib import Path
 import sys
 
 class MultiplierGenerator:
@@ -565,13 +566,19 @@ module Log_our_{self.N}bit(
 endmodule
 """
 
-def generate_Log(test_bit_widths):
-    
+def generate_Log(test_bit_widths, output_dir="."):
+    """Generate logarithmic multiplier Verilog files for the requested bit widths."""
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    generated_files = []
+
     for bits in test_bit_widths:
         generator = MultiplierGenerator(N=bits)
         verilog_code = generator.generate_verilog()
-        
-        filename = "Log_our_{}bit.v".format(bits)
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(verilog_code)
 
+        filename = output_path / f"Log_our_{bits}bit.v"
+        filename.write_text(verilog_code, encoding="utf-8")
+        generated_files.append(filename)
+        print(f"Generated logarithmic multiplier: {filename}")
+
+    return generated_files

@@ -53,7 +53,8 @@ OpenACMv2 introduces **Accuracy-Constrained Co-Optimization (ACCO)** to jointly 
 
 ### ✔️ Open-Source DCiM Front-End
 
-- Exact / approximate / logarithmic multipliers
+- Exact / configurable approximate / logarithmic integer multipliers
+- Standalone exact and approximate floating-point multiplier RTLs
 - Parameterized SRAM macros
 - DCiM PE generation (SRAM + multiplier + control logic)
 - Full OpenROAD-compatible backend flow
@@ -161,13 +162,24 @@ The generated multiplier files are stored in `DCIM/rtl/`
 
 Multiplier:
 
-This step produces an exact or approximate multiplier depending on the configuration.
+This step produces exact, configurable approximate, and logarithmic integer multiplier RTL depending on the configuration.
 
 ```
 python openacm/multiplier_compiler/multiplier_compiler.py --bit_width 8
 ```
 
 The generated multiplier files are stored in `DCIM/multiplier/`
+
+Standalone exact and approximate floating-point multiplier RTL implementations
+are provided in:
+
+`DCIM/multiplier/Approximate_Floating-Point_Multiplier/`
+
+These modules accept floating-point operands and produce floating-point results
+with the corresponding data width. They are currently independent of the
+SRAM-based processing-element flow. Integrating them into the existing PE
+architecture requires an interface wrapper and corresponding updates to the PE
+datapath and control logic.
 
 PE:
 
@@ -314,6 +326,32 @@ The multiplier front-end supports:
 New compressors can be added through `nbit_approx.py`.
 
 ![compressor.png](./docs/compressor.png)
+
+---
+
+## Supported Floating-Point Multipliers
+
+OpenACM also provides standalone exact and approximate floating-point multiplier
+RTLs under `DCIM/multiplier/Approximate_Floating-Point_Multiplier/`.
+
+These designs follow the common floating-point multiplication flow: sign XOR,
+exponent addition with bias correction, mantissa multiplication or approximation,
+normalization, and result packing. Approximation is mainly introduced in the
+mantissa path by truncating low-significance bits, segmenting mantissas, or
+approximating correction and cross-product terms.
+
+| Directory | Top module | Description |
+| --- | --- | --- |
+| `Exact/` | `V_EFPM` | Exact IEEE-like floating-point multiplier baseline. It supports parameterized total width and exponent width, and includes zero, infinity, NaN, normalization, and round-to-nearest-even handling. |
+| `AC/` | `V_AFPM_v1` | Configurable approximate floating-point multiplier. It uses truncated high-order mantissa segments and provides low-, medium-, and high-precision modes through the `mode` parameter. |
+| `EAFPU/` | `EAFPU` | FP32 approximate floating-point multiplier with `MODE=0/1/2`, corresponding to no correction, low-precision correction, and high-precision correction. |
+| `MMBS/` | `MMBS5`, `MMBS6`, `MMBS7` | FP32 mantissa-block segmentation multipliers. They multiply the leading mantissa blocks exactly and approximate the cross terms. Larger suffixes keep more leading mantissa bits, usually improving accuracy with higher hardware cost. |
+| `SSFPM/` | `FPmult_opt_pipe_SSM` | Static segmented floating-point multiplier. The multiply-and-add unit can be switched among `MMssm_n23_m*` and `MMssm_corr2_n23_m*` variants for different accuracy/cost trade-offs. |
+
+The current PE compiler expects integer multiplier modules named
+`<multiplier_module>_<data_width>bit` with integer inputs and a double-width
+integer product. Floating-point multiplier integration therefore needs an
+interface wrapper and corresponding PE data-path changes.
 
 ---
 

@@ -1,5 +1,6 @@
 import datetime
 import math
+from pathlib import Path
 
 class MultiplierGeneratorArbitrary:
     def __init__(self, n_bits=32, compressor_types=None):
@@ -1870,40 +1871,108 @@ module STAGE{stage_num}_{n_bits}(
 #             bits, filename, generator.stage_count, ", ".join(compressor_names)))
 #         print()
 
-def generate_Appro_4_2(test_bit_widths):
+def _resolve_compressor_types(config_value, required_compressors, bits, prompt_for_missing):
+    """Normalize one bit-width compressor configuration.
+
+    config_value may be:
+      * one integer from 1 to 8: use that compressor at every approximate position;
+      * a list/tuple containing exactly one entry per approximate position;
+      * None: use ACCI1 everywhere, unless prompt_for_missing=True.
+    """
+    if required_compressors == 0:
+        return []
+
+    if isinstance(config_value, int):
+        compressor_types = [config_value] * required_compressors
+    elif config_value is None:
+        compressor_types = []
+    else:
+        compressor_types = list(config_value)
+
+    if not compressor_types and prompt_for_missing:
+        print(
+            f"Please enter {required_compressors} compressor types for "
+            f"{bits}-bit multiplier (separated by spaces):"
+        )
+        print(
+            "1: ACCI1, 2: kong2, 3: antonio, 4: momeni, "
+            "5: ha, 6: akbar1, 7: akbar2, 8: sabetz"
+        )
+        try:
+            user_input = input().strip()
+            compressor_types = (
+                [int(value) for value in user_input.split()]
+                if user_input
+                else [1] * required_compressors
+            )
+        except (ValueError, EOFError):
+            print("Invalid input, using ACCI1 at every approximate position.")
+            compressor_types = [1] * required_compressors
+
+    if not compressor_types:
+        compressor_types = [1] * required_compressors
+
+    if len(compressor_types) != required_compressors:
+        raise ValueError(
+            f"{bits}-bit multiplier requires {required_compressors} compressor "
+            f"entries, but {len(compressor_types)} were configured."
+        )
+
+    invalid_types = [value for value in compressor_types if value not in range(1, 9)]
+    if invalid_types:
+        raise ValueError(
+            "Compressor types must be integers from 1 to 8; "
+            f"invalid values: {invalid_types}"
+        )
+
+    return compressor_types
+
+
+def generate_Appro_4_2(
+    test_bit_widths,
+    compressor_config=None,
+    output_dir=".",
+    prompt_for_missing=False,
+):
+    """Generate configurable approximate multiplier Verilog files.
+
+    compressor_config is a dictionary keyed by bit width. Each value can be a
+    single compressor number or a complete per-position list. The default path
+    is non-interactive, so scripts and CI jobs never block waiting for input.
+    """
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    compressor_config = compressor_config or {}
+    generated_files = []
 
     for bits in test_bit_widths:
         temp_generator = MultiplierGeneratorArbitrary(n_bits=bits)
-        
         total_columns = 2 * bits - 1
-        required_compressors = temp_generator._count_required_compressors(total_columns)
-        
-        print(f"{bits}-bit multiplier requires approximate compressors: {required_compressors}")
-        
-        compressor_types = []
-        if required_compressors > 0:
-            print(f"Please enter {required_compressors} compressor types for {bits}-bit multiplier (separated by spaces):")
-            print("1: ACCI1, 2: kong2, 3: antonio, 4: momeni, 5: ha, 6: akbar1, 7: akbar2, 8: sabetz")
-            
-            try:
-                user_input = input().strip()
-                if user_input:
-                    compressor_types = [int(x) for x in user_input.split()]
-                else:
-                    compressor_types = [1] * required_compressors
-            except (ValueError, EOFError):
-                print("Invalid input, using default compressor ACCI1")
-                compressor_types = [1] * required_compressors
-        
+        required_compressors = temp_generator._count_required_compressors(
+            total_columns
+        )
 
-        generator = MultiplierGeneratorArbitrary(n_bits=bits, compressor_types=compressor_types)
+        print(
+            f"{bits}-bit multiplier requires "
+            f"{required_compressors} approximate compressors."
+        )
+
+        compressor_types = _resolve_compressor_types(
+            compressor_config.get(bits),
+            required_compressors,
+            bits,
+            prompt_for_missing,
+        )
+
+        generator = MultiplierGeneratorArbitrary(
+            n_bits=bits,
+            compressor_types=compressor_types,
+        )
         verilog_code = generator.generate_verilog_code()
-        
-        compressor_names = []
-        for comp_type in compressor_types:
-            name = generator.compressor_mapping.get(comp_type, "ACCI1")
-            compressor_names.append(name)
 
-        filename = f"Appro4_2_{bits}bit.v"
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(verilog_code)
+        filename = output_path / f"Appro4_2_{bits}bit.v"
+        filename.write_text(verilog_code, encoding="utf-8")
+        generated_files.append(filename)
+        print(f"Generated approximate multiplier: {filename}")
+
+    return generated_files

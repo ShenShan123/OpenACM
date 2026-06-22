@@ -1,5 +1,6 @@
 import datetime
 import math
+from pathlib import Path
 
 class MultiplierGeneratorArbitrary:
     def __init__(self, n_bits=32):
@@ -1752,12 +1753,19 @@ module STAGE{stage_num}_{n_bits}(
         
         return "\n".join(internal_wires) + "\n\n" + "\n".join(assignments) + "\n"
 
-def generate_Exact(test_bit_widths):
-    
+def generate_Exact(test_bit_widths, output_dir="."):
+    """Generate exact multiplier Verilog files for the requested bit widths."""
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    generated_files = []
+
     for bits in test_bit_widths:
         generator = MultiplierGeneratorArbitrary(n_bits=bits)
         verilog_code = generator.generate_verilog_code()
-        
-        filename = "Exact_{}bit.v".format(bits)
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(verilog_code)
+
+        filename = output_path / f"Exact_{bits}bit.v"
+        filename.write_text(verilog_code, encoding="utf-8")
+        generated_files.append(filename)
+        print(f"Generated exact multiplier: {filename}")
+
+    return generated_files
