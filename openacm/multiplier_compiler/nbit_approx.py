@@ -1,6 +1,18 @@
+import argparse
 import datetime
 import math
+import sys
 from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OUTPUT_DIR = REPO_ROOT / "DCIM" / "multiplier"
+DEFAULT_CONFIG_DIR = Path(__file__).resolve().parent / "compressor_configs"
+
+COMPRESSOR_TYPE_HELP = (
+    "1: ACCI1, 2: kong2, 3: antonio, 4: momeni, "
+    "5: ha, 6: akbar1, 7: akbar2, 8: sabetz"
+)
 
 class MultiplierGeneratorArbitrary:
     def __init__(self, n_bits=32, compressor_types=None):
@@ -1827,49 +1839,74 @@ module STAGE{stage_num}_{n_bits}(
         
         return "\n".join(internal_wires) + "\n\n" + "\n".join(assignments) + "\n"
 
-# def main():
-#     test_bit_widths = [8]
-    
-#     for bits in test_bit_widths:
+def _required_compressor_count(bits):
+    generator = MultiplierGeneratorArbitrary(n_bits=bits)
+    total_columns = 2 * bits - 1
+    return generator._count_required_compressors(total_columns)
 
-#         temp_generator = MultiplierGeneratorArbitrary(n_bits=bits)
-#         total_columns = 2 * bits - 1
-#         required_compressors = temp_generator._count_required_compressors(total_columns)
-        
-#         print(f"{bits}-bit multiplier requires approximate compressors: {required_compressors}")
-        
-#         compressor_types = []
-#         if required_compressors > 0:
-#             print(f"Please enter {required_compressors} compressor types for {bits}-bit multiplier (separated by spaces):")
-#             print("1: ACCI1, 2: kong2, 3: antonio, 4: momeni, 5: ha, 6: akbar1, 7: akbar2, 8: sabetz")
-            
-#             try:
-#                 user_input = input().strip()
-#                 if user_input:
-#                     compressor_types = [int(x) for x in user_input.split()]
-#                 else:
-#                     compressor_types = [1] * required_compressors
-#             except (ValueError, EOFError):
-#                 print("Invalid input, using default compressor ACCI1")
-#                 compressor_types = [1] * required_compressors
-        
 
-#         generator = MultiplierGeneratorArbitrary(n_bits=bits, compressor_types=compressor_types)
-#         verilog_code = generator.generate_verilog_code()
-        
-#         compressor_names = []
-#         for comp_type in compressor_types:
-#             name = generator.compressor_mapping.get(comp_type, "ACCI1")
-#             compressor_names.append(name)
-        
-#         filename = "mult{}_approx.v".format(bits)
-#         with open(filename, "w", encoding="utf-8") as f:
-#             f.write(verilog_code)
-        
-#         compression_width = generator.compression_width
-#         print("Generated {}-bit approximate multiplier code to file: {} (Number of stages: {}, Compressors used: {})".format(
-#             bits, filename, generator.stage_count, ", ".join(compressor_names)))
-#         print()
+def _compressor_config_path(bits, config_dir):
+    return Path(config_dir) / f"Appro4_2_{bits}bit.cfg"
+
+
+def _format_compressor_values(values, row_width=10):
+    lines = []
+    for start in range(0, len(values), row_width):
+        row = values[start:start + row_width]
+        lines.append(" ".join(str(value) for value in row))
+    return "\n".join(lines)
+
+
+def write_compressor_config_template(bits, config_dir=DEFAULT_CONFIG_DIR, overwrite=False):
+    config_path = _compressor_config_path(bits, config_dir)
+    if config_path.exists() and not overwrite:
+        print(f"Compressor config already exists: {config_path}")
+        return config_path
+
+    required_compressors = _required_compressor_count(bits)
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+
+    values = _format_compressor_values([1] * required_compressors)
+    template = f"""{values}
+
+# Approximate compressor config for Appro4_2_{bits}bit
+# Required approximate compressors: {required_compressors}
+# Edit only the numbers above. Keep exactly {required_compressors} entries.
+# {COMPRESSOR_TYPE_HELP}
+"""
+    config_path.write_text(template, encoding="utf-8")
+    print(f"Created compressor config template: {config_path}")
+    return config_path
+
+
+def read_compressor_config(bits, config_dir=DEFAULT_CONFIG_DIR):
+    config_path = _compressor_config_path(bits, config_dir)
+    if not config_path.exists():
+        raise FileNotFoundError(
+            f"Missing compressor config: {config_path}. "
+            f"Run: python nbit_approx.py --bit_width {bits} --init_config"
+        )
+
+    values = []
+    for line in config_path.read_text(encoding="utf-8").splitlines():
+        line = line.split("#", 1)[0].strip()
+        if not line:
+            continue
+        for token in line.replace(",", " ").split():
+            try:
+                values.append(int(token))
+            except ValueError as exc:
+                raise ValueError(
+                    f"Invalid compressor value '{token}' in {config_path}"
+                ) from exc
+
+    required_compressors = _required_compressor_count(bits)
+    return _resolve_compressor_types(
+        values,
+        required_compressors,
+        bits,
+        prompt_for_missing=False,
+    )
 
 def _resolve_compressor_types(config_value, required_compressors, bits, prompt_for_missing):
     """Normalize one bit-width compressor configuration.
@@ -1976,3 +2013,81 @@ def generate_Appro_4_2(
         print(f"Generated approximate multiplier: {filename}")
 
     return generated_files
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Generate approximate 4-2 compressor multipliers."
+    )
+    parser.add_argument(
+        "--bit_width",
+        type=int,
+        nargs="+",
+        default=[8],
+        help="Multiplier bit width(s) to generate. Default: 8",
+    )
+    parser.add_argument(
+        "--config_dir",
+        type=Path,
+        default=DEFAULT_CONFIG_DIR,
+        help=f"Compressor config directory. Default: {DEFAULT_CONFIG_DIR}",
+    )
+    parser.add_argument(
+        "--output_dir",
+        type=Path,
+        default=DEFAULT_OUTPUT_DIR,
+        help=f"Output directory. Default: {DEFAULT_OUTPUT_DIR}",
+    )
+    parser.add_argument(
+        "--init_config",
+        action="store_true",
+        help="Create compressor config template(s) only, then exit.",
+    )
+    parser.add_argument(
+        "--overwrite_config",
+        action="store_true",
+        help="Overwrite existing config template(s) when used with --init_config.",
+    )
+
+    args = parser.parse_args()
+    invalid_bit_widths = [bits for bits in args.bit_width if bits < 1]
+    if invalid_bit_widths:
+        parser.error(f"Bit width must be positive; invalid values: {invalid_bit_widths}")
+    if args.overwrite_config and not args.init_config:
+        parser.error("--overwrite_config can only be used with --init_config.")
+    return args
+
+
+def main():
+    args = parse_args()
+
+    if args.init_config:
+        for bits in args.bit_width:
+            write_compressor_config_template(
+                bits,
+                config_dir=args.config_dir,
+                overwrite=args.overwrite_config,
+            )
+        return
+
+    compressor_config = {}
+    try:
+        for bits in args.bit_width:
+            compressor_config[bits] = read_compressor_config(
+                bits,
+                config_dir=args.config_dir,
+            )
+
+        generate_Appro_4_2(
+            args.bit_width,
+            compressor_config=compressor_config,
+            output_dir=args.output_dir,
+            prompt_for_missing=False,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

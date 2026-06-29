@@ -1,8 +1,14 @@
 import argparse
+import sys
 from pathlib import Path
 
 from nbit_exact import generate_Exact   
-from nbit_approx import generate_Appro_4_2
+from nbit_approx import (
+    DEFAULT_CONFIG_DIR,
+    generate_Appro_4_2,
+    read_compressor_config,
+    write_compressor_config_template,
+)
 from nbit_log import generate_Log
 
 
@@ -15,75 +21,63 @@ GENERATE_EXACT = True
 GENERATE_APPROX = True
 GENERATE_LOG = True
 
-# Approximate compressor type mapping:
-# 1: ACCI1, 2: kong2, 3: antonio, 4: momeni, 5: ha, 6: akbar1, 7: akbar2, 8: sabetz
-# Change the numbers in each list to customize the approximate multiplier.
-APPROX_COMPRESSOR_TYPES = {
-    8: [
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-    ],
-    16: [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-    ],
-    32: [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1,
-    ],
-}
-
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Generate exact, approximate, and log multipliers.")
     parser.add_argument(
         "--bit_width",
         type=int,
-        choices=sorted(APPROX_COMPRESSOR_TYPES),
-        default=DEFAULT_BIT_WIDTH,
-        help=f"Multiplier bit width to generate. Default: {DEFAULT_BIT_WIDTH}",
+        nargs="+",
+        default=[DEFAULT_BIT_WIDTH],
+        help=f"Multiplier bit width(s) to generate. Default: {DEFAULT_BIT_WIDTH}",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--config_dir",
+        type=Path,
+        default=DEFAULT_CONFIG_DIR,
+        help=f"Approximate compressor config directory. Default: {DEFAULT_CONFIG_DIR}",
+    )
+    parser.add_argument(
+        "--init_config",
+        action="store_true",
+        help="Create approximate compressor config template(s) only, then exit.",
+    )
+    args = parser.parse_args()
+
+    invalid_bit_widths = [bits for bits in args.bit_width if bits < 1]
+    if invalid_bit_widths:
+        parser.error(f"Bit width must be positive; invalid values: {invalid_bit_widths}")
+
+    return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    bit_widths = [args.bit_width]
+    bit_widths = args.bit_width
 
-    print(f"Generating {args.bit_width}-bit multiplier files in: {OUTPUT_DIR}")
+    if args.init_config:
+        for bits in bit_widths:
+            write_compressor_config_template(bits, config_dir=args.config_dir)
+        sys.exit(0)
+
+    try:
+        compressor_config = {
+            bits: read_compressor_config(bits, config_dir=args.config_dir)
+            for bits in bit_widths
+        }
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+    bit_width_label = ", ".join(f"{bits}-bit" for bits in bit_widths)
+    print(f"Generating {bit_width_label} multiplier files in: {OUTPUT_DIR}")
 
     if GENERATE_EXACT:
         generate_Exact(bit_widths, output_dir=OUTPUT_DIR)
     if GENERATE_APPROX:
         generate_Appro_4_2(
             bit_widths,
-            compressor_config=APPROX_COMPRESSOR_TYPES,
+            compressor_config=compressor_config,
             output_dir=OUTPUT_DIR,
             prompt_for_missing=False,
         )

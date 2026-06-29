@@ -163,12 +163,43 @@ The generated multiplier files are stored in `DCIM/rtl/`
 Multiplier:
 
 This step produces exact, configurable approximate, and logarithmic integer multiplier RTL depending on the configuration.
+The configurable approximate multiplier reads editable compressor templates from
+`openacm/multiplier_compiler/compressor_configs/`. The repository provides
+8-bit, 16-bit, and 32-bit templates as examples.
 
 ```
 python openacm/multiplier_compiler/multiplier_compiler.py --bit_width 8
 ```
 
+For any other bit width, first generate the matching template:
+
+```
+python openacm/multiplier_compiler/multiplier_compiler.py --bit_width 7 --init_config
+```
+
+Then edit the generated file:
+
+```
+openacm/multiplier_compiler/compressor_configs/Appro4_2_7bit.cfg
+```
+
+The template lists compressor IDs from the first line, with 10 entries per row.
+Comments and the compressor ID legend are placed after the editable entries.
+After editing the template, generate the multiplier:
+
+```
+python openacm/multiplier_compiler/multiplier_compiler.py --bit_width 7
+```
+
 The generated multiplier files are stored in `DCIM/multiplier/`
+
+To generate only the configurable approximate multiplier, use `nbit_approx.py`
+with the same template flow:
+
+```
+python openacm/multiplier_compiler/nbit_approx.py --bit_width 7 --init_config
+python openacm/multiplier_compiler/nbit_approx.py --bit_width 7
+```
 
 Standalone exact and approximate floating-point multiplier RTL implementations
 are provided in:
